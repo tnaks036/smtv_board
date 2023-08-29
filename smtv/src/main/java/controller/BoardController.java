@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
  
@@ -10,7 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+import javax.servlet.http.Part;
+
 import dto.BoardDTO;
 import smtv.DBConn;
  
@@ -95,8 +97,10 @@ public class BoardController extends HttpServlet {
             // 게시글 번호를 데이터베이스에서 가져오기
             int board_ID = dbConn.getLastBoardID() + 1; // 실제 데이터베이스와 연동되어야 합니다.
             
-            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, ins_Date_Time,
-                    file_name, upd_Date_Time, del_Date_Time, del_Yn);
+            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, file_name, ins_Date_Time,
+                    upd_Date_Time, del_Date_Time, del_Yn);
+            
+            System.out.println("여기에요" + board);
             
             dbConn.insertBoard(board);
             
@@ -121,25 +125,17 @@ public class BoardController extends HttpServlet {
         }
         
         //게시글 삭제하기
-        if(command.equals("/delete.do"))
+        if (command.equals("/delete.do"))
         {
-            //boardNum이라는 문자열을 받아온다. int형 변환을 함께해준다.
             int num = Integer.parseInt(request.getParameter("board_ID"));
-            
-            for(int i =0; i<boardList.size(); i++)
-            {
-                //리스트 뒤에 get은 순번. 
-                if(boardList.get(i).getBoard_ID() == num )
-                {
-                    boardList.remove(i);
-                    
-                }
-            }
-            
-            
-            
-            //page="boarList.jsp"; 이렇게 들고가면 데이터 안가져가준다. 화며네 암것도안봉미.
-            page="boardList.do";
+
+            // 데이터베이스에서 해당 게시글을 삭제하는 코드를 추가합니다.
+            DBConn dbConn = new DBConn();
+            dbConn.deleteBoard(num);
+
+            // 삭제 후 게시글 목록으로 이동
+            page = "boardList.do";
+            isRedirect = true;
         }
         
         //게시글 수정 페이지로 이동
@@ -159,32 +155,33 @@ public class BoardController extends HttpServlet {
         //글 수정
         if(command.equals("/updateBoard.do"))
         {
-        	String comment_ID = request.getParameter("comment_ID");
+            String comment_ID = request.getParameter("comment_ID");
             String title = request.getParameter("title");
             String contents = request.getParameter("contents");
-            String file_name = request.getParameter("file_name");
+            Part filePart = request.getPart("file_name");
+            InputStream fileContent = filePart.getInputStream();
+            byte[] fileData = fileContent.readAllBytes();
             String ins_Date_Time = request.getParameter("ins_Date_Time");
             String upd_Date_Time = request.getParameter("upd_Date_Time");
             String del_Date_Time = request.getParameter("del_Date_Time");
             String del_Yn = request.getParameter("del_Yn");
             int num = Integer.parseInt(request.getParameter("board_ID"));
-            
+
             for(BoardDTO board : boardList) {
                 if(board.getBoard_ID()==num)
                 {
                     board.setComment_ID(comment_ID);
                     board.setTitle(title);
                     board.setContents(contents);
-                    board.setFile_Name(file_name);
+                    board.setFile_Name(fileData); // 변경된 부분
                     board.setIns_Date_Time(ins_Date_Time);
                     board.setUpd_Date_Time(upd_Date_Time);
                     board.setDel_Date_Time(del_Date_Time);
                     board.setDel_Yn(del_Yn);
                 }
             }
-            
-            page="boarList.do";
-       
+
+            page = "boardList.do";
         }
         
         // 페이지 이동.

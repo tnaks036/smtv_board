@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +39,10 @@ public class DBConn {
         ResultSet rs = null;
 
         try {
-            String selectQuery = "SELECT * FROM CS_Ques"; // 여기에 테이블명을 정확히 입력해주세요
+            String selectQuery = "SELECT Board_ID, Comment_ID, Title, Contents, File_Name, FORMAT(Ins_Date_Time, 'MM-dd')as Ins_Date_Time,Upd_Date_Time, Del_Date_Time, Del_Yn FROM CS_Ques"; // 여기에 테이블명을 정확히 입력해주세요
             pstmt = dbConn.prepareStatement(selectQuery);
             rs = pstmt.executeQuery();
+            System.out.println(rs);
 
             while (rs.next()) {
                 int boardID = rs.getInt("Board_ID");
@@ -48,10 +50,13 @@ public class DBConn {
                 String title = rs.getString("Title");
                 String contents = rs.getString("Contents");
                 String fileName = rs.getString("File_Name");
-                String insDateTime = rs.getString("Ins_Date_Time");
+                
+                // 날짜 값을 가져와서 원하는 형식으로 변환
+                String insDateTime = rs.getString("Ins_Date_Time"); // 이미 원하는 형식으로 변환되어 있는 경우
                 String updDateTime = rs.getString("Upd_Date_Time");
                 String delDateTime = rs.getString("Del_Date_Time");
                 String delYN = rs.getString("Del_Yn");
+                
                 // 나머지 필드들도 적절하게 가져와서 BoardDTO 객체를 생성하고 boardList에 추가
                 BoardDTO board = new BoardDTO(boardID, commentID, title, contents, fileName, insDateTime, updDateTime, delDateTime, delYN);
                 boardList.add(board);
@@ -96,32 +101,85 @@ public class DBConn {
             dbConn = getConnection();
             dbConn.setAutoCommit(false); // AutoCommit 모드 비활성화
 
-            String insertQuery = "INSERT INTO CS_Ques (Board_ID, Comment_ID, Title, Contents, File_Name, Ins_Date_Time) VALUES (?, ?, ?, ?, ?, ?)";
-            pstmt = dbConn.prepareStatement(insertQuery);
+            String insertQuery = "INSERT INTO CS_Ques (Comment_ID, Title, Contents, File_Name, Ins_Date_Time, Upd_Date_Time, Del_Date_Time, Del_Yn) " +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            pstmt = dbConn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-            pstmt.setInt(1, board.getBoard_ID());
-            if (board.getComment_ID() != null) {
-                pstmt.setString(2, board.getComment_ID());
-            } else {
-                pstmt.setString(2, "default_comment_id");
-            }
-            if (board.getTitle() != null) {
-                pstmt.setString(3, board.getTitle());
-            } else {
-                pstmt.setString(3, "default_title");
-            }
-            pstmt.setString(4, board.getContents());
-
-            // 파일 이름을 바이트 배열로 변환하여 삽입
-            byte[] fileNameBytes = board.getFile_Name().getBytes("UTF-8"); // 혹은 다른 인코딩 방식
-            pstmt.setBytes(5, fileNameBytes);
-
-            pstmt.setString(6, board.getIns_Date_Time()); // 데이터 형식을 변환해서 삽입
+            pstmt.setString(1, board.getComment_ID());
+            pstmt.setString(2, board.getTitle());
+            pstmt.setString(3, board.getContents());
+            pstmt.setBytes(4, board.getFile_Name());
+            pstmt.setString(5, board.getIns_Date_Time());
+            pstmt.setString(6, board.getUpd_Date_Time());
+            pstmt.setString(7, board.getDel_Date_Time());
+            pstmt.setString(8, board.getDel_Yn());
 
             pstmt.executeUpdate();
             System.out.println("데이터 삽입 성공");
 
+            // 삽입된 ID 값을 가져오기
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int insertedID = generatedKeys.getInt(1);
+                board.setBoard_ID(insertedID); // 삽입된 ID를 BoardDTO에 설정
+            }
+
             // 데이터 삽입 후에 커밋을 수행합니다.
+            dbConn.commit();
+            commit = true; // 커밋이 성공했을 경우에만 true로 설정
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            // 에러 발생 시 롤백을 수행합니다.
+            if (dbConn != null) {
+                try {
+                    dbConn.rollback();
+                } catch (Exception rollbackException) {
+                    rollbackException.printStackTrace();
+                }
+            }
+        } finally {
+    	    if (pstmt != null) {
+    	        try {
+    	            pstmt.close();
+    	        } catch (Exception e) {
+    	            e.printStackTrace();
+    	        }
+    	    }
+    	    if (dbConn != null) {
+    	        try {
+    	            if (commit) {
+    	                dbConn.commit(); // 커밋이 된 경우에만 커밋
+    	            } else {
+    	                dbConn.rollback(); // 커밋이 안 된 경우에 롤백
+    	            }
+    	            dbConn.setAutoCommit(true); // AutoCommit 모드 활성화
+    	            dbConn.close();
+    	        } catch (Exception e) {
+    	            e.printStackTrace();
+    	        }
+    	    }
+    	}
+    }
+
+    
+    public void deleteBoard(int boardID) {
+        Connection dbConn = null;
+        PreparedStatement pstmt = null;
+        boolean commit = false; // 커밋 여부 플래그
+
+        try {
+            dbConn = getConnection();
+            dbConn.setAutoCommit(false); // AutoCommit 모드 비활성화
+
+            String deleteQuery = "DELETE FROM CS_Ques WHERE Board_ID = ?";
+            pstmt = dbConn.prepareStatement(deleteQuery);
+            pstmt.setInt(1, boardID);
+
+            pstmt.executeUpdate();
+            System.out.println("데이터 삭제 성공");
+
+            // 데이터 삭제 후에 커밋을 수행합니다.
             dbConn.commit();
             commit = true; // 커밋이 성공했을 경우에만 true로 설정
 
@@ -146,7 +204,7 @@ public class DBConn {
             if (dbConn != null) {
                 try {
                     if (commit) {
-                        dbConn.commit(); // 커밋이 된 경우에 다시 커밋
+                        dbConn.commit(); // 커밋이 된 경우에만 커밋
                     } else {
                         dbConn.rollback(); // 커밋이 안 된 경우에 롤백
                     }
@@ -159,6 +217,8 @@ public class DBConn {
         }
     }
 
+    
+    
     public int getLastBoardID() {
         int lastBoardID = 0;
 

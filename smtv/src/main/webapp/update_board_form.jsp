@@ -12,7 +12,7 @@
 <table>
     <tr>
         <td>제목</td>
-        <td><input type="text" name="title" value="${board.file_name }"></td>
+        <td><input type="text" name="title" value="${board.title }"></td>
     </tr>
     <tr>
         <td>작성일</td>
