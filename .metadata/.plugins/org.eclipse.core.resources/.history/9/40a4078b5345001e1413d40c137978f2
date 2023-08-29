@@ -1,0 +1,12 @@
+package jsp.board.action;
+
+public class BoardFormChangeAction {  //- Each screen transition is performed by the BoardFormChangeAction class.
+									  //- The Action class is implemented by the following seven methods
+	
+
+	public void setCommand(String key) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -1,0 +1,39 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+public class jdbc {
+
+	public static void main(String[] args) throws ClassNotFoundException {
+        //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
+        
+        String connectionUrl =
+                "jdbc:sqlserver://smtv.iptime.org,2433;"
+                        + "database=notice;"
+                        + "user=sa;"
+                        + "password=@admin9150;";
+ 
+        
+        try (Connection connection = DriverManager.getConnection(connectionUrl);) {
+            // Code here.
+              Statement stmt = connection.createStatement();
+              System.out.println("MS-SQL 서버 접속에 성공하였습니다.");
+              ResultSet rs = stmt.executeQuery("SELECT * FROM instructor");
+ 
+              while (rs.next()) {
+                  int AddressID = rs.getInt("AddressID");
+                  String AddressLine1 = rs.getString("AddressLine1");
+                  
+                  System.out.println(AddressID + ", " + AddressLine1);                  
+              }           
+            rs.close();
+            stmt.close();
+            connection.close();
+        }
+        // Handle any errors that may have occurred.
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

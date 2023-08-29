@@ -1,0 +1,18 @@
+alt + U , U(프로젝트 업데이트 받기)
+
+
+
+
+업체별 요구사항, 개발 리스트
+https://docs.google.com/spreadsheets/d/1Dmj-DHod9_4MWrRXH3vRUsWXNlXxuN0WslJppnEKDS4/edit#gid=833769516
+
+개발정의서
+https://docs.google.com/spreadsheets/d/1syCkLVEg8GFnF_fwrSf_zXx8rElgdGLEjI6W_KhME5U/edit#gid=16516843
+
+업체별 SVN, DB  사용 현황
+https://docs.google.com/spreadsheets/d/1marnhH9V0kHEK2EX7iT4cuPk7BWdv5OY0VnDCdcysz8/edit#gid=0
+
+
+
+클라우드 1 서버 : 133.186.250.88, 9150 / smtv/ #smtv@9150$
+MES서버 : smtv.iptime.org,2433/smtv/ #smtv@9150$

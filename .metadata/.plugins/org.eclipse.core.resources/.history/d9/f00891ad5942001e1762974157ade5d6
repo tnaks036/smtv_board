@@ -1,0 +1,22 @@
+package com.db.biz;
+
+import java.util.List;
+
+import com.db.dto.BoardDto;
+
+public interface BoardBiz {	//Business Lobic -> 규칙, 운영 및 상호작용 처리0pre
+	// 게시글 전체 출력
+	public List<BoardDto> selectAll();
+	
+	//게시글 하나 출력
+	public BoardDto selectOne(int bd_no);
+	
+	//글쓰기
+	public boolean insert(BoardDto dto);
+	
+	//글수정
+	public boolean update(BoardDto dto);
+	
+	//글삭제
+	public boolean delete(int bd_no);
+}

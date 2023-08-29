@@ -1,0 +1,5 @@
+package com.db.biz;
+
+public class BoardBizImpl {
+
+}

@@ -1,0 +1,23 @@
+import java.sql.Connection;
+
+public class TestingDriverAndConnection {
+	 public static void main(String[] args) {
+	        TestingDriverAndConnection testingDriver = new TestingDriverAndConnection();
+
+	        try {
+	            Connection connection = testingDriver.getConnection();
+	            // 이후 데이터베이스 작업을 수행하세요.
+	            
+	            // 연결 및 리소스 해제
+	            connection.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	private Connection getConnection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
+
