@@ -27,18 +27,19 @@ public class BoardController extends HttpServlet {
     
     public BoardController() {
         super();
-        board_ID = 1;
         boardList = new ArrayList<>();
       
     }
  
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doProcess(request, response);
+        request.setCharacterEncoding("UTF-8");
+    	doProcess(request, response);
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doProcess(request, response);
+    	request.setCharacterEncoding("UTF-8");
+    	doProcess(request, response);
     }
  
     public void doProcess(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException{
@@ -59,7 +60,14 @@ public class BoardController extends HttpServlet {
         
         if(command.equals("/boardList.do"))
         {
+        	DBConn dbConn = new DBConn();
+            
+            // getBoardList 메서드를 호출하여 데이터를 가져와서 boardList에 설정
+            boardList = dbConn.getBoardList();
+            
+            // 가져온 데이터를 request에 설정
             request.setAttribute("list", boardList);
+            System.out.println(boardList);
             
             page = "boardList.jsp";
         }
@@ -73,35 +81,26 @@ public class BoardController extends HttpServlet {
         //글 등록 실행
         if (command.equals("/regBoard.do")) {
             // 데이터 받기
-            String board_ID_str = request.getParameter("board_ID");
-            int board_ID_int = 0; // 여기서 변수를 선언하고 초기화합니다.
-            if (board_ID_str != null && !board_ID_str.isEmpty()) {
-                board_ID_int = Integer.parseInt(board_ID_str);
-            }
-            String comment_ID = request.getParameter("comment_ID");
-            String answer_ID = request.getParameter("answer_ID");
+        	String comment_ID = request.getParameter("comment_ID");
+            String title = request.getParameter("title");
             String contents = request.getParameter("contents");
             String file_name = request.getParameter("file_name");
             String ins_Date_Time = request.getParameter("ins_Date_Time");
             String upd_Date_Time = request.getParameter("upd_Date_Time");
             String del_Date_Time = request.getParameter("del_Date_Time");
             String del_Yn = request.getParameter("del_Yn");
-
-            // 위에서 전달받은 데이터를 갖는 게시글 생성
-            BoardDTO board = new BoardDTO(board_ID_int, comment_ID, answer_ID, contents, ins_Date_Time,
-                    file_name, upd_Date_Time, del_Date_Time, del_Yn);
-
-            // DB 연결 클래스를 생성
+            
             DBConn dbConn = new DBConn();
-            // insertBoard 메서드 호출하여 데이터 삽입
+
+            // 게시글 번호를 데이터베이스에서 가져오기
+            int board_ID = dbConn.getLastBoardID() + 1; // 실제 데이터베이스와 연동되어야 합니다.
+            
+            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, ins_Date_Time,
+                    file_name, upd_Date_Time, del_Date_Time, del_Yn);
+            
             dbConn.insertBoard(board);
             
-            // board_ID_int 증가 후에 데이터 리스트에 추가하지 않도록 수정합니다.
-            // board_ID_int++;
-
-            // page="boardList.jsp";
             page = "boardList.do";
-            // 맨 밑 페이지 이동시 쓰는거. 일단 page 이동 do로 끝내는것만. 기억하자.
             isRedirect = true;
         }
         
@@ -140,7 +139,7 @@ public class BoardController extends HttpServlet {
             
             
             //page="boarList.jsp"; 이렇게 들고가면 데이터 안가져가준다. 화며네 암것도안봉미.
-            page="boarList.do";
+            page="boardList.do";
         }
         
         //게시글 수정 페이지로 이동
@@ -161,7 +160,7 @@ public class BoardController extends HttpServlet {
         if(command.equals("/updateBoard.do"))
         {
         	String comment_ID = request.getParameter("comment_ID");
-            String answer_ID = request.getParameter("answer_ID");
+            String title = request.getParameter("title");
             String contents = request.getParameter("contents");
             String file_name = request.getParameter("file_name");
             String ins_Date_Time = request.getParameter("ins_Date_Time");
@@ -174,7 +173,7 @@ public class BoardController extends HttpServlet {
                 if(board.getBoard_ID()==num)
                 {
                     board.setComment_ID(comment_ID);
-                    board.setAnswer_ID(answer_ID);
+                    board.setTitle(title);
                     board.setContents(contents);
                     board.setFile_Name(file_name);
                     board.setIns_Date_Time(ins_Date_Time);
@@ -196,10 +195,5 @@ public class BoardController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
         }
-                
-        
-        
-        
     }
-    
 }

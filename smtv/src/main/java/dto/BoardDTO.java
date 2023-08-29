@@ -3,7 +3,7 @@ package dto;
 public class BoardDTO {
 	   private int Board_ID;
 	   private String Comment_ID;
-	   private String Answer_ID;
+	   private String Title;
 	   private String Contents;
 	   private String File_Name;
 	   private String Ins_Date_Time;
@@ -14,12 +14,12 @@ public class BoardDTO {
 	   
 	   
 	   
-		public BoardDTO(int board_ID, String comment_ID, String answer_ID, String contents, String ins_Date_Time, 
+		public BoardDTO(int board_ID, String comment_ID, String title, String contents, String ins_Date_Time, 
 						String file_name, String upd_Date_Time, String del_Date_Time, String del_Yn) {
 		      super();
 		      this.Board_ID = board_ID;
 		      this.Comment_ID = comment_ID;
-		      this.Answer_ID = answer_ID;
+		      this.Title = title;
 		      this.Contents = contents;
 		      this.File_Name = file_name;
 		      this.Ins_Date_Time = ins_Date_Time;
@@ -27,20 +27,6 @@ public class BoardDTO {
 		      this.Del_Date_Time = del_Date_Time;
 		      this.Del_Yn = del_Yn;
 		   }
-
-
-
-
-		public String getFile_Name() {
-			return File_Name;
-		}
-
-
-
-
-		public void setFile_Name(String file_name) {
-			File_Name = file_name;
-		}
 
 
 
@@ -73,15 +59,15 @@ public class BoardDTO {
 
 
 
-		public String getAnswer_ID() {
-			return Answer_ID;
+		public String getTitle() {
+			return Title;
 		}
 
 
 
 
-		public void setAnswer_ID(String answer_ID) {
-			Answer_ID = answer_ID;
+		public void setTitle(String title) {
+			Title = title;
 		}
 
 
@@ -96,6 +82,20 @@ public class BoardDTO {
 
 		public void setContents(String contents) {
 			Contents = contents;
+		}
+
+
+
+
+		public String getFile_Name() {
+			return File_Name;
+		}
+
+
+
+
+		public void setFile_Name(String file_Name) {
+			File_Name = file_Name;
 		}
 
 
@@ -153,5 +153,17 @@ public class BoardDTO {
 		public void setDel_Yn(String del_Yn) {
 			Del_Yn = del_Yn;
 		}
-	
+
+
+
+
+		@Override
+		public String toString() {
+			return "BoardDTO [Board_ID=" + Board_ID + ", Comment_ID=" + Comment_ID + ", Title=" + Title + ", Contents="
+					+ Contents + ", File_Name=" + File_Name + ", Ins_Date_Time=" + Ins_Date_Time + ", Upd_Date_Time="
+					+ Upd_Date_Time + ", Del_Date_Time=" + Del_Date_Time + ", Del_Yn=" + Del_Yn + "]";
+		}
+
+
+
 }
