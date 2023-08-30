@@ -67,7 +67,8 @@ public class BoardDAO { //data access object ;DB에 접근하기 위한 객체�
 			sql.append("INSERT INTO CS_QUES");
 			//sql.append("(Board_Id, Comment_ID, Title, Contents, File_Name, Ins_Date_Time, Upd_Date_Time, Del_Date_Time, Del_Yn)");
 			sql.append("(Title, Contents, File_Name, Ins_Date_Time, Upd_Date_Time, Del_Date_Time, Del_Yn)"); //delete boardID , Comment_ID
-			sql.append(" VALUES(?, ?, ?, CONVERT(varbinary(max), ?), ?, ?, ?)");
+			sql.append(" VALUES(?, CONVERT(varbinary(max), ?), CONVERT(varbinary(max), ?), CONVERT(varbinary(max), ?), ?, ?, ?)");
+			//sql.append("ALTER TABLE CS_QUES ALTER Comment_ID VARBINARY(MAX)");
 			//sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             
             int num = board.getBoard_ID();

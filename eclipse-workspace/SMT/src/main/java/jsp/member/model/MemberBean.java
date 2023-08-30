@@ -41,6 +41,7 @@ public class MemberBean {//DTO data transfer object; 로직을 가지지 않는 
         this.memberReg = memberReg;
     }
     
+    
     @Override
     public String toString() {
         return "MemberBean [memberID=" + memberID + ", memberPWD=" + memberPWD + ", memberName=" + memberName

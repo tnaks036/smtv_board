@@ -54,7 +54,7 @@
                         <thead>
                             <tr>
                                 <th class="index" scope="col" width="12%">글 번호</th>
-                                <th class="title" scope="col" width="36%">제목=작성날짜</th>
+                                <th class="title" scope="col" width="36%">제목</th>
                                 <th class="name" scope="col" width="20%">작성자</th>
                                 <th class="date "scope="col" width="20%">작성날짜</th>
                                 <!-- <th class="countView" scope="col" width="12%">조회수</th>  -->
@@ -103,7 +103,7 @@
                         <select name="option">
                             <option value="0">제목</option>
                             <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                            <option value="2">제목</option>
                             <option value="3">글쓴이</option>
                         </select>
                         <input type="text" size="20" name="condition"/>&nbsp;

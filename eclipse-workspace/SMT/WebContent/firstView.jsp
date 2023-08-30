@@ -10,6 +10,7 @@
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
+            overflow: auto; /*자동 스크롤*/
         }
         
         @media (min-width: 768px) {

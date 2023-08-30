@@ -27,6 +27,7 @@
             height: 500px;
             text-align:center;
             vertical-align: middle;
+            overflow: auto; /*자동 스크롤*/
         }
     </style>
     </head>

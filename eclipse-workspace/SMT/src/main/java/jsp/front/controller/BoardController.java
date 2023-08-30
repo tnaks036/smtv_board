@@ -82,29 +82,14 @@ public class BoardController extends HttpServlet { // 게시판 관련 컨트롤
 				System.out.println("not found : "+command);
 				return;
 			}
-			
 			forward = action.execute(request, response); //execute() 호출
-			String path = (forward != null) ? forward.getPath() : null; // Get path or null if forward is null
-			//String path = forward.getPath(); //경로설정
-			if (path != null) { // Check if path is not null before using it
-			    System.out.println("path " + path);
-			    System.out.println(forward);
-
-			    if (forward.isRedirect()) {
-			        response.sendRedirect(forward.getPath());
-			    } else {
-			        //getRequestDispatcher(상대경로)
-			        RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
-			        dispatcher.forward(request, response);
-			    }
-			}
+			String path = forward.getPath(); //경로설정
 			System.out.println("path "+path);
 			System.out.println(forward);
 			
-			if(forward != null) { // Check if path is not null before using it
+			if(forward != null) {
 				if(forward.isRedirect()) {
 					response.sendRedirect(forward.getPath());
-					return;
 				} else {
 					//getRequestDispatcher(상대경로)
 					RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
@@ -115,6 +100,25 @@ public class BoardController extends HttpServlet { // 게시판 관련 컨트롤
 			e.printStackTrace();
 		}
 	}	
+//			forward = action.execute(request, response); //execute() 호출
+//			String path = (forward != null) ? forward.getPath() : null; // Get path or null if forward is null
+//			//String path = forward.getPath(); //경로설정
+//			if (path != null) { // Check if path is not null before using it
+//			    System.out.println("path " + path);
+//			    System.out.println(forward);
+//
+//			    if (forward.isRedirect()) {
+//			        response.sendRedirect(forward.getPath());
+//			    } else {
+//			        //getRequestDispatcher(상대경로)
+//			        RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
+//			        dispatcher.forward(request, response);
+//			    }
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}	
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
