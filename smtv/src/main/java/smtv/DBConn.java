@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.BoardDTO;
+import dto.CommentDTO;
 
 public class DBConn {
 
@@ -262,5 +263,195 @@ public class DBConn {
         }
 
         return lastBoardID;
+    }
+    
+    
+    
+    public List<CommentDTO> getCommentList(int boardID) {
+        List<CommentDTO> commentList = new ArrayList<>();
+
+        Connection dbConn = getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            String selectQuery = "SELECT Comment_ID, Answer_ID, Contents, File_Name, CONVERT(VARCHAR, Ins_Date_Time, 101) AS Ins_Date_Time, CONVERT(VARCHAR, Upd_Date_Time, 101) AS Upd_Date_Time,"
+                    + "CONVERT(VARCHAR, Del_Date_Time, 101) AS Del_Date_Time, Del_Yn FROM CS_Ans"; // 여기에 테이블명을 정확히 입력해주세요
+            System.out.println("SQL Query: " + selectQuery);
+            pstmt = dbConn.prepareStatement(selectQuery);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String commentID = rs.getString("Comment_ID");
+                String answerID = rs.getString("Answer_ID");
+                String contents = rs.getString("Contents");
+                String fileName = rs.getString("File_Name");
+                
+                // 날짜 값을 가져와서 원하는 형식으로 변환
+                String insDateTime = rs.getString("Ins_Date_Time"); // 이미 원하는 형식으로 변환되어 있는 경우
+                String updDateTime = rs.getString("Upd_Date_Time");
+                String delDateTime = rs.getString("Del_Date_Time");
+                String delYN = rs.getString("Del_Yn");
+                
+                CommentDTO comment = new CommentDTO(boardID, commentID, answerID, contents, fileName, insDateTime, updDateTime, delDateTime, delYN);
+                commentList.add(comment);
+                System.out.println("\n");
+                System.out.println(comment);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            // 리소스 해제
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dbConn != null) {
+                try {
+                    dbConn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return commentList;
+    }
+
+    public CommentDTO getComment(int boardID, String commentID) {
+        Connection dbConn = getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        CommentDTO comment = null;
+
+        try {
+            String selectQuery = "SELECT Comment_ID, Answer_ID, Contents, File_Name, CONVERT(VARCHAR, Ins_Date_Time, 101) AS Ins_Date_Time, CONVERT(VARCHAR, Upd_Date_Time, 101) AS Upd_Date_Time,"
+                    + "CONVERT(VARCHAR, Del_Date_Time, 101) AS Del_Date_Time, Del_Yn FROM CS_Ans WHERE Board_ID = ? AND Comment_ID = ?";
+            pstmt = dbConn.prepareStatement(selectQuery);
+            pstmt.setInt(1, boardID);
+            pstmt.setString(2, commentID);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String fetchedCommentID = rs.getString("Comment_ID");
+                String answerID = rs.getString("Answer_ID");
+                String contents = rs.getString("Contents");
+                String fileName = rs.getString("File_Name");
+                String insDateTime = rs.getString("Ins_Date_Time");
+                String updDateTime = rs.getString("Upd_Date_Time");
+                String delDateTime = rs.getString("Del_Date_Time");
+                String delYN = rs.getString("Del_Yn");
+
+                comment = new CommentDTO(boardID, fetchedCommentID, answerID, contents, fileName, insDateTime, updDateTime, delDateTime, delYN);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            // 리소스 해제
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dbConn != null) {
+                try {
+                    dbConn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return comment;
+    }
+    
+    public void updateComment(int boardID, String commentID, String newContents) {
+        Connection dbConn = getConnection();
+        PreparedStatement pstmt = null;
+
+        try {
+            String updateQuery = "UPDATE CS_Ans SET Contents = ? WHERE Board_ID = ? AND Comment_ID = ?";
+            pstmt = dbConn.prepareStatement(updateQuery);
+            pstmt.setString(1, newContents);
+            pstmt.setInt(2, boardID);
+            pstmt.setString(3, commentID);
+
+            pstmt.executeUpdate();
+            System.out.println("댓글 수정 성공");
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            // 리소스 해제
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dbConn != null) {
+                try {
+                    dbConn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void deleteComment(int boardID, String commentID) {
+        Connection dbConn = getConnection();
+        PreparedStatement pstmt = null;
+
+        try {
+            String deleteQuery = "DELETE FROM CS_Ans WHERE Board_ID = ? AND Comment_ID = ?";
+            pstmt = dbConn.prepareStatement(deleteQuery);
+            pstmt.setInt(1, boardID);
+            pstmt.setString(2, commentID);
+
+            pstmt.executeUpdate();
+            System.out.println("댓글 삭제 성공");
+
+            // 여기에서 원하는 동작을 추가할 수 있습니다.
+            // 예를 들어, 삭제 후에 어떤 페이지로 이동하거나 메시지를 표시할 수 있습니다.
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            // 리소스 해제
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dbConn != null) {
+                try {
+                    dbConn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import dto.BoardDTO;
+import dto.CommentDTO;
 import smtv.DBConn;
  
  
@@ -95,7 +96,7 @@ public class BoardController extends HttpServlet {
             DBConn dbConn = new DBConn();
 
             // 게시글 번호를 데이터베이스에서 가져오기
-            int board_ID = dbConn.getLastBoardID() + 1; // 실제 데이터베이스와 연동되어야 합니다.
+            // int board_ID = dbConn.getLastBoardID() + 1; // 실제 데이터베이스와 연동되어야 합니다.
             
             BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, file_name, ins_Date_Time,
                     upd_Date_Time, del_Date_Time, del_Yn);
@@ -113,6 +114,11 @@ public class BoardController extends HttpServlet {
         {
             int num = Integer.parseInt(request.getParameter("board_ID"));
             
+            // 게시글 목록에서 해당 게시글의 댓글을 가져옴
+            DBConn dbConn = new DBConn();
+            List<CommentDTO> commentList = dbConn.getCommentList(num);
+            
+            
             //게시글 목록에서 넘겨온 글번호와 같은 게시글 찾기.
             // boardList로 반복할거다. 반복해서 뽑으면 그게 BoardDTO.
             for(BoardDTO board: boardList) {
@@ -120,7 +126,7 @@ public class BoardController extends HttpServlet {
                     request.setAttribute("board", board );
                 }
             }
-            
+            request.setAttribute("commentList", commentList);
             page="boardDetail.jsp";
         }
         
@@ -192,5 +198,7 @@ public class BoardController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
         }
+        
+       
     }
 }
