@@ -1,0 +1,13 @@
+127.0.0.1 - - [30/Aug/2023:09:02:49 +0900] "GET / HTTP/1.1" 404 807
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /BoardWriteForm.bo HTTP/1.1" 200 12286
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /css/bootstrap.min.css HTTP/1.1" 200 160392
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /css/navbar-top-fixed.css HTTP/1.1" 404 835
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /js/jquery-3.5.1.min.js HTTP/1.1" 404 833
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /css/bootstrap-icons.css HTTP/1.1" 200 88587
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /js/bootstrap.js HTTP/1.1" 200 143686
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /css/templatemo-topic-listing.css HTTP/1.1" 200 24402
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /css/navbar-top-fixed.css HTTP/1.1" 404 835
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /fonts/bootstrap-icons.woff2?8d200481aa7f02a2d63a331fc782cfaf HTTP/1.1" 404 838
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /fonts/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf HTTP/1.1" 404 837
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:02:50 +0900] "GET /favicon.ico HTTP/1.1" 404 818
+0:0:0:0:0:0:0:1 - - [30/Aug/2023:09:06:52 +0900] "POST /BoardWriteAction.bo HTTP/1.1" 200 -
