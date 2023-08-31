@@ -1,5 +1,0 @@
-package com.db.biz;
-
-public interface BoardBiz {
-
-}

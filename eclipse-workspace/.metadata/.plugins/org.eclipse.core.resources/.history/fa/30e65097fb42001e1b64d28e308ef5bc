@@ -1,6 +1,0 @@
-package jsp.filter;
-
-@WebFilter("/*")
-public class EncodingFilter implements Filter {
-
-}

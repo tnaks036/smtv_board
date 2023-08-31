@@ -1,5 +1,0 @@
-package jsp.board.comment.model;
-
-public class CommentBean {
-
-}
