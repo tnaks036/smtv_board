@@ -125,11 +125,13 @@ public class BoardController extends HttpServlet {
             BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, file_name, ins_Date_Time,
                     upd_Date_Time, del_Date_Time, del_Yn);
             
-            System.out.println("여기에요" + board);
+            System.out.println(" hi " + board);
             
             dbConn.insertBoard(board);
             
             page = "boardList.do";
+            // boardList로 돌아가서 
+            // 데이터를 적재할 request.setAtrribute("list", boardlist)를 추가해줘야한다.
             isRedirect = true;
         }
         

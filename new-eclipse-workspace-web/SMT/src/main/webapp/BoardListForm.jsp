@@ -88,6 +88,7 @@ https://templatemo.com/tm-590-topic-listing
       							<tr>
 							          <td>${board.getBoard_ID() }	</td>
 							          <td><a href="boardDetail.do?board_ID=${board.getBoard_ID() }">${board.getTitle() }</a></td>
+							          <td>${board.getComment_ID() }	</td>
 							          <td>${board.ins_Date_Time }</td>
       							</tr>
                             </c:forEach>
@@ -123,7 +124,7 @@ https://templatemo.com/tm-590-topic-listing
                             <option value="0">제목</option>
                             <option value="1">내용</option>
                             <option value="2">제목</option>
-                            <option value="3">글쓴이</option>
+                            <option value="3">작성자</option>
                         </select>
                         <input type="text" size="20" name="condition"/>&nbsp;
                         <input type="submit" value="검색"/>

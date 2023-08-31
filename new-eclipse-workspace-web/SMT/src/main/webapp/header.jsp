@@ -4,13 +4,20 @@
 <html lang="en">
   <head>
     <style>
+   /* div#header{
+	    background-color:#02c7ea;
+	    position:fixed;
+	    width:100%;
+	    top:0;
+	    left:0;
+	}*/
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
-        position: sticky;
+        position: fixed;
       }
  
       @media (min-width: 768px) {
@@ -74,9 +81,10 @@ https://templatemo.com/tm-590-topic-listing
         -->
       </head>
       <body>
+      <div id="header">
         <nav class="navbar navbar-expand-lg">
                 <div class="container">
-                    <a class="navbar-brand" href="BoardListForm.jsp">
+                    <a class="navbar-brand" href="boardList.do">
                         <!-- <i class="bi-back"></i> -->
                         <span>게시판</span>
                     </a>
@@ -151,9 +159,9 @@ https://templatemo.com/tm-590-topic-listing
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </section>
+       </div>
     </body>
 </html>

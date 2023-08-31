@@ -26,12 +26,18 @@
 			/* form 태그의 boardSubject, boardContent의 value 가져오기 */
 			const subject = form.boardSubject.value;
 			const content = form.boardContent.value;
+			const comment_ID = form.boardComment.value;
 			
 			/* 입력이 되지 않았다면 */
 			if(!subject) {
 				alert("제목을 입력해주세요.");
 				return false;
-			} else if(!content) {
+			} 
+			else if(!Comment_ID){
+				alert("작성자를 입력해주세요.")
+				return false;
+			}
+			else if(!content) {
 				alert("내용을 입력해주세요.");
 				return false;
 			}

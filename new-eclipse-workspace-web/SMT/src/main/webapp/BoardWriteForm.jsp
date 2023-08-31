@@ -19,7 +19,9 @@
 			const form = document.boardForm;
 			/* boardForm의 boardSubject, boardContent 값 가져오기 */
 			const subject = form.boardSubject.value;
+			const comment_ID = form.boardComment_Id.value;
 			const content = form.boardContent.value;
+			
 			
 			/* 값이 없으면 */
 			if(!subject) 
@@ -27,6 +29,11 @@
 				alert("제목을 입력해주세요.");
 				return false;
 			} 
+			else if(!comment_ID)
+			{
+				alert("작성자를 입력해주세요.");
+				return false;
+			}
 			else if(!content) 
 			{
 				alert("내용을 입력해주세요.");
@@ -70,6 +77,11 @@ https://templatemo.com/tm-590-topic-listing
 					<span class="input-group-text" id="inputGroup-sizing-default">제목</span>
 					<input name="boardSubject" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 				</div>
+				<!-- 작성자 -->
+				<div class="input-group">
+					<span class="input-group-text" id="inputGroup-sizing-default">작성자</span>
+					<input name="boardComment_Id" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+				</div>
 				<!-- 첨부파일 -->
 				<div class="input-group mb-3">
 					<input name="boardFile" type="file" class="form-control" id="inputGroupFile02">
@@ -89,3 +101,4 @@ https://templatemo.com/tm-590-topic-listing
 		</div>
 </body>
 </html>
+

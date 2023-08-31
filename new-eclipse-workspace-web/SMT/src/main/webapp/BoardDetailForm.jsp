@@ -6,10 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${board.Ins_Date_Time}</title> <!-- 글 상세보기 : 글 제목, 글 작성 날짜, 첨부 파일, 글 내용을 출력  -->
+<title>${board.getTitle()}</title> <!-- 글 상세보기 : 글 제목, 글 작성 날짜, 첨부 파일, 글 내용을 출력  -->
 <style type="text/css">
 		.container{
 			margin-top: 100px;
+			
 		}
 		.input-group{
 			margin-bottom: 5px;
@@ -23,7 +24,7 @@
 		}
 		/*comment! */
 		#wrap {
-            width: 800px;
+            width: 1200px;
             margin: 0 auto 0 auto;    
         }
     
@@ -41,88 +42,141 @@
 		  border-collapse: collapse; /* Merge adjacent borders into a single border */
 		  border: 1px solid lightgray; /* Set border style and color */
 		}
-		
-	</style>
-	<script type="text/javascript">
-		function detailAction(value) { /*function changeView(value)  */
-			if(value == 0)
-			{
-				location.href = "BoardUpdateFormAction.bo?num=${board.Board_ID}&page=${page}";
-			} 
-			else if(value == 1) 
-			{
-				if(confirm("정말로 삭제하시겠습니까?"))
-				{
-					location.href="BoardDeleteAction.bo?num=${board.Board_ID}";
-					return true;
-				} 
-				else 
-				{
-					return false;
-				}
-			} 
-			else if(value == 2) 
-			{
-				location.href = "BoardListAction.bo?page=${page}";
-			}
+		/* comment css style */
+		#root {
+		  width: 100%;
+		  margin: 0 auto;
+		  max-width: 1200px;
 		}
 		
-		var httpReuqest = null;
-		// httpRequest 객체 생성
-	    function getXMLHttpRequest(){
-	        var httpRequest = null;
-	    
-	        if(window.ActiveXObject){
-	            try{
-	                httpRequest = new ActiveXObject("Msxml2.XMLHTTP");    
-	            } catch(e) {
-	                try{
-	                    httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-	                } catch (e2) { httpRequest = null; }
-	            }
-	        }
-	        else if(window.XMLHttpRequest){
-	            httpRequest = new window.XMLHttpRequest();
-	        }
-	        return httpRequest;    
-	    }
-	    
-	    // 댓글 등록
-	    function writeCmt()
-	    {
-	        var form = document.getElementById("writeCommentForm");
-	        
-	        var board = form.comment_board.value
-	        var id = form.comment_id.value
-	        var content = form.comment_content.value;
-	        
-	        if(!content)
-	        {
-	            alert("내용을 입력하세요.");
-	            return false;
-	        }
-	        else
-	        {    
-	            var param="comment_board="+board+"&comment_id="+id+"&comment_content="+content;
-	                
-	            httpRequest = getXMLHttpRequest();
-	            httpRequest.onreadystatechange = checkFunc;
-	            httpRequest.open("POST", "CommentWriteAction.co", true);    
-	            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=EUC-KR'); 
-	            httpRequest.send(param);
-	        }
-	    }
-	    
-	    function checkFunc(){
-	        if(httpRequest.readyState == 4){
-	            // 결과값을 가져온다.
-	            var resultText = httpRequest.responseText;
-	            if(resultText == 1){ 
-	                document.location.reload(); // 상세보기 창 새로고침
-	            }
-	        }
-	    }
-	</script>
+		/* 입력 폼 */
+		.form {
+		  display: flex;
+		  flex-direction: column;
+		}
+		.form textarea {
+		  resize: none;
+		  border: 1px solid #dbdbdb;
+		  padding: 15px 20px;
+		  outline: none;
+		  color: #717275;
+		}
+		.form .submit {
+	
+		  padding: 5px;
+		  cursor: pointer;
+		  display: -ms-flexbox;
+			  align-items: center;
+			  padding: 0.375rem 0.75rem;
+			  margin-bottom: 0;
+			  font-size: 1rem;
+			  font-weight: 400;
+			  line-height: 1.5;
+			  color: #495057;
+			  text-align: center;
+			  white-space: nowrap;
+			  background-color: #e9ecef;
+			  border: 1px solid #ced4da;
+			  border-radius: 0.25rem;
+			  
+		}
+		/*
+		.form .submit {
+		  border: 1px solid #8f8f8f;
+		  background-color: #8f8f8f;
+		  color: #f0f8ff;
+		  padding: 5px;
+		  cursor: pointer;
+		  display: -ms-flexbox;
+		  */
+		
+		/* 레이아웃 - 댓글 */
+		.comments {
+		  border: 1px solid #dbdbdb;
+		}
+		.comments .comment {
+		  border-bottom: 1px solid #dbdbdb;
+		  padding: 20px;
+		  width: 90%; 
+  		  margin: 0 auto; 
+		}
+		.comments .comment:last-child {
+		  border-bottom: none;
+		}
+		
+		/* 레이아웃 - 답글 */
+		.replies {	
+		  position: relative;
+		  background-color: ;
+		  padding-left: 40px;
+		  padding-right: 20px;
+		  padding-bottom: 20px;
+		  	  
+		}
+		.replies:after {
+		  content: "";
+		  position: absolute;
+		  left: 0;
+		  top: 0;
+		  width: 4px;
+		  height: 100%;
+		  background-color: #ddd;
+		}
+		.replies .reply {
+		  padding: 20px 0;
+		  border-bottom: 1px solid #dbdbdb;
+		}
+		.replies .reply:last-of-type {
+		  border-bottom: none;
+		}
+		
+		/* 상단 메뉴 */
+		.top {
+		  display: flex;
+		  flex-direction: row;
+		  align-items: center;
+		}
+		.top .username {
+		  font-weight: bold;
+		  color: #495057;
+		}
+		.top .utility {
+		  display: flex;
+		  flex-direction: row;
+		  margin-left: auto;
+		}
+		
+		/* 하단 메뉴 */
+		.bottom {
+		  
+		  display: flex;
+		  flex-direction: row;
+		  align-items: center;
+		  list-style: none;
+		  padding: 0;
+		  margin: 0;
+		  text-transform: uppercase;
+		  letter-spacing: -0.5px;
+		  font-weight: bold;
+		  font-size: 14px;
+		}
+		.bottom .divider {
+		  width: 1px;
+		  height: 20px;
+		  background-color: #dbdbdb;
+		  margin: 0 20px;
+		}
+		.bottom .menu {
+		  margin: 0;
+		  padding: 0;
+		  color: #bebebe;
+		}
+		.bottom .menu.show-reply {
+		  color: #333;
+		}
+		
+	</style>
+	
 	<link href="css/navbar-top-fixed.css" rel="stylesheet">
     
     <!-- CSS FILES -->
@@ -142,63 +196,123 @@
 TemplateMo 590 topic listing
 https://templatemo.com/tm-590-topic-listing
         -->
-	</head>
-	<body>
-	<div class="container">
-		<input type="hidden" name="Board_ID" value="${sessionScope.Board_ID}">
-		<!-- 제목, 작성날짜  -->
+        
+        <script type="text/javascript">
+		function detailAction(value) {
+			if(value == 0)
+			{
+				location.href = "updateBoard.do?num=${board.getBoard_ID()}&page=${page}";
+			} 
+			else if(value == 1) 
+			{
+				if(confirm("정말로 삭제하시겠습니까?"))
+				{
+					location.href="delete.do?num=${board.getBoard_ID()}";
+					return true;
+				} 
+				else 
+				{
+					return false;
+				}
+			} 
+			else if(value == 2) 
+			{
+				location.href = "boardDetail.do?page=${page}";
+			}
+	}
+	</script>
+</head>
+<body>
+		<div class="container">
 		<div class="input-group">
-			<input id="subject" name="Title" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${board.Title}" readonly/>
-			<span class="input-group-text" id="basic-addon2">${board.Ins_Date_Time}</span>			
-		</div>
+			<input id="subject" name="boardSubject" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${board.getTitle()}" readonly/>
+			<span class="input-group-text" id="basic-addon2">${board.getIns_Date_Time()}</span>
+		</div>			
 		<!-- 첨부파일 -->
 		<div class="input-group mb-3">
 			<span type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-				<a href="BoardDownloadAction.bo?boardFile=${board.File_Name}">${board.File_Name}</a>
+				<a href="BoardDownloadAction.bo?boardFile=${board.getFile_Name()}">${board.getFile_Name()}</a>
 			</span>
 			<label class="input-group-text" for="inputGroupFile02">첨부파일</label>
 		</div>
 		<!-- 내용 -->
 		<div class="input-group">
-			<textarea id="content" name="boardContent" class="form-control" aria-label="With textarea" rows="20" readonly>${board.Contents}</textarea>
+			<textarea id="content" name="boardContent" class="form-control" aria-label="With textarea" rows="20" readonly>${board.getContents()}</textarea>
 		</div>
-		<div id="btn" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-			<c:if test="${board.Comment_ID!=null}">
-				<!--<c:if test="${board.Answer_ID == board.Answer_ID"> 아이디가 login한 seesion id와 같다면-->
-					<button type="button" class="btn btn-primary btn-sm px-3 gap-3" onclick="location.href='updateBoardForm.do?board_ID=${board.getBoard_ID()}';">수정</button>
-					<button type="button" class="btn btn-outline-secondary btn-sm px-3" onclick="location.href='delete.do?board_ID=${board.getBoard_ID()}';">삭제</button>
-					<button type="button" class="btn btn-primary btn-sm px-3 gap-3" onclick="">댓글</button>
-				<!--</c:if>-->
-					<input type="button" value="답글" onclick="changeView(1)" >
-			</c:if>
-			<!-- session 에 저장된 member_ID == Answer_ID 값과 상관 없이 '목록'버튼 추력 -->
-			<button type="button" class="btn btn-outline-secondary btn-sm px-3" onclick="detailAction(2)">목록</button>
+		<!-- 
+		글번호 : ${board.getBoard_ID()}<br>
+		제목 : ${board.getTitle()} <br>
+		내용 : ${board.getContents()}<br>
+		작성일 : ${board.getIns_Date_Time()}<br>  -->
 		</div>
-	</div>
-	<br><br>
-	<!-- 댓글 부분 -->
-    <div id="comment">
-        <div class ="custom-table">
-    <!-- 댓글 목록 -->    
-    <c:if test="${requestScope.commentList != null}">
-        <c:forEach var="comment" items="${requestScope.commentList}">
-            <tr>
-                <!-- 아이디, 작성날짜 -->
-                <td width="150">
-                    <div>
-                        ${comment.Comment_ID}<br>
-                        <font size="2" color="lightgray">${comment.Ins_Date_Time}</font>
-                    </div>
-                </td>
-                <!-- 본문내용 -->
-                <td width="550">
-                    <div class="text_wrapper">
-                        ${comment.Contents}
-                    </div>
-                </td>             
-            </tr>
-        </c:forEach>
-    	</c:if>    
-   	</div>       
-	</body>
+ 		<!-- comment style -->
+ 		<div class="container">
+		 	<div id="root">
+			    <form class="form comment-form">
+			      <textarea placeholder="Comment"></textarea>
+			      <button type="button" class="submit">등록하기</button>
+			    </form>
+		    <div class="comments">
+		      <c:forEach items="${commentList}" var="comment">
+		        <div class="comment">
+		          <div class="content">
+		            <header class="top">
+		              <div class="username">${comment.getComment_ID()}</div>
+		              <div class="utility">
+		                <form action="updateCommentForm.do" method="get">
+		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
+		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		                  <button class="input-group-text" for="inputGroupFile02">수정</button>
+		                </form>
+						 &nbsp; &nbsp;
+		                <form action="deleteComment.do" method="post">
+		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
+		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		                  <button class="input-group-text" for="inputGroupFile02">삭제</button>
+		                </form>
+		              </div>
+		            </header>
+		            <p>${comment.getContents()}</p>
+		            <ul class="bottom">
+		              <li class="menu time">${comment.getIns_Date_Time()}</li>
+		            </ul>
+		          </div>
+		        </div>
+		      </c:forEach>
+		      <div class="replies">
+		        <!-- You can add replies here if needed -->
+		      </div>
+		    </div>
+		  </div>
+		</div>						 	
+
+<!-- old comment <div class="container">
+		<div class="input-group">
+			<span class="input-group-text" id="basic-addon2">댓글 목록</span>
+		</div>
+		<ul>
+		   <c:forEach items="${commentList}" var="comment">
+		    <li>
+		        작성자: ${comment.getComment_ID()}<br>
+		        작성일: ${comment.getIns_Date_Time()}<br>
+		        내용: ${comment.getContents()}<br>
+		        <form action="updateCommentForm.do" method="get">
+		            <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
+		            <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		            <input type="submit" value="수정">
+		        </form>
+		        <form action="deleteComment.do" method="post">
+		            <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
+		            <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		            <input type="submit" value="삭제하기">
+		        </form>
+		    </li>
+			</c:forEach>
+		</ul>
+		</div> 
+		<input type="button" value="삭제하기" onclick="location.href='delete.do?board_ID=${board.getBoard_ID()}';">
+		<input type="button" value="수정" onclick="location.href='updateBoardForm.do?board_ID=${board.getBoard_ID()}';">
+		<input type="button" value="댓글" onclick="">
+		-->
+</body>
 </html>
