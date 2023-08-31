@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- JSTL & EL -->
+	<%@ include file="/WEB-INF/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +36,7 @@
 		/* 취소 버튼 클릭 시 */
 		function goToList() {
 			/* 게시판 목록으로 돌아가기  */
-			location.href = "BoardListAction.bo";
+			location.href = "BoardListForm.jsp";
 		}
 	</script>
         <link href="css/navbar-top-fixed.css" rel="stylesheet">
@@ -60,7 +61,7 @@ https://templatemo.com/tm-590-topic-listing
 </head>
 <body>
 	<div class="container">
-			<form method="post" action="BoardWriteAction.bo" name="boardForm" enctype="multipart/form-data" onsubmit="return checkValue()">
+			<form method="post" action="regBoard.do" name="boardForm" enctype="multipart/form-data" onsubmit="return checkValue()">
 				<!-- memberID 파라미터 전달 용 숨은 input태그 , hidden xxxxx-->
 				<!-- <input type="hidden" name="boardID" value="${sessionScope.memberID}">  -->
 				<!-- 제목 -->

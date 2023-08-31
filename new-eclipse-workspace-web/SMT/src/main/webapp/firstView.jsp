@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- JSTL & EL -->
+	<%@ include file="/WEB-INF/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +33,7 @@
                     location.href = "LoginForm.do";
                 } else if(value == 2) 
                 {
-                    location.href = "BoardListForm.bo"; //아직 미구현
+                    location.href = "BoardListForm.jsp"; //아직 미구현
                 } else if(value == 3) 
                 {
                     const link = "https://github.com/tnaks036/smtv_board";

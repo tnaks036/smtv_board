@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- JSTL & EL -->
+	<%@ include file="/WEB-INF/header.jsp" %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,6 +11,7 @@
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
+        position: sticky;
       }
  
       @media (min-width: 768px) {
@@ -76,7 +77,7 @@ https://templatemo.com/tm-590-topic-listing
       <body>
         <nav class="navbar navbar-expand-lg">
                 <div class="container">
-                    <a class="navbar-brand" href="BoardListForm.bo">
+                    <a class="navbar-brand" href="BoardListForm.jsp">
                         <!-- <i class="bi-back"></i> -->
                         <span>게시판</span>
                     </a>

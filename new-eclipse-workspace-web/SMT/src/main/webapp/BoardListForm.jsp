@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ include file="/WEB-INF/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,8 +44,28 @@
                 location.href = "BoardWriteForm.bo";        
             }
         </script>
+        <link href="css/navbar-top-fixed.css" rel="stylesheet">
+    
+    <!-- CSS FILES -->
+    <!-- CSS FILES -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+                        
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/templatemo-topic-listing.css" rel="stylesheet">    
+        <!--
+TemplateMo 590 topic listing
+https://templatemo.com/tm-590-topic-listing
+        -->
 </head>
 <body>
+<form action="regBoard.do" method="post">
 	<div id="container">
             <div class="wrap">
                 <div class="table-responsive">
@@ -78,7 +98,7 @@
                 <!-- 페이지 번호 -->
                 <div id="pageNumber" class="text-center">
                     <c:if test="${startPage != 1}">
-                        <a href="BoardListAction.bo?page=${startPage-1}">[이전]</a>
+                        <a href="regBoardForm.do?page=${startPage-1}">[이전]</a>
                     </c:if>
                         
                     <c:forEach var="pageNum" begin="${startPage}" end="${endPage}">
@@ -86,12 +106,12 @@
                             ${pageNum}&nbsp;
                         </c:if>
                         <c:if test="${pageNum != page}">
-                            <a href='BoardListAction.bo?page=${pageNum}'>${pageNum}&nbsp;</a>
+                            <a href='regBoardForm.do?page=${pageNum}'>${pageNum}&nbsp;</a>
                         </c:if>
                     </c:forEach>
                         
                     <c:if test="${endPage != maxPage}">
-                        <a href='BoardListAction.bo?page=${endPage+1}'>[다음]</a>
+                        <a href='?page=${endPage+1}'>[다음]</a>
                     </c:if>
                 </div>
                 
@@ -107,6 +127,6 @@
                         <input type="text" size="20" name="condition"/>&nbsp;
                         <input type="submit" value="검색"/>
                     </form>
-                </div>
+                </div>               
 </body>
 </html>

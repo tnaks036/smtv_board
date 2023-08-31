@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class BoardController
  */
-@WebServlet("*.bo")
+@WebServlet("*.do")
 public class BoardController extends HttpServlet {
     private static final long serialVersionUID = 1L;
       
@@ -71,6 +71,20 @@ public class BoardController extends HttpServlet {
         // 맨 밑 페이지 이동시 쓰는거.
         boolean isRedirect = false;
         
+        if(command.equals("/boardMain.do"))
+        {
+        	DBConnection dbConn = new DBConnection();
+            
+            // getBoardList 메서드를 호출하여 데이터를 가져와서 boardList에 설정
+            boardList = dbConn.getBoardList();
+            
+            // 가져온 데이터를 request에 설정
+            request.setAttribute("list", boardList);
+            System.out.println(boardList);
+            
+            page = "main.jsp";
+        }
+        
         if(command.equals("/boardList.do"))
         {
         	DBConnection dbConn = new DBConnection();
@@ -82,13 +96,13 @@ public class BoardController extends HttpServlet {
             request.setAttribute("list", boardList);
             System.out.println(boardList);
             
-            page = "boardList.jsp";
+            page = "BoardListForm.jsp";
         }
         
         //글쓰기 페이지로 이동
         if(command.equals("/regBoardForm.do"))
         {
-            page="board_write_form.jsp";
+            page="BoardWriteForm.jsp";
         }
         
         //글 등록 실행
@@ -137,7 +151,7 @@ public class BoardController extends HttpServlet {
                 }
             }
             request.setAttribute("commentList", commentList);
-            page="boardDetail.jsp";
+            page="BoardDetailForm.jsp";
         }
         
         //게시글 삭제하기
@@ -165,31 +179,39 @@ public class BoardController extends HttpServlet {
                 }
             }
             //수정하고자 하는 게시글의 정보를 jsp에 보내줘야함.
-            page = "update_board_form.jsp";
+            page = "BoardUpdateForm.jsp"
+            		+ "";
         }
         
       //글 수정
-        if(command.equals("/updateBoard.do"))
-        {
+        if (command.equals("/updateBoard.do")) {
             String comment_ID = request.getParameter("comment_ID");
             String title = request.getParameter("title");
             String contents = request.getParameter("contents");
             Part filePart = request.getPart("file_name");
             InputStream fileContent = filePart.getInputStream();
-            byte[] fileData = fileContent.readAllBytes();
+            byte[] fileData = null;
+
+            try {
+                fileData = fileContent.readAllBytes();
+            } catch (IOException e) {
+                e.printStackTrace(); // 또는 로깅 처리
+            }
+
             String ins_Date_Time = request.getParameter("ins_Date_Time");
             String upd_Date_Time = request.getParameter("upd_Date_Time");
             String del_Date_Time = request.getParameter("del_Date_Time");
             String del_Yn = request.getParameter("del_Yn");
             int num = Integer.parseInt(request.getParameter("board_ID"));
 
-            for(BoardDTO board : boardList) {
-                if(board.getBoard_ID()==num)
-                {
+            for (BoardDTO board : boardList) {
+                if (board.getBoard_ID() == num) {
                     board.setComment_ID(comment_ID);
                     board.setTitle(title);
                     board.setContents(contents);
-                    board.setFile_Name(fileData); // 변경된 부분
+                    if (fileData != null) {
+                        board.setFile_Name(fileData); // 변경된 부분
+                    }
                     board.setIns_Date_Time(ins_Date_Time);
                     board.setUpd_Date_Time(upd_Date_Time);
                     board.setDel_Date_Time(del_Date_Time);
@@ -199,12 +221,11 @@ public class BoardController extends HttpServlet {
 
             page = "boardList.do";
         }
-        
+
         // 페이지 이동.
-        if(isRedirect) {
+        if (isRedirect) {
             response.sendRedirect(page);
-        }
-        else {
+        } else {
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
         }
