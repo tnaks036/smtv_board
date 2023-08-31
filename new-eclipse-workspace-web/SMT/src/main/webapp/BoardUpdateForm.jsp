@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- JSTL & EL -->
-<%@ include file="/WEB-INF/header.jsp" %>
+	<%@ include file="/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,15 +63,12 @@ https://templatemo.com/tm-590-topic-listing
 </head>
 <body>
 	<div class="container">
-			<form method="post" action="BoardUpdateAction.bo?page=${page}" name="boardForm" enctype="multipart/form-data" onsubmit="return checkValue()">
-				<!-- 파라미터로 전달할 hidden 요소 값 -->
-				<input type="hidden" name="boardID" value="${sessionScope.memberID}">
-				<input type="hidden" name="boardFile" value="${board.boardFile}">
-				<input type="hidden" name="boardNum" value="${board.boardNum}">
+			<form method="post" action="updateBoard.do?page=${page}" name="boardForm" enctype="multipart/form-data" onsubmit="return checkValue()">
+			<input type="hidden" name="boardNum" value="${board.board_ID }">
 				<!-- 제목  -->
 				<div class="input-group">
 					<span class="input-group-text" id="inputGroup-sizing-default">제목</span>
-					<input name="boardSubject" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${board.boardSubject}"/>
+					<input name="boardSubject" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${board.title}"/>
 				</div>
 				<!-- 첨부파일 -->
 				<div class="input-group mb-3">
@@ -81,12 +78,18 @@ https://templatemo.com/tm-590-topic-listing
 				<!-- 내용 -->
 				<div class="input-group">
 					<span class="input-group-text">내용</span>
-					<textarea name="boardContent" class="form-control" aria-label="With textarea" rows="20">${board.boardContent}</textarea>
+					<textarea name="boardContent" class="form-control" aria-label="With textarea" rows="20" cols="50">${board.contents}</textarea>
 				</div>
+				<!-- 작성일  -->
+				<div class="input-group">
+					<span class="input-group-text" id="inputGroup-sizing-default">작성일</span>
+					<input name="boardDate" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${board.ins_Date_Time}" readonly/>
+				</div>		
 				<!-- 등록/취소 버튼 -->
 				<div id="btn" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
 					<input type="submit" class="btn btn-primary btn-sm px-3 gap-3" value="등록"></button>
 					<input type="button" class="btn btn-outline-secondary btn-sm px-3" value="취소" onclick="goToList()"></input>
+					<input type="submit" value="글수정">
 				</div>
 			</form>
 		</div>
