@@ -160,20 +160,12 @@ https://templatemo.com/tm-590-topic-listing
 		<div class="input-group">
 			<textarea id="content" name="boardContent" class="form-control" aria-label="With textarea" rows="20" readonly>${board.Contents}</textarea>
 		</div>
-		<!-- 로그인 정보와 boardID 값이 일치하면 수정/삭제 버튼 출력  
-		-> 필요없음 
-		<c:if test="${sessionScope.memberID!=null}">
-				<c:if test="${sessionScope.memberID == board.boardID}">
-					<button type="button" class="btn btn-primary btn-sm px-3 gap-3" onclick="detailAction(0)">수정</button>
-					<button type="button" class="btn btn-outline-secondary btn-sm px-3" onclick="detailAction(1)">삭제</button>
-				</c:if>
-			</c:if>
-		-->
 		<div id="btn" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
 			<c:if test="${board.Comment_ID!=null}">
 				<!--<c:if test="${board.Answer_ID == board.Answer_ID"> 아이디가 login한 seesion id와 같다면-->
-					<button type="button" class="btn btn-primary btn-sm px-3 gap-3" onclick="detailAction(0)">수정</button>
-					<button type="button" class="btn btn-outline-secondary btn-sm px-3" onclick="detailAction(1)">삭제</button>
+					<button type="button" class="btn btn-primary btn-sm px-3 gap-3" onclick="location.href='updateBoardForm.do?board_ID=${board.getBoard_ID()}';">수정</button>
+					<button type="button" class="btn btn-outline-secondary btn-sm px-3" onclick="location.href='delete.do?board_ID=${board.getBoard_ID()}';">삭제</button>
+					<button type="button" class="btn btn-primary btn-sm px-3 gap-3" onclick="">댓글</button>
 				<!--</c:if>-->
 					<input type="button" value="답글" onclick="changeView(1)" >
 			</c:if>
@@ -206,42 +198,5 @@ https://templatemo.com/tm-590-topic-listing
         </c:forEach>
     	</c:if>    
    	</div>       
-  	<!-- 로그인 했을 경우만 댓글 작성가능  -->      
-     <c:if test="${comment.Comment_ID !=null}">
-            <tr bgcolor="#F5F5F5">
-            <form id="writeCommentForm">
-                <input type="hidden" name="comment_board" value="${board.board_ID}">
-                <input type="hidden" name="comment_id" value="${sessionScope.sessionID}">
-                <!-- 아이디            
-                <td width="150">
-                
-                    <div>
-                        ${sessionScope.sessionID}
-                    </div>
-                </td>
-                -->
-                <td width="150">
-                    <div>
-                        ${comment.Comment_ID}
-                    </div>
-                </td>
-                <!-- 본문 작성-->
-                <td width="550">
-                    <div>
-                        <textarea name="comment_content" rows="4" cols="70" ></textarea>
-                    </div>
-                </td>
-                <!-- 댓글 등록 버튼 -->
-                <td width="100">
-                    <div id="btn" style="text-align:center;">
-                        <p><a href="#" onclick="writeCmt()">[댓글등록]</a></p>    
-                    </div>
-                </td>
-            </form>
-            </tr>
-            </c:if>
-        </table>
-    	</div>                    
-	</div>   
 	</body>
 </html>

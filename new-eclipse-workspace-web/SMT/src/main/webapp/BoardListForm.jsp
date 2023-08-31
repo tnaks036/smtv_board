@@ -63,18 +63,16 @@
                         <!-- 테이블 목록  -->
                         <tbody>
                         <!-- a태그에서 데이터를 넘길때에는 ? 를 쓴다.  boardNum이라는 글번호를 가지고 가겠다. 게시글 개수만큼 만들어줘야한다.taglib만들어주고. -->
-                            <c:forEach var="board" items="${arrayList}">
-                                <tr>
-                                    <td>${board.board_ID}</td>
-                                    <td><a href="BoardDetailAction.bo?num=${board.board_ID}&page=${page}">
-                                    ${board.Ins_Date_Time}</a></td>
-                                    <td>${board.Answer_Id}</td>
-                                    <td>${board.Ins_Date_Time}</td>
-                                    <!-- <td>${board.Del_Yn}</td>  -->
-                                </tr>
+                            <c:forEach items="${list}" var="board">
+      							<tr>
+							          <td>${board.getBoard_ID() }	</td>
+							          <td><a href="boardDetail.do?board_ID=${board.getBoard_ID() }">${board.getTitle() }</a></td>
+							          <td>${board.ins_Date_Time }</td>
+      							</tr>
                             </c:forEach>
                         </tbody>
                     </table>
+                    <input type="button" value="글쓰기" onclick="location.href='regBoardForm.do';">
                 </div>
                 
                 <!-- 페이지 번호 -->
@@ -110,19 +108,5 @@
                         <input type="submit" value="검색"/>
                     </form>
                 </div>
-                
-                <tr>
-                <div id="btn" class="bg-white py-3 px-3 text-center border mt-3">
-					<input type="submit" class="btn btn-primary btn-sm px-3 gap-3" value="글쓰기" onclick="writeBoard()"></button></input>
-				</div>
-                </tr>                       
-                <!-- 세션에 전달된 아이디 값이 있으면(로그인이 되어 있으면) 글쓰기 활성화  
-                <div class="bg-white py-3 px-3 text-center border mt-3">
-                    <c:if test="${sessionScope.memberID!=null}">
-                        <input class="w-100 btn btn-lg btn-primary" type="button" value="글쓰기" onclick="writeBoard()"></input>
-                    </c:if>
-                </div> -->
-            </div>
-        </div>
 </body>
 </html>
