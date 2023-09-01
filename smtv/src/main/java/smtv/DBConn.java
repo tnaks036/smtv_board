@@ -548,7 +548,7 @@ public class DBConn {
             pstmt.setString(1, updatedBoard.getComment_ID());
             pstmt.setString(2, updatedBoard.getTitle());
             pstmt.setString(3, updatedBoard.getContents());
-            pstmt.setBytes(4, updatedBoard.getFile_Name());
+            pstmt.setBytes(4, updatedBoard.getFile_Name()); // 파일 이름을 문자열로 설정
             pstmt.setString(5, updatedBoard.getIns_Date_Time());
             pstmt.setString(6, updatedBoard.getUpd_Date_Time());
             pstmt.setString(7, updatedBoard.getDel_Date_Time());
