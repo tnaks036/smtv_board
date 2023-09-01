@@ -206,27 +206,32 @@ public class Board {
 		//DB에 글 수정내역 업데이트
 		query = "UPDATE CS_Ques "
 				+ " SET Title = ? "
-				+ " , Contents = ? "
-				+ " , File_Name = ? "
-				+ " , Upd_Date_Time = GETDATE()"
-				+ " WHERE Board_ID = " + multi.getParameter("board_ID");
+				+ " , Contents = ? ";
+				
 		
 		title = multi.getParameter("title");
 		contents = multi.getParameter("contents");
-		 
 		try {
 			con = db.getConnection();
 			
-			ps = con.prepareStatement(query);
-			ps.setString(1, title);
-			ps.setString(2, contents);
 			
 			File file = multi.getFile("file_Name");
 		    if (file != null && file.exists()) {
 		        byte[] fileData = Files.readAllBytes(file.toPath());
+		        query += " , File_Name = ? "
+						+ " , Upd_Date_Time = GETDATE()"
+						+ " WHERE Board_ID = " + multi.getParameter("board_ID");
+
+		        ps = con.prepareStatement(query);
+		        ps.setString(1, title);
+		        ps.setString(2, contents);
 				ps.setBytes(3, fileData);
 			}else {
-				ps.setBytes(3, null);
+				query +=  " , Upd_Date_Time = GETDATE()"
+					  + " WHERE Board_ID = " + multi.getParameter("board_ID");
+				ps = con.prepareStatement(query);
+		        ps.setString(1, title);
+		        ps.setString(2, contents);
 			}
 			
 			ps.executeUpdate();
@@ -295,7 +300,7 @@ public class Board {
 				qvo.setBoard_ID(rs.getInt("Board_ID"));
 				qvo.setComment_ID(rs.getString("Comment_ID"));
 				qvo.setTitle(rs.getString("Title"));
-				qvo.setContents(rs.getString("Contents"));
+				qvo.setContents(rs.getString("Contents").replace("\r\n", "<br>")); //엔터 바꾸기
 				qvo.setFile_Name(rs.getBytes("File_Name"));
 				qvo.setIns_Date_Time(rs.getString("Ins_Date_Time"));
 				

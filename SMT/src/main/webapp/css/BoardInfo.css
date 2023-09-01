@@ -206,9 +206,9 @@ div.ansUpdDBCancle >button:hover{
 .downloadLink{
 	color: black;
 	cursor: pointer;
-	font-size: 0.85rem;
 }
 
 .downloadLink:hover{
+	font-size: 0.85rem;
 	text-decoration: underline;
 }

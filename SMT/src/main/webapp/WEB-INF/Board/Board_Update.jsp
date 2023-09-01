@@ -14,7 +14,7 @@
 	<h3>수정하기</h3>
 
 	<form action="updateBoard" method="post" encType = "multipart/form-data">
-		<input type="hidden" name="comment_ID" value="${list.board_ID}" readonly>
+		<input type="hidden" name="board_ID" value="${list.board_ID}" readonly>
 		<input type="text" name="title" class="form-control mt-4 mb-2"
 			placeholder="제목을 입력해주세요." value="${list.title}" required >
 		<div class="form-group">

@@ -76,7 +76,8 @@ public class Controller extends HttpServlet {
 			case "/updateBoard" : //수정 DB에 올리기
 				board.updBoard(img.uploadTest(request), response);
 				img.delImg();
-				site = "/WEB-INF/Board/Board_List.jsp";
+//				site = "/WEB-INF/Board/Board_List.jsp";
+				site = "boardPage";
 				response.setContentType("text/html;charset=UTF-8");
 		        PrintWriter out1 = response.getWriter();
 		        out1.println("<script>alert('등록이 완료되었습니다.'); location.href='" + site + "';</script>");

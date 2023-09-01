@@ -218,15 +218,15 @@ function getAnsList() {
 					comment_html += "</svg>";
 					comment_html += "</label>";
 					comment_html += "<img class='ansUpdpreviewImg' style='max-height:50px; width:auto;'>";
-					comment_html += "<input type='file' id='ansUpdimageInput" + i + "' class='fileNm form-control' name='file_Name' accept='image/*' style='display:none;'>";
+					comment_html += "<input type='file' id='ansUpdimageInput" + i + "' class='fileNm' name='file_Name' accept='image/*' style='display:none;'>";
 					comment_html += "</div>";
-					comment_html += "</form>"; //폼끝
-
 					comment_html += "<div class='ansUpdDBCancle' style='display:none;'>";
 					comment_html += "<button type='button' class='btn updDBBtn'>등록</button>";
 					comment_html += "<span class='btnLine' style='display:inline-block!important;'>|</span>"
 					comment_html += "<button type='button' class='btn updDelBtn'>취소</button>";
 					comment_html += "</div>";
+					comment_html += "</form>"; //폼끝
+
 					
 					comment_html += "<div class='ansUpdDelBtn'>"
 					comment_html += "<button type='button' class='btn updBtn'>수정</button>";
@@ -262,7 +262,7 @@ function getAnsList() {
 					});
 					
 					$(".updDelBtn").click(function() {//수정취소
-					    var $container = $(this).closest("div").parent();
+					    var $container = $(this).closest("div").parent().parent();
 					    var $textarea = $container.find(".Anscontent");//textarea
 					    var $ansUpdDelBtn = $container.find(".ansUpdDelBtn");//수정|삭제 div
 					    var $ansUpdfileLabelBox = $container.find(".ansUpdfileLabelBox");//수정 파일 올릴 수 있는 div
@@ -280,7 +280,7 @@ function getAnsList() {
 					
 					$(".updDBBtn").click(function() {//수정 DB입력
 						if(confirm("정말 수정하시겠습니까?")){
-						    var $container = $(this).closest("div");
+						    var $container = $(this).closest("div").parent();
 						    var $textarea = $container.find(".Anscontent");
 						    
 						    var boardID = $container.find(".board_ID").val();
