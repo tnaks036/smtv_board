@@ -1,30 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>글 수정</title>
 </head>
 <body>
-<form action="updateBoard.do" method="post">
-<input type="hidden" name="boardNum" value="${board.board_ID }">
+<form action="updateBoard.do" method="post" enctype="multipart/form-data">
+<input type="hidden" name="board_ID" value="${board.getBoard_ID()}">
 <table>
     <tr>
         <td>제목</td>
-        <td><input type="text" name="title" value="${board.title }"></td>
+        <td><input type="text" name="title" value="${board.getTitle()}"></td>
     </tr>
     <tr>
-        <td>작성일</td>
-        <!-- read온리는 수정은 안되지만, 데이터가 넘어간다. -->
-        <td><input type="text" name="createDate" value="${board.ins_Date_Time }" readonly></td>
+        <td>내용</td>
+        <td><textarea rows="5" cols="50" name="contents">${board.getContents()}</textarea></td>
     </tr>
     <tr>
-        <td>내용</td> <!--textarea는 value가 없다. 여는태그, 닫는태그 사이에 넣어준다.  -->
-        <td><textarea rows="5" cols="50">${board.contents }</textarea></td>
+        <td>첨부 파일</td>
+        <td><input type="file" name="file_name"></td>
     </tr>
 </table>
-<input type="submit" value="글수정">
+<input type="button" value="글 수정" onclick="location.href='updateBoard.do?board_ID=${board.getBoard_ID()}';">
 </form>
+<p>board_ID 값: ${board.getBoard_ID()}</p> <!-- 추가 -->
 </body>
 </html>

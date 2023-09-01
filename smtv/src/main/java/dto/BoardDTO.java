@@ -11,35 +11,24 @@ public class BoardDTO {
     private String Del_Date_Time;
     private String Del_Yn;
    
-    public BoardDTO(int board_ID, String comment_ID, String title, String contents, String file_name, String ins_Date_Time, String upd_Date_Time, String del_Date_Time, String del_Yn) {
+    public BoardDTO(int board_ID, String comment_ID, String title, String contents, byte[] fileData, String ins_Date_Time, String upd_Date_Time, String del_Date_Time, String del_Yn) {
         super();
         this.Board_ID = board_ID;
         this.Comment_ID = comment_ID;
         this.Title = title;
         this.Contents = contents;
-        
-        // String을 byte[]로 변환
-        if (file_name != null) {
-            this.File_Name = file_name.getBytes();
-        }
-        
+        this.File_Name = fileData; // 파일 데이터를 직접 할당
         this.Ins_Date_Time = ins_Date_Time;
         this.Upd_Date_Time = upd_Date_Time;
         this.Del_Date_Time = del_Date_Time;
         this.Del_Yn = del_Yn;
     }
 
+   
 
-
-
-		
-
-		public int getBoard_ID() {
+    public int getBoard_ID() {
 		return Board_ID;
 	}
-
-
-
 
 
 
@@ -49,15 +38,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getComment_ID() {
 		return Comment_ID;
 	}
-
-
-
 
 
 
@@ -67,15 +50,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getTitle() {
 		return Title;
 	}
-
-
-
 
 
 
@@ -85,15 +62,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getContents() {
 		return Contents;
 	}
-
-
-
 
 
 
@@ -103,15 +74,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public byte[] getFile_Name() {
 		return File_Name;
 	}
-
-
-
 
 
 
@@ -121,15 +86,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getIns_Date_Time() {
 		return Ins_Date_Time;
 	}
-
-
-
 
 
 
@@ -139,15 +98,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getUpd_Date_Time() {
 		return Upd_Date_Time;
 	}
-
-
-
 
 
 
@@ -157,15 +110,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getDel_Date_Time() {
 		return Del_Date_Time;
 	}
-
-
-
 
 
 
@@ -175,15 +122,9 @@ public class BoardDTO {
 
 
 
-
-
-
 	public String getDel_Yn() {
 		return Del_Yn;
 	}
-
-
-
 
 
 
@@ -193,16 +134,10 @@ public class BoardDTO {
 
 
 
-
-
-
-		@Override
-		public String toString() {
-			return "BoardDTO [Board_ID=" + Board_ID + ", Comment_ID=" + Comment_ID + ", Title=" + Title + ", Contents="
-					+ Contents + ", File_Name=" + File_Name + ", Ins_Date_Time=" + Ins_Date_Time + ", Upd_Date_Time="
-					+ Upd_Date_Time + ", Del_Date_Time=" + Del_Date_Time + ", Del_Yn=" + Del_Yn + "]";
-		}
-
-
-
+	@Override
+    public String toString() {
+        return "BoardDTO [Board_ID=" + Board_ID + ", Comment_ID=" + Comment_ID + ", Title=" + Title + ", Contents="
+                + Contents + ", File_Name=" + File_Name + ", Ins_Date_Time=" + Ins_Date_Time + ", Upd_Date_Time="
+                + Upd_Date_Time + ", Del_Date_Time=" + Del_Date_Time + ", Del_Yn=" + Del_Yn + "]";
+    }
 }

@@ -12,6 +12,7 @@ public class CommentDTO {
     private String Upd_Date_Time;
     private String Del_Date_Time;
     private String Del_Yn;
+    
 
     public CommentDTO(int board_ID, String comment_ID, String answer_ID, String contents, String file_name, String ins_Date_Time, String upd_Date_Time, String del_Date_Time, String del_Yn) {
         super();

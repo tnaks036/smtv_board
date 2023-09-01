@@ -7,6 +7,7 @@ import java.util.List;
  
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,13 @@ import smtv.DBConn;
  
  
 @WebServlet("*.do")
+
+@MultipartConfig(
+	    location = "C:/Users/V15 G3/Documents/GitHub/smtv_board/upload", // 업로드 디렉토리 경로
+	    maxFileSize = 1024 * 1024, // 업로드 가능한 최대 크기 (1MB)
+	    maxRequestSize = 2 * 1024 * 1024, // 전체 요청의 최대 크기 (2MB)
+	    fileSizeThreshold = 0 // 파일 크기가 너무 큰 경우 예외 발생하지 않음
+	)
 public class BoardController extends HttpServlet {
     private static final long serialVersionUID = 1L;
       
@@ -45,12 +53,10 @@ public class BoardController extends HttpServlet {
     	doProcess(request, response);
     }
  
-    public void doProcess(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException{
-        
+    public void doProcess(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
- 
- 
+
         String requestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String command = requestURI.substring(contextPath.length());
@@ -84,27 +90,26 @@ public class BoardController extends HttpServlet {
         //글 등록 실행
         if (command.equals("/regBoard.do")) {
             // 데이터 받기
-        	String comment_ID = request.getParameter("comment_ID");
+            String comment_ID = request.getParameter("comment_ID");
             String title = request.getParameter("title");
             String contents = request.getParameter("contents");
-            String file_name = request.getParameter("file_name");
             String ins_Date_Time = request.getParameter("ins_Date_Time");
             String upd_Date_Time = request.getParameter("upd_Date_Time");
             String del_Date_Time = request.getParameter("del_Date_Time");
             String del_Yn = request.getParameter("del_Yn");
-            
+
             DBConn dbConn = new DBConn();
 
             // 게시글 번호를 데이터베이스에서 가져오기
             // int board_ID = dbConn.getLastBoardID() + 1; // 실제 데이터베이스와 연동되어야 합니다.
-            
-            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, file_name, ins_Date_Time,
+
+            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, null, ins_Date_Time,
                     upd_Date_Time, del_Date_Time, del_Yn);
-            
+
             System.out.println("여기에요" + board);
-            
+
             dbConn.insertBoard(board);
-            
+
             page = "boardList.do";
             isRedirect = true;
         }
@@ -145,50 +150,76 @@ public class BoardController extends HttpServlet {
         }
         
         //게시글 수정 페이지로 이동
-        if(command.equals("/updateBoardForm.do"))
-        {
+        if (command.equals("/updateBoardForm.do")) {
             int num = Integer.parseInt(request.getParameter("board_ID"));
-            
+
             for(BoardDTO board : boardList) {
                 if(board.getBoard_ID() == num) {
                     request.setAttribute("board", board);
+                    break;
                 }
             }
+
             //수정하고자 하는 게시글의 정보를 jsp에 보내줘야함.
             page = "update_board_form.jsp";
+            isRedirect = false; // 수정된 부분
         }
         
         //글 수정
-        if(command.equals("/updateBoard.do"))
-        {
-            String comment_ID = request.getParameter("comment_ID");
-            String title = request.getParameter("title");
-            String contents = request.getParameter("contents");
-            Part filePart = request.getPart("file_name");
-            InputStream fileContent = filePart.getInputStream();
-            byte[] fileData = fileContent.readAllBytes();
-            String ins_Date_Time = request.getParameter("ins_Date_Time");
-            String upd_Date_Time = request.getParameter("upd_Date_Time");
-            String del_Date_Time = request.getParameter("del_Date_Time");
-            String del_Yn = request.getParameter("del_Yn");
-            int num = Integer.parseInt(request.getParameter("board_ID"));
+     // 게시글 수정
+     // 파일 업로드 로직 추가
+        if (command.equals("/updateBoard.do")) {
+            String boardIdParam = request.getParameter("board_ID");
+            if (boardIdParam != null && !boardIdParam.isEmpty()) {
+                try {
+                    int num = Integer.parseInt(boardIdParam);
 
-            for(BoardDTO board : boardList) {
-                if(board.getBoard_ID()==num)
-                {
-                    board.setComment_ID(comment_ID);
-                    board.setTitle(title);
-                    board.setContents(contents);
-                    board.setFile_Name(fileData); // 변경된 부분
-                    board.setIns_Date_Time(ins_Date_Time);
-                    board.setUpd_Date_Time(upd_Date_Time);
-                    board.setDel_Date_Time(del_Date_Time);
-                    board.setDel_Yn(del_Yn);
+                    String comment_ID = request.getParameter("comment_ID");
+                    String title = request.getParameter("title");
+                    String contents = request.getParameter("contents");
+                    Part filePart = request.getPart("file_name");
+
+                    // 수정된 부분: 파일 데이터를 받아서 byte[]로 변환
+                    byte[] fileData = null;
+                    if (filePart != null && filePart.getSize() > 0) {
+                        try (InputStream inputStream = filePart.getInputStream()) {
+                            fileData = inputStream.readAllBytes();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    String ins_Date_Time = request.getParameter("ins_Date_Time");
+                    String upd_Date_Time = request.getParameter("upd_Date_Time");
+                    String del_Date_Time = request.getParameter("del_Date_Time");
+                    String del_Yn = request.getParameter("del_Yn");
+
+                    // DBConn 인스턴스 생성
+                    DBConn dbConn = new DBConn();
+
+                    // 수정된 정보를 담은 BoardDTO 생성
+                    BoardDTO updatedBoard = new BoardDTO(num, comment_ID, title, contents, fileData,
+                            ins_Date_Time, upd_Date_Time, del_Date_Time, del_Yn);
+
+                    System.out.println("Updated BoardDTO: " + updatedBoard.toString());
+                    // DBConn의 updateBoard 메소드 호출
+                    dbConn.updateBoard(updatedBoard);
+
+                    // 수정 후 게시글 상세 페이지로 이동
+                    page = "boardDetail.do?board_ID=" + num;
+                    isRedirect = true;
+                } catch (NumberFormatException e) {
+                    e.printStackTrace(); // 에러 메시지 출력
                 }
+            } else {
+                // board_ID 파라미터가 없는 경우에 대한 처리
+                // 예를 들어, 에러 메시지를 설정하거나 다른 동작을 수행할 수 있습니다.
             }
-
-            page = "boardList.do";
         }
+
+
+
+          
         
         // 페이지 이동.
         if(isRedirect) {
@@ -198,7 +229,8 @@ public class BoardController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
         }
+     
         
-       
     }
+    
 }
