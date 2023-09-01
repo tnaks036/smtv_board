@@ -1,0 +1,10 @@
+package jsp.board.action;
+
+public class BoardFormChangeAction {
+
+	public void setCommand(String key) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

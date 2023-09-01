@@ -235,6 +235,9 @@ https://templatemo.com/tm-590-topic-listing
 			</span>
 			<label class="input-group-text" for="inputGroupFile02">첨부파일</label>
 		</div>
+		
+		
+		
 		<!-- 내용 -->
 		<div class="input-group">
 			<textarea id="content" name="boardContent" class="form-control" aria-label="With textarea" rows="20" readonly>${board.getContents()}</textarea>
@@ -248,9 +251,14 @@ https://templatemo.com/tm-590-topic-listing
  		<!-- comment style -->
  		<div class="container">
 		 	<div id="root">
-			    <form class="form comment-form">
-			      <textarea placeholder="Comment"></textarea>
-			      <button type="button" class="submit">등록하기</button>
+			    <form class="form comment-form" action="writeCommentForm.do" method="post">
+			    	<input type="hidden" name="board_ID" value="${board_ID}">
+			    	
+			    	<textarea placeholder="작성자" rows="1" cols="10" required></textarea>		     					    	
+			    	<!--<label for="writer">작성자:</label>
+			        <input type="text" name="writer" required><br>	 -->
+			      <textarea placeholder="Contents" rows="4" cols="50" required></textarea>
+			      <button type="button" class="submit">등록하기</button>			     			      
 			    </form>
 		    <div class="comments">
 		      <c:forEach items="${commentList}" var="comment">
@@ -285,6 +293,8 @@ https://templatemo.com/tm-590-topic-listing
 		    </div>
 		  </div>
 		</div>						 	
+
+    	
 
 <!-- old comment <div class="container">
 		<div class="input-group">

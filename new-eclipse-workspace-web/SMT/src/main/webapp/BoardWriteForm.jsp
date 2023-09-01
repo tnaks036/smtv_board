@@ -18,13 +18,13 @@
 			/* boardForm 태그 선택 */
 			const form = document.boardForm;
 			/* boardForm의 boardSubject, boardContent 값 가져오기 */
-			const subject = form.boardSubject.value;
+			const title = form.boardTitle.value;
 			const comment_ID = form.boardComment_Id.value;
-			const content = form.boardContent.value;
+			const contents = form.boardContents.value;
 			
 			
 			/* 값이 없으면 */
-			if(!subject) 
+			if(!title) 
 			{
 				alert("제목을 입력해주세요.");
 				return false;
@@ -34,7 +34,7 @@
 				alert("작성자를 입력해주세요.");
 				return false;
 			}
-			else if(!content) 
+			else if(!contents) 
 			{
 				alert("내용을 입력해주세요.");
 				return false;
@@ -69,28 +69,28 @@ https://templatemo.com/tm-590-topic-listing
 </head>
 <body>
 	<div class="container">
-			<form method="post" action="regBoard.do" name="boardForm" enctype="multipart/form-data" onsubmit="return checkValue()">
+			<form method="post" action="regBoard.do" name="boardForm" enctype="multipart/form-data">
 				<!-- memberID 파라미터 전달 용 숨은 input태그 , hidden xxxxx-->
 				<!-- <input type="hidden" name="boardID" value="${sessionScope.memberID}">  -->
 				<!-- 제목 -->
 				<div class="input-group">
 					<span class="input-group-text" id="inputGroup-sizing-default">제목</span>
-					<input name="boardSubject" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					<input name="title" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 				</div>
 				<!-- 작성자 -->
 				<div class="input-group">
 					<span class="input-group-text" id="inputGroup-sizing-default">작성자</span>
-					<input name="boardComment_Id" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					<input name="Comment_ID" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="0">
 				</div>
 				<!-- 첨부파일 -->
 				<div class="input-group mb-3">
-					<input name="boardFile" type="file" class="form-control" id="inputGroupFile02">
+					<input name="file_name" type="file" class="form-control" id="inputGroupFile02">
 					<label class="input-group-text" for="inputGroupFile02">Upload</label>
 				</div>
 				<!-- 내용 -->
 				<div class="input-group">
 					<span class="input-group-text">내용</span>
-					<textarea name="boardContent" class="form-control" aria-label="With textarea" rows="20"></textarea>
+					<textarea name="contents" class="form-control" aria-label="With textarea" rows="20"></textarea>
 				</div>
 				<!-- 등록/취소 버튼  -->
 				<div id="btn" class="d-grid gap-2 d-sm-flex justify-content-sm-center">

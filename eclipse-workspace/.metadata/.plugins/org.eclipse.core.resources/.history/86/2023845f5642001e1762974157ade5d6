@@ -1,0 +1,5 @@
+package com.db.dto;
+
+public class BoardDto {
+
+}

@@ -232,6 +232,19 @@ public class BoardController extends HttpServlet {
             dispatcher.forward(request, response);
         }
         
-       
+        
     }
+    
+    /*댓글 수 표시
+     * public List<BoardDTO> calculateCommentCounts(List<BoardDTO> posts) {
+    for (BoardDTO post : posts) {
+        int postId = post.getBoard_ID();
+        int commentCount = yourDaoMethodToGetCommentCount(postId); // Implement this method in your DAO
+        post.setRecent(commentCount);
+    }
+    return posts;
+		}
+     * 
+     * */
+    
 }

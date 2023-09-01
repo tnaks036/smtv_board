@@ -116,7 +116,7 @@ https://templatemo.com/tm-590-topic-listing
                         <a href='?page=${endPage+1}'>[다음]</a>
                     </c:if>
                 </div>
-                
+                <tr>
                 <!-- 검색 옵션  -->
                 <div id="searchForm" class="text-center">
                     <form>

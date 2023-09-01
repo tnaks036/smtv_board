@@ -1,0 +1,5 @@
+package jsp.front.Controller;
+
+public class BoardController {
+
+}

@@ -23,5 +23,6 @@ public class UpdateCommentServlet extends HttpServlet {
 
         // 댓글 수정 후 댓글 목록 페이지로 이동
         response.sendRedirect("boardDetail.do?board_ID=" + boardID);
+        
     }
 }

@@ -10,6 +10,8 @@ public class BoardDTO {
     private String Upd_Date_Time;
     private String Del_Date_Time;
     private String Del_Yn;
+    
+    //private int recent; //게시글 댓글의 수
    
     public BoardDTO(int board_ID, String comment_ID, String title, String contents, String file_name, String ins_Date_Time, String upd_Date_Time, String del_Date_Time, String del_Yn) {
         super();
@@ -103,6 +105,17 @@ public class BoardDTO {
 	@Override
 	public String toString() {
 		return "BoardDAO [board_ID=" + Board_ID + ", Comment_ID=" + Comment_ID + ", Title=" + Title + ", Contents=" + Contents + 
-				", File_Name" + File_Name + ", Ins_Date_Time" + Ins_Date_Time + ", Upd_Date_Time" + Upd_Date_Time + ", Del_Date_Time" + Del_Date_Time + ", Del_Yn" + Del_Yn +"]";
+				", File_Name" + File_Name + ", Ins_Date_Time" + Ins_Date_Time + ", Upd_Date_Time" + Upd_Date_Time + ", Del_Date_Time" + Del_Date_Time + ", Del_Yn" + Del_Yn +  "]";
 	}
+	
+	/*
+	 * recent=" + recent + "]";
+	 * public int getRecent() {
+		return recent;
+	}
+	public void setRecent(int recent) {
+		this.recent = recent;
+	}
+	 */
+	
 }
