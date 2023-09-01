@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+ 
+ function goBoard(){
+	location.href="goBoard";
+}
+
+function insertBoard(){
+	location.href="insertBoardFrm";
+}
+
+function updateFrm(){
+	location.href="updateFrm";
+}
+
+function BoardInfo(boardID){
+	//var boardID = bId;
+	location.href="BoardInfo?board_ID="+boardID;
+}

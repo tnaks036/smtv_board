@@ -1,0 +1,108 @@
+/**
+ * 
+ */
+ 
+ function goBoard(){
+	location.href="goBoard";
+}
+
+function insertBoard(){
+	location.href="insertBoardFrm";
+}
+
+function updateFrm(boardID){
+	location.href="updateFrm?board_ID="+boardID;
+}
+
+function deleteBoard(boardID){
+	location.href="deleteBoard?board_ID="+boardID;
+}
+
+function BoardInfo(boardID){
+	location.href="BoardInfo?board_ID="+boardID;
+}
+
+
+/* boardList */
+function getQuesList(nNum){ //페이징 + 리스트 
+	var condition = $("#condition").val();
+	var searchKeyword = $("#searchKeyword").val();
+	var nowNum = 0;
+	if(nNum != null){
+		nowNum = nNum;
+	}
+	
+	$.ajax({
+	    type: "POST",
+	    url: "goBoard", 
+	    data: {
+	    	"condition" : condition,
+	    	"searchKeyword" : searchKeyword,
+	    	"nowNum" : nowNum
+	    },
+	   /*  processData: false,
+	    contentType: false, */
+	    success: function(data) {
+	    	var bList = data.list;
+	    	var pageInfo = data.pageInfo;
+	    	
+	    	if(Array.isArray(bList) && bList.length > 0){
+				var comment_html = "<table class='board-table'>";
+				comment_html += "<thead>";
+				comment_html += "<tr>";
+				comment_html += "<th scope='col' class='th-num'>번호</th>";
+				comment_html += "<th scope='col' class='th-title'>제목</th>";
+				comment_html += "<th scope='col' class='th-title'>작성자</th>";
+				comment_html += "<th scope='col' class='th-date'>등록일</th>";
+				comment_html += "</tr>";
+				comment_html += "</thead>";
+				comment_html += "<tr>";
+				comment_html += "<tbody>";
+				
+				for(i = 0;i < bList.length;i++){
+					var board_ID = bList[i].board_ID;
+					var comment_ID = bList[i].comment_ID;
+					var title = bList[i].title;
+					var ins_Date_Time = bList[i].ins_Date_Time;
+					
+					comment_html += "<tr OnClick='BoardInfo("+ board_ID + ")'>";
+					comment_html += "<td>" + board_ID + "</td>";
+					comment_html += "<td>" + title + "</td>";
+					comment_html += "<td>" + comment_ID + "</td>";
+					comment_html += "<td>" + ins_Date_Time + "</td>";
+					comment_html += "</tr>";
+					
+					}
+				
+					comment_html += "</tbody>";
+					comment_html += "</table>";
+
+					$("#boardListDiv").html(comment_html);
+	    }
+	    	
+	    	var pageBtn_html = "";
+	    	
+	    	if(pageInfo != null){
+	    		
+	    		if(!(pageInfo.nowNum == 1 || pageInfo.endNum == 1)){
+		    		pageBtn_html += "<a onClick='getQuesList(1)'>&lt;&lt;</a>";
+		    		pageBtn_html += "&#32;&#32;<a onClick='getQuesList(" + (pageInfo.nowNum - 1) + ")'>&lt;</a>";
+	    		}
+
+	    		for (i = pageInfo.startNum; i <= pageInfo.endNum; i++) {
+	    		    pageBtn_html += "&#32;&#32;<a onClick='getQuesList(" + i + ")'>" + i + "</a>";
+	    		}
+
+	    		if(!(pageInfo.nowNum == pageInfo.totalNum || pageInfo.endNum == 1)){
+		    		pageBtn_html += "&#32;&#32;<a onClick='getQuesList(" + (pageInfo.nowNum + 1) + ")'>&gt;</a>";
+		    		pageBtn_html += "&#32;&#32;<a onClick='getQuesList(" + pageInfo.totalNum + ")'>&gt;&gt;</a>";
+	    		}
+
+	    		$("#pageBtns").html(pageBtn_html);
+	    	}
+    },
+	    error: function(xhr, status, error) {
+	      alert("목록을 불러오는 중 에러가 발생했습니다.");
+	    }
+	  });
+}
