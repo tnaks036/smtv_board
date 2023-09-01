@@ -1,9 +1,13 @@
 INDEX VERSION 1.131
 C:\Users\SMT\Desktop\게시판 프로젝트\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2101606343.index
 \SMT\src\main\java
+C:\Users\SMT\Desktop\git\smtv_board\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2094142805.index
+\SMT\src\main\java
 C:\Users\SMT\Desktop\게시판 프로젝트\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2094142805.index
 \SMT\src\main\java
 C:\Users\SMT\Desktop\게시판 프로젝트\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3595338003.index
 \SMTV\src\main\java
+C:\Users\SMT\Desktop\git\smtv_board\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3920561226.index
+\SMT\src\main\java
 C:\Users\SMT\Desktop\게시판 프로젝트\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3920561226.index
 \SMT\src\main\java

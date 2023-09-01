@@ -10,23 +10,6 @@
 	text-align: left;
 }
 
-#boardInfoTitle{
-    text-align: left;
-    color: white;
-    font-weight: 100;
-    margin-bottom: 40px;
-}
-
-#boardInfoTitle >span:before {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    z-index: -1;
-    background: #000000;
-}
-
 /*타이틀 INPUT*/
 #boardTitle{
 	border: none;
@@ -91,7 +74,7 @@
 	border: none;
 	box-shadow: none;
 	padding-left: 50px;
-	padding-top: 30px;
+	padding-top: 25px;
 }
 
 /* 댓글 글씨 */

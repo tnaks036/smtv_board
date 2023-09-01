@@ -13,7 +13,7 @@
 <%@ include file = "../../../header.jsp" %>
 <section class="board">
 
-<h2 id="boardInfoTitle"><span>상세보기</span></h2>
+<h2 class="boardInfoTitle"><span>상세보기</span></h2>
 
 <div id="boardModiDelBtnBox">
 	<button type="button" class="btn BoardMenuBtn" onClick="updateFrm(${list.board_ID})">
@@ -315,7 +315,7 @@ function getAnsList() {
 					});
 					
 					$(".delBtn").click(function() {//삭제
-						if(confirm("댓글을 삭제하시겠습니까?")){
+						if(confirm("댓글을 삭제하시겠습니까?\n 삭제 후 되돌릴 수 없습니다.")){
 						    var $container = $(this).closest("div");
 						    var $span = $container.find(".answerID");
 						    var boardID = $("#board_ID").val();

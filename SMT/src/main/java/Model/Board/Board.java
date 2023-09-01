@@ -93,7 +93,7 @@ public class Board {
 					+ " ROWS FETCH NEXT "
 					+ allPn.getPageSize()
 					+ " ROWS ONLY ";
-		
+
 		try {
 			con = db.getConnection();
 			ps = con.prepareStatement(query);

@@ -33,7 +33,7 @@ public class Image {
         
 		MultipartRequest multi = null;
 		// 저장할 경로
-        String savePath = "C:\\Users\\SMT\\Desktop\\게시판 프로젝트\\SMT\\src\\main\\webapp\\img";
+        String savePath = "C:\\Users\\SMT\\Desktop\\git";
         // 파일 최대 크기
         int size = 50 * 1024 * 1024;
 

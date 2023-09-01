@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.oreilly.servlet.MultipartRequest;
 
 import Model.Ans.Ans;
 import Model.Board.Board;
@@ -60,7 +61,7 @@ public class Controller extends HttpServlet {
 			case "/insertBoard" : //DB에 글 등록
 				board.insBoard(img.uploadTest(request),response); //이미지등록
 				img.delImg();
-				site = "/WEB-INF/Board/Board_List.jsp";
+				site = "boardPage";
 //				if (site) {
 			        response.setContentType("text/html;charset=UTF-8");
 			        PrintWriter out = response.getWriter();
@@ -74,10 +75,11 @@ public class Controller extends HttpServlet {
 				break;
 				
 			case "/updateBoard" : //수정 DB에 올리기
-				board.updBoard(img.uploadTest(request), response);
+				MultipartRequest mul = img.uploadTest(request);
+				board.updBoard(mul, response);
 				img.delImg();
 //				site = "/WEB-INF/Board/Board_List.jsp";
-				site = "boardPage";
+				site = "BoardInfo?board_ID=" + mul.getParameter("board_ID") ;
 				response.setContentType("text/html;charset=UTF-8");
 		        PrintWriter out1 = response.getWriter();
 		        out1.println("<script>alert('등록이 완료되었습니다.'); location.href='" + site + "';</script>");

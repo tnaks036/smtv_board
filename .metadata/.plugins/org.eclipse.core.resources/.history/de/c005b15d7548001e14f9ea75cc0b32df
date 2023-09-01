@@ -1,0 +1,111 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/BoardList.css">
+<link rel="stylesheet" href="css/BoardInsert.css">
+<meta charset="UTF-8">
+<title>SMT 게시판</title>
+</head>
+<body>
+<%@ include file = "../../../header.jsp" %>
+<section class="board">
+
+<h2 class="boardInfoTitle"><span>문의하기</span></h2>
+
+	<form id="frm" action="insertBoard" method="POST" encType = "multipart/form-data">
+		<input type="text" name="comment_ID" class="form-control" required>
+		<input type="text" name="title" class="form-control"
+			placeholder="제목을 입력해주세요." required >
+		<textarea id="quesContents" class="form-control" rows="10" name="content"
+		placeholder="내용을 입력해주세요" required ></textarea>
+		<input type="file" name="file_Name" accept="image/*">
+		<button type="submit" class="btn btn-secondary" onClick="checkBoard();return = false;">등록하기</button>
+	</form>
+</section>
+
+<script src="/smartEditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script>
+	function checkBoard(){
+		var f = document.frm;
+		
+		if(f.comment_ID.val() == ""){
+			alert("작성자를 입력해주세요.");
+			f.comment_ID.focus();
+			return false;
+		}
+		
+		if(f.title.val() == ""){
+			alert("제목을 입력해주세요.");
+			f.title.focus();
+			return false;
+		}
+		
+		if(f.comment_ID.val() == ""){
+			alert("내용을 입력해주세요.");
+			f.comment_ID.focus();
+			return false;
+		}
+		
+		f.submit();
+	}
+	
+var oEditors = [];
+
+nhn.husky.EZCreator.createInIFrame({
+
+ 	 oAppRef: oEditors,
+
+ 	 elPlaceHolder: document.getElementById('quesContents'), // html editor가 들어갈 textarea id
+
+  	 sSkinURI: "/webapp/smartEditor/SmartEditor2Skin.html",  // html editor가 skin url
+
+     fCreator: "createSEditor2"	
+
+ });
+
+
+
+function submitContents() {
+
+    oEditors.getById["quesContents"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됨
+
+    alert(document.getElementById("content").value);
+
+}
+
+var oEditors = [];
+$(function(){
+      nhn.husky.EZCreator.createInIFrame({
+          oAppRef: oEditors,
+          elPlaceHolder: "ir1", //textarea에서 지정한 id와 일치해야 합니다. 
+          //SmartEditor2Skin.html 파일이 존재하는 경로
+          sSkinURI: "/smarteditorSample/SE2/SmartEditor2Skin.html",  
+          htParams : {
+              // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+              bUseToolbar : true,             
+              // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+              bUseVerticalResizer : true,     
+              // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+              bUseModeChanger : true,         
+              fOnBeforeUnload : function(){
+                   
+              }
+          }, 
+          fOnAppLoad : function(){
+              //기존 저장된 내용의 text 내용을 에디터상에 뿌려주고자 할때 사용
+              oEditors.getById["quesContents"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됨
+          },
+          fCreator: "createSEditor2"
+      });
+      
+      //저장버튼 클릭시 form 전송
+      $("#save").click(function(){
+    	  oEditors.getById["quesContents"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됨
+          $("#frm").submit();
+      });    
+});
+</script>
+</body>
+</html>

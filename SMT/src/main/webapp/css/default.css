@@ -197,3 +197,17 @@ input.form-control:focus{
 	outline: none; /* 포커스 아웃라인 제거 */
   	box-shadow: none!important;
 }
+
+/**/
+.boardInfoTitle{
+	text-align: left;
+    margin: 30px 0 40px 0 ;
+}
+.boardInfoTitle > span{
+    font-weight: 100;
+    
+    background: #F9F7F6;
+    border-left: 0.5em solid #0d771b;
+    padding: 0.5em;
+}
+

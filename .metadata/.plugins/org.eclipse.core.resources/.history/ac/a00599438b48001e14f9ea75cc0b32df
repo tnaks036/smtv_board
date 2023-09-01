@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+#insBoardBox{
+	border-top: 3px solid black;
+	border-bottom: 3px solid black;
+}
+
+#insBoardBox p{
+	border-left: 10px solid #688FF4;
+	padding: 0.5em;
+	border-bottom: 2px solid #688FF4; 
+	margin:0;
+	display: flex;
+}
+
+#insBoardBox p > span{
+	display:block;
+	width: 100px;
+}
