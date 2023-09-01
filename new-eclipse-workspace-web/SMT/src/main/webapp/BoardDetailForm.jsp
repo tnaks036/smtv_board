@@ -224,6 +224,7 @@ https://templatemo.com/tm-590-topic-listing
 </head>
 <body>
 		<div class="container">
+		<!-- 제목  -->
 		<div class="input-group">
 			<input id="subject" name="boardSubject" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${board.getTitle()}" readonly/>
 			<span class="input-group-text" id="basic-addon2">${board.getIns_Date_Time()}</span>
@@ -234,19 +235,11 @@ https://templatemo.com/tm-590-topic-listing
 				<a href="BoardDownloadAction.bo?boardFile=${board.getFile_Name()}">${board.getFile_Name()}</a>
 			</span>
 			<label class="input-group-text" for="inputGroupFile02">첨부파일</label>
-		</div>
-		
-		
-		
+		</div>				
 		<!-- 내용 -->
 		<div class="input-group">
 			<textarea id="content" name="boardContent" class="form-control" aria-label="With textarea" rows="20" readonly>${board.getContents()}</textarea>
 		</div>
-		<!-- 
-		글번호 : ${board.getBoard_ID()}<br>
-		제목 : ${board.getTitle()} <br>
-		내용 : ${board.getContents()}<br>
-		작성일 : ${board.getIns_Date_Time()}<br>  -->
 		</div>
  		<!-- comment style -->
  		<div class="container">
@@ -276,6 +269,7 @@ https://templatemo.com/tm-590-topic-listing
 		                <form action="deleteComment.do" method="post">
 		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
 		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		                   	<input type="hidden" name="comment_ID_numeric" value="${comment.getComment_ID()}">
 		                  <button class="input-group-text" for="inputGroupFile02">삭제</button>
 		                </form>
 		              </div>

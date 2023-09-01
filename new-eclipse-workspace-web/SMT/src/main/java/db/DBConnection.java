@@ -448,5 +448,146 @@ public class DBConnection {
 		            }
 		        }
 		    }
+		    
+		    
+		    
+		    public void insertComment(int boardID, CommentDTO comment) {
+		        Connection dbConn = null;
+		        PreparedStatement pstmt = null;
+		        boolean commit = false; // 커밋 여부 플래그
+
+		        try {
+		            dbConn = getConnection();
+		            dbConn.setAutoCommit(false); // AutoCommit 모드 비활성화
+
+		            String insertQuery = "INSERT INTO CS_Ans (Board_ID, Comment_ID, Answer_ID, Contents, File_Name, Ins_Date_Time, Upd_Date_Time, Del_Date_Time, Del_Yn) " +
+		                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		            pstmt = dbConn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+		            pstmt.setInt(1, boardID); // 게시물의 Board_ID를 삽입
+		            pstmt.setString(2, comment.getComment_ID()); // 실제 Comment_ID 값 입력
+		            pstmt.setString(3, comment.getAnswer_ID());
+		            pstmt.setString(4, comment.getContents());
+		            pstmt.setBytes(5, comment.getFile_Name());
+		            pstmt.setString(6, comment.getIns_Date_Time());
+		            pstmt.setString(7, comment.getUpd_Date_Time());
+		            pstmt.setString(8, comment.getDel_Date_Time());
+		            pstmt.setString(9, comment.getDel_Yn());
+
+		            pstmt.executeUpdate();
+		            System.out.println("댓글 삽입 성공");
+
+		            // 데이터 삽입 후에 커밋을 수행합니다.
+		            dbConn.commit();
+		            commit = true; // 커밋이 성공했을 경우에만 true로 설정
+
+		        } catch (Exception e) {
+		            System.out.println(e.toString());
+		            // 에러 발생 시 롤백을 수행합니다.
+		            if (dbConn != null) {
+		                try {
+		                    dbConn.rollback();
+		                } catch (Exception rollbackException) {
+		                    rollbackException.printStackTrace();
+		                }
+		            }
+		        } finally {
+		            if (pstmt != null) {
+		                try {
+		                    pstmt.close();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                }
+		            }
+		            if (dbConn != null) {
+		                try {
+		                    if (commit) {
+		                        dbConn.commit(); // 커밋이 된 경우에만 커밋
+		                    } else {
+		                        dbConn.rollback(); // 커밋이 안 된 경우에 롤백
+		                    }
+		                    dbConn.setAutoCommit(true); // AutoCommit 모드 활성화
+		                    dbConn.close();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                }
+		            }
+		        }
+		    }
+		    public void updateBoard(BoardDTO updatedBoard) {
+		        System.out.println("수정화면");
+		        System.out.println("Board_ID: " + updatedBoard.getBoard_ID());
+		        Connection dbConn = null;
+		        PreparedStatement pstmt = null;
+		        boolean commit = false; // 커밋 여부 플래그
+
+		        try {
+		            dbConn = getConnection();
+		            dbConn.setAutoCommit(false); // AutoCommit 모드 비활성화
+
+		            // 수정 쿼리
+		            String updateQuery = "UPDATE CS_Ques SET Comment_ID = ?, Title = ?, Contents = ?, File_Name = ?, "
+		                                + "Ins_Date_Time = ?, Upd_Date_Time = ?, Del_Date_Time = ?, Del_Yn = ? WHERE Board_ID = ?";
+		            pstmt = dbConn.prepareStatement(updateQuery);
+		            pstmt.setString(1, updatedBoard.getComment_ID());
+		            pstmt.setString(2, updatedBoard.getTitle());
+		            pstmt.setString(3, updatedBoard.getContents());
+		            pstmt.setBytes(4, updatedBoard.getFile_Name());
+		            pstmt.setString(5, updatedBoard.getIns_Date_Time());
+		            pstmt.setString(6, updatedBoard.getUpd_Date_Time());
+		            pstmt.setString(7, updatedBoard.getDel_Date_Time());
+		            pstmt.setString(8, updatedBoard.getDel_Yn());
+		            pstmt.setInt(9, updatedBoard.getBoard_ID());
+
+		            pstmt.executeUpdate();
+		            System.out.println("게시물 수정 성공");
+
+		            // 데이터 수정 후에 커밋을 수행합니다.
+		            dbConn.commit();
+		            commit = true; // 커밋이 성공했을 경우에만 true로 설정
+
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            // 에러 발생 시 롤백을 수행합니다.
+		            if (dbConn != null) {
+		                try {
+		                    dbConn.rollback();
+		                } catch (Exception rollbackException) {
+		                    rollbackException.printStackTrace();
+		                }
+		            }
+		        } finally {
+		            if (pstmt != null) {
+		                try {
+		                    pstmt.close();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                }
+		            }
+		            if (dbConn != null) {
+		                try {
+		                    if (commit) {
+		                        dbConn.commit(); // 커밋이 된 경우에만 커밋
+		                    } else {
+		                        dbConn.rollback(); // 커밋이 안 된 경우에 롤백
+		                    }
+		                    dbConn.setAutoCommit(true); // AutoCommit 모드 활성화
+		                    dbConn.close();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                }
+		            }
+		        }
+		    }
+
 		}
+		    
+		    
+		    
+		    
+		   
+
+
+
+
 
