@@ -80,7 +80,7 @@ https://templatemo.com/tm-590-topic-listing
 				<!-- 작성자 -->
 				<div class="input-group">
 					<span class="input-group-text" id="inputGroup-sizing-default">작성자</span>
-					<input name="Comment_ID" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="0">
+					<input name="Comment_ID" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="whoareyou">
 				</div>
 				<!-- 첨부파일 -->
 				<div class="input-group mb-3">
