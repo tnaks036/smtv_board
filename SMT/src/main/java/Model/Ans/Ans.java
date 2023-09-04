@@ -85,6 +85,7 @@ public class Ans {
 				;
 		
 		try {
+			
 			con = db.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();

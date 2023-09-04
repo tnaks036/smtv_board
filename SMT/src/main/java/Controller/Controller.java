@@ -88,6 +88,12 @@ public class Controller extends HttpServlet {
 				
 			case "/BoardInfo" : //게시판 상세보기
 				site = board.boardInfo(request, response);
+				if(site == "") {
+					response.setContentType("text/html;charset=UTF-8");
+			        PrintWriter out2 = response.getWriter();
+			        out2.println("<script>alert('존재하지 않는 게시글입니다.'); location.href='boardPage';</script>");
+			        out2.flush();
+				}
 				break;
 				
 			case "/downloadImg" : //이미지 다운로드

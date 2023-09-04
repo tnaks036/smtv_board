@@ -32,12 +32,30 @@
 	</button>
 </div>
 <div id="boardInfoBox">
-	<input type="text" id="boardTitle" name="title" class="form-control" value="${list.title}" readonly>
-
-	<c:if test="${list.file_ViewName ne null}">
-	<div>
-		<a class="downloadLink" href="downloadImg?file_Name=${list.file_ViewName}&board_ID=${list.board_ID}">[첨부파일]</a>
+	<c:choose>
+		<c:when test="${list.answerCnt ne null}">
+			<div id="quesInfoStatus">
+				<span class="ansStatusOK">답변완료</span>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div id="quesInfoStatus">>
+				<span class="ansStatusNO">답변대기</span>
+			</div>
+		</c:otherwise>
+	</c:choose>
+	<div style="display: flex; border-bottom: 1px solid black;">
+		<input type="text" id="boardTitle" name="title" class="form-control" value="${list.title}" readonly>
+		<input style="text-align: right;" id="insDateTime" type="text" class="form-control" value="${list.ins_Date_Time}" readonly>
 	</div>
+
+	<div style="display: flex; justify-content: space-between;">
+		<p>${list.comment_ID}</p>
+	<c:if test="${list.file_ViewName ne null}">
+		<a class="downloadLink" href="downloadImg?file_Name=${list.file_ViewName}&board_ID=${list.board_ID}">[첨부파일]</a>
+	</c:if>
+	</div>
+	<c:if test="${list.file_ViewName ne null}">
 		<img src="data:image/png;base64,${list.file_ViewName}" alt="Image">
 	</c:if>
 	<p>
@@ -45,12 +63,11 @@
 	</p>
 </div>
 
-<hr> 
-<p id="AnsInsBoxTitle">댓글</p>
+<p id="AnsInsBoxTitle">답변</p>
 <div id="AnsInsBox">
 	<form id="frm" enctype="multipart/form-data">
 		<div class="row">
-			<div class="col-10">
+			<div class="col-md-10 col-12">
 				<input type="hidden" id="board_ID" name="board_ID" value="${list.board_ID}" readonly>
 				<input type="hidden" id="comment_ID" name="comment_ID" value="${list.comment_ID}" readonly>
 				<input type="text" id="answerID" class="form-control" placeholder="작성자" maxLength=10>
@@ -63,21 +80,23 @@
 						</svg>
 					</label>
 					<p id="originName" style="display : inline-block; color: #21252978; font-size:0.8rem; margin-right:10px;"></p>
-					<img id="previewImg" style="max-height:50px; width:auto;">
+					<img id="previewImg" style="height:auto; max-width:720px;">
 				</div>
 				<input type="file" id="imageInput" name="file_Name" onChange="previewImage(event)" accept="image/*" style="display:none;">
 			</div>
-			<div class="col-2">
+			<div class="col-md-2 col-12">
 				<button type="button" class="btn" id="insAnsBtn" onClick="insAns(${list.board_ID})">등록</button>
 			</div>
 		</div>
 	</form>
 </div>
 
+<hr> 
 <div class="comment_Box"> <!-- 댓글이 들어갈 박스 -->
 
 </div>
 </section>
+<%@ include file = "../../../footer.jsp" %>
 <script src="js/board.js"></script>	
 <script>
 

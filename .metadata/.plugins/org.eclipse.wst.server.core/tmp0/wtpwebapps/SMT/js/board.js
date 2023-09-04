@@ -3,7 +3,7 @@
  */
  
  function goBoard(){
-	location.href="goBoard";
+	location.href="boardPage";
 }
 
 function insertBoard(){

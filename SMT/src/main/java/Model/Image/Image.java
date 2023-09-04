@@ -133,7 +133,7 @@ public class Image {
     
     
     public void delImg() {
-    	String directoryPath = "C:/Users/SMT/Desktop/게시판 프로젝트/SMT/src/main/webapp/img";
+    	String directoryPath = "C:/Users/SMT/Desktop/git";
 
         File directory = new File(directoryPath);
 

@@ -10,5 +10,6 @@
 <%@ include file = "header.jsp" %>
 	<button class="btn" onClick="location.href='boardPage'">게시판으로 이동</button>
 	<script src="js/board.js"></script>	
+<%@ include file = "footer.jsp" %>
 </body>
 </html>

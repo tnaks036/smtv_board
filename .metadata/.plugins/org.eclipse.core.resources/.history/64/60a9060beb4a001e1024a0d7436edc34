@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<footer class="footer-bar con">
+  <div class="footer-wrap row">
+    <ul class="profile cell row">
+      <li class="cell"><a href="#">LOGIN</a></li>
+      <li class="cell"><a href="#">JOIN</a></li>
+      <li class="cell"><a href="#">FAMILY SITE</a></li>
+      <li class="cell"><a href="#">MALL LINK</a></li>
+      <li class="cell"><a href="#">FACEBOOK</a></li>
+      <li class="cell"><a href="#">BLOG</a></li>
+    </ul>
+    <div class="copy cell">
+      <a href="#">개인정보취급처리방침</a>
+      <p>COPYRIGHT (C) 2015 <span>AVISTA INC.</span> ALL RIGHTS RESERVED</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -13,7 +13,7 @@ public class BoardQVO {
 	private String Del_Date_Time;
 	private String Del_Yn;
 	
-	private String answer_ID;
+	private int answerCnt;
 	
 	
 	
@@ -23,11 +23,11 @@ public class BoardQVO {
 	public void setFile_ViewName(String file_ViewName) {
 		this.file_ViewName = file_ViewName;
 	}
-	public String getAnswer_ID() {
-		return answer_ID;
+	public int getAnswerCnt() {
+		return answerCnt;
 	}
-	public void setAnswer_ID(String answer_ID) {
-		this.answer_ID = answer_ID;
+	public void setAnswerCnt(int answerCnt) {
+		this.answerCnt = answerCnt;
 	}
 	public int getBoard_ID() {
 		return board_ID;
@@ -82,13 +82,5 @@ public class BoardQVO {
 	}
 	public void setDel_Yn(String del_Yn) {
 		Del_Yn = del_Yn;
-	}
-
-	@Override
-	public String toString() {
-		return "BoardQVO [board_ID=" + board_ID + ", comment_ID=" + comment_ID + ", title=" + title + ", contents="
-				+ contents + ", file_Name=" + file_Name + ", ins_Date_Time=" + ins_Date_Time + ", upd_Date_Time="
-				+ upd_Date_Time + ", Del_Date_Time=" + Del_Date_Time + ", Del_Yn=" + Del_Yn + ", answer_ID=" + answer_ID
-				+ "]";
 	}
 }
