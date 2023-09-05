@@ -12,18 +12,43 @@ import javax.servlet.http.HttpServletResponse;
 import dto.CommentDTO;
 import db.DBConnection; 
 
+
+
 @WebServlet("/writeCommentForm.do")
 public class WriteCommentFormServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int boardID = Integer.parseInt(request.getParameter("board_ID"));
-        request.setAttribute("board_ID", boardID); // 댓글 작성 후 리다이렉트할 때 사용
+        String boardIDString = request.getParameter("board_ID");
+        // Check if boardIDString is a valid integer before parsing
+        if (boardIDString != null && !boardIDString.isEmpty()) {
+            try {
+                int boardID = Integer.parseInt(boardIDString);
+                // Now you have a valid integer value for boardID
+                request.setAttribute("board_ID", boardID); // Set it as an attribute if needed
+                System.out.println("정슈 num 들어가유");
+                // Continue with your code...
+                RequestDispatcher dispatcher = request.getRequestDispatcher("CommentWriteForm.jsp");
+                dispatcher.forward(request, response);
+            } catch (NumberFormatException e) {
+            	System.out.println("실팽용");
+            	e.printStackTrace();
+                // Handle the case where boardIDString is not a valid integer
+                // You can log an error, redirect to an error page, or handle it as needed.
+            }
+        } else {
+        	System.out.println("null값이용 비었어용");
+            // Handle the case where boardIDString is empty or null
+        }
+    	
+    	
+//    	int boardID = Integer.parseInt(request.getParameter("board_ID"));
+//        request.setAttribute("board_ID", boardID); // 댓글 작성 후 리다이렉트할 때 사용
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("write_comment_form.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("CommentWriteForm.jsp");
         dispatcher.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8"); // 한글 데이터 인코딩 설정
+request.setCharacterEncoding("UTF-8"); // 한글 데이터 인코딩 설정
         
         int boardID = Integer.parseInt(request.getParameter("board_ID"));
         String contents = request.getParameter("contents");

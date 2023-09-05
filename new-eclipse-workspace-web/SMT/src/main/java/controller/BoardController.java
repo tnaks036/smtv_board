@@ -63,19 +63,7 @@ public class BoardController extends HttpServlet {
         // 맨 밑 페이지 이동시 쓰는거.
         boolean isRedirect = false;
         
-        if(command.equals("/boardMain.do"))
-        {
-        	DBConnection dbConn = new DBConnection();
-            
-            // getBoardList 메서드를 호출하여 데이터를 가져와서 boardList에 설정
-            boardList = dbConn.getBoardList();
-            
-            // 가져온 데이터를 request에 설정
-            request.setAttribute("list", boardList);
-            System.out.println(boardList);
-            
-            page = "main.jsp";
-        }
+        
         
         if(command.equals("/boardList.do"))
         {
@@ -91,6 +79,7 @@ public class BoardController extends HttpServlet {
             page = "BoardListForm.jsp";
         }
         
+        
         //글쓰기 페이지로 이동
         if(command.equals("/regBoardForm.do"))
         {
@@ -101,6 +90,7 @@ public class BoardController extends HttpServlet {
         if (command.equals("/regBoard.do")) {
             // 데이터 받기
         	String comment_ID = request.getParameter("comment_ID");
+        	
             String title = request.getParameter("title");
             String contents = request.getParameter("contents");
             String file_name = request.getParameter("file_name");
@@ -114,16 +104,18 @@ public class BoardController extends HttpServlet {
             // 게시글 번호를 데이터베이스에서 가져오기
             // int board_ID = dbConn.getLastBoardID() + 1; // 실제 데이터베이스와 연동되어야 합니다.
             
-            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, file_name, ins_Date_Time,
-                    upd_Date_Time, del_Date_Time, del_Yn);
+            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, null, ins_Date_Time, upd_Date_Time,
+                    del_Date_Time, del_Yn);
             
-            System.out.println(" hi " + board);
+            System.out.println(" Hello " + board);
             
             dbConn.insertBoard(board);
             
-            page = "boardList.do";
             // boardList로 돌아가서 
-            // 데이터를 적재할 request.setAtrribute("list", boardlist)를 추가해줘야한다.
+            // 데이터를 적재할 request.setAtrribute("list", boardlist)를 추가해줘야한다. 게시글 등록 후 db에서 최신 데이터를 가져와서 업데이트
+            boardList = dbConn.getBoardList();
+
+            page = "boardList.do";
             isRedirect = true;
         }
         
@@ -142,9 +134,12 @@ public class BoardController extends HttpServlet {
             for(BoardDTO board: boardList) {
                 if(board.getBoard_ID() == num) {
                     request.setAttribute("board", board );
+                    break; //break
                 }
             }
             request.setAttribute("commentList", commentList);
+         // 최신 데이터로 업데이트
+            boardList = dbConn.getBoardList();
             page="BoardDetailForm.jsp";
         }
         
@@ -157,6 +152,9 @@ public class BoardController extends HttpServlet {
             DBConnection dbConn = new DBConnection();
             dbConn.deleteBoard(num);
 
+            // 삭제 후 데이터베이스에서 최신 데이터를 가져와서 업데이트
+            boardList = dbConn.getBoardList();
+            
             // 삭제 후 게시글 목록으로 이동
             page = "boardList.do";
             isRedirect = true;
@@ -170,51 +168,15 @@ public class BoardController extends HttpServlet {
             for(BoardDTO board : boardList) {
                 if(board.getBoard_ID() == num) {
                     request.setAttribute("board", board);
+                    break;
                 }
             }
             //수정하고자 하는 게시글의 정보를 jsp에 보내줘야함.
-            page = "BoardUpdateForm.jsp"
-            		+ "";
+            page = "BoardUpdateForm.jsp";
+            isRedirect = false; // Modified Part
         }
         
-      //글 수정
-        if (command.equals("/updateBoard.do")) {
-            String comment_ID = request.getParameter("comment_ID");
-            String title = request.getParameter("title");
-            String contents = request.getParameter("contents");
-            Part filePart = request.getPart("file_name");
-            InputStream fileContent = filePart.getInputStream();
-            byte[] fileData = null;
-
-            try {
-                fileData = fileContent.readAllBytes();
-            } catch (IOException e) {
-                e.printStackTrace(); // 또는 로깅 처리
-            }
-
-            String ins_Date_Time = request.getParameter("ins_Date_Time");
-            String upd_Date_Time = request.getParameter("upd_Date_Time");
-            String del_Date_Time = request.getParameter("del_Date_Time");
-            String del_Yn = request.getParameter("del_Yn");
-            int num = Integer.parseInt(request.getParameter("board_ID"));
-
-            for (BoardDTO board : boardList) {
-                if (board.getBoard_ID() == num) {
-                    board.setComment_ID(comment_ID);
-                    board.setTitle(title);
-                    board.setContents(contents);
-                    if (fileData != null) {
-                        board.setFile_Name(fileData); // 변경된 부분
-                    }
-                    board.setIns_Date_Time(ins_Date_Time);
-                    board.setUpd_Date_Time(upd_Date_Time);
-                    board.setDel_Date_Time(del_Date_Time);
-                    board.setDel_Yn(del_Yn);
-                }
-            }
-
-            page = "boardList.do";
-        }
+      
 
         // 페이지 이동.
         if (isRedirect) {
@@ -227,7 +189,9 @@ public class BoardController extends HttpServlet {
         
     }
     
-    /*댓글 수 표시
+    /*
+     * 
+     * 댓글 수 표시
      * public List<BoardDTO> calculateCommentCounts(List<BoardDTO> posts) {
     for (BoardDTO post : posts) {
         int postId = post.getBoard_ID();

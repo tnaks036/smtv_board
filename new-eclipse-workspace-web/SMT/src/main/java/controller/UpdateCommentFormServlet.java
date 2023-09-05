@@ -23,7 +23,7 @@ public class UpdateCommentFormServlet extends HttpServlet {
         CommentDTO comment = dbConn.getComment(boardID, commentID);
         request.setAttribute("comment", comment);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("update_comment_form.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("CommentUpdateForm.jsp");
         dispatcher.forward(request, response);
     }
 }

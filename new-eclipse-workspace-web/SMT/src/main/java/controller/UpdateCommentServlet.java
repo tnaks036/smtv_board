@@ -13,7 +13,18 @@ import db.DBConnection;
 @WebServlet("/updateComment.do")
 public class UpdateCommentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int boardID = Integer.parseInt(request.getParameter("board_ID"));
+        //int boardID = Integer.parseInt(request.getParameter("board_ID"));
+    	 String boardIDParameter = request.getParameter("board_ID");
+    	    int boardID = 0; // 기본값 설정
+        if (boardIDParameter != null && !boardIDParameter.isEmpty()) {
+            try {
+                boardID = Integer.parseInt(boardIDParameter);
+            } catch (NumberFormatException e) {
+                // 정수로 변환할 수 없는 경우 예외 처리
+                e.printStackTrace(); // 또는 로깅 처리
+            }
+        }
+        
         String commentID = request.getParameter("comment_ID");
         String contents = request.getParameter("contents");
 

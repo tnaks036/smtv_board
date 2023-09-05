@@ -7,6 +7,7 @@
 </head>
 <body>
     <h3>댓글 작성</h3>
+    
     <form action="writeCommentForm.do" method="post">
         <input type="hidden" name="board_ID" value="${board_ID}">
         <label for="writer">작성자:</label>
@@ -17,6 +18,6 @@
     </form>
     
     <br>
-    <a href="boardDetail.do?board_ID=${board_ID}">게시물로 돌아가기</a>
+    <a href="boardDetail.do?board_ID=${comment.getBoard_ID()}">게시물로 돌아가기</a>
 </body>
 </html>

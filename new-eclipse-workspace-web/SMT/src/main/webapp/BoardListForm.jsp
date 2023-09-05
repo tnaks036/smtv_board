@@ -66,6 +66,7 @@ https://templatemo.com/tm-590-topic-listing
         -->
 </head>
 <body>
+<!-- 프로젝트 실행 시 바로 페이지 이동 -->
 <form action="regBoard.do" method="post">
 	<div id="container">
             <div class="wrap">

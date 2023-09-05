@@ -17,7 +17,7 @@ public class DBConnection {
 	            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
 	            dbConn = DriverManager.getConnection(connectionUrl);
-	            System.out.println("서버접속");
+	            //System.out.println("서버접속");
 	        } catch (Exception e) {
 	            System.out.println("서버접속실패" + e.toString() + '\n');
 	            e.printStackTrace();
@@ -34,7 +34,7 @@ public class DBConnection {
 		        ResultSet rs = null;
 
 		        try {
-		            String selectQuery = "SELECT Board_ID, Comment_ID, Title, Contents, File_Name, FORMAT(Ins_Date_Time, 'MM-dd')as Ins_Date_Time,Upd_Date_Time, Del_Date_Time, Del_Yn FROM CS_Ques"; // 여기에 테이블명을 정확히 입력해주세요
+		            String selectQuery = "SELECT Board_ID, Comment_ID, Title, Contents, File_Name, FORMAT(Ins_Date_Time, 'MM-dd')as Ins_Date_Time,Upd_Date_Time, Del_Date_Time, Del_Yn FROM CS_Ques"; 
 		            pstmt = dbConn.prepareStatement(selectQuery);
 		            rs = pstmt.executeQuery();
 		            System.out.println(rs);
@@ -44,7 +44,7 @@ public class DBConnection {
 		                String commentID = rs.getString("Comment_ID");
 		                String title = rs.getString("Title");
 		                String contents = rs.getString("Contents");
-		                String fileName = rs.getString("File_Name");
+		                byte[] fileData = rs.getBytes("File_Name"); // 파일 데이터를 바이트 배열로 가져오기
 		                
 		                // 날짜 값을 가져와서 원하는 형식으로 변환
 		                String insDateTime = rs.getString("Ins_Date_Time"); // 이미 원하는 형식으로 변환되어 있는 경우
@@ -52,8 +52,10 @@ public class DBConnection {
 		                String delDateTime = rs.getString("Del_Date_Time");
 		                String delYN = rs.getString("Del_Yn");
 		                
-		                // 나머지 필드들도 적절하게 가져와서 BoardDTO 객체를 생성하고 boardList에 추가
-		                BoardDTO board = new BoardDTO(boardID, commentID, title, contents, fileName, insDateTime, updDateTime, delDateTime, delYN);
+		                List<CommentDTO> comments = getCommentList(boardID);
+		                
+		             // 나머지 필드들도 적절하게 가져와서 BoardDTO 객체를 생성하고 boardList에 추가
+		                BoardDTO board = new BoardDTO(boardID, commentID, title, contents, fileData, insDateTime, updDateTime, delDateTime, delYN);
 		                boardList.add(board);
 		                System.out.println(board);
 		            }
@@ -95,6 +97,7 @@ public class DBConnection {
 		        try {
 		            dbConn = getConnection();
 		            dbConn.setAutoCommit(false); // AutoCommit 모드 비활성화
+
 
 		            String insertQuery = "INSERT INTO CS_Ques (Comment_ID, Title, Contents, File_Name, Ins_Date_Time, Upd_Date_Time, Del_Date_Time, Del_Yn) " +
 		                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -270,9 +273,9 @@ public class DBConnection {
 
 		        try {
 		            String selectQuery = "SELECT Comment_ID, Answer_ID, Contents, File_Name, CONVERT(VARCHAR, Ins_Date_Time, 101) AS Ins_Date_Time, CONVERT(VARCHAR, Upd_Date_Time, 101) AS Upd_Date_Time,"
-		                    + "CONVERT(VARCHAR, Del_Date_Time, 101) AS Del_Date_Time, Del_Yn FROM CS_Ans"; // 여기에 테이블명을 정확히 입력해주세요
-		            System.out.println("SQL Query: " + selectQuery);
+		                    + "CONVERT(VARCHAR, Del_Date_Time, 101) AS Del_Date_Time, Del_Yn FROM CS_Ans WHERE Board_ID = ?";
 		            pstmt = dbConn.prepareStatement(selectQuery);
+		            pstmt.setInt(1, boardID);
 		            rs = pstmt.executeQuery();
 
 		            while (rs.next()) {
@@ -413,21 +416,32 @@ public class DBConnection {
 		        }
 		    }
 
-		    public void deleteComment(int boardID, String commentID) {
+		    public void deleteComment(String commentID) {
 		        Connection dbConn = getConnection();
 		        PreparedStatement pstmt = null;
 
 		        try {
-		            String deleteQuery = "DELETE FROM CS_Ans WHERE Board_ID = ? AND Comment_ID = ?";
-		            pstmt = dbConn.prepareStatement(deleteQuery);
-		            pstmt.setInt(1, boardID);
-		            pstmt.setString(2, commentID);
+		            // 게시물 ID 찾기
+		            String selectQuery = "SELECT Board_ID FROM CS_Ans WHERE Comment_ID = ?";
+		            pstmt = dbConn.prepareStatement(selectQuery);
+		            pstmt.setString(1, commentID); // commentID를 문자열로 설정
+		            ResultSet rs = pstmt.executeQuery();
+		            
+		            int boardID = -1; // 초기값으로 임의의 값 설정
+		            if (rs.next()) {
+		                boardID = rs.getInt("Board_ID");
+		            }
 
-		            pstmt.executeUpdate();
-		            System.out.println("댓글 삭제 성공");
+		            if (boardID != -1) { // 올바른 게시물 ID를 찾았을 경우에만 삭제 수행
+		                String deleteQuery = "DELETE FROM CS_Ans WHERE Comment_ID = ?";
+		                pstmt = dbConn.prepareStatement(deleteQuery);
+		                pstmt.setString(1, commentID); // commentID를 문자열로 설정
 
-		            // 여기에서 원하는 동작을 추가할 수 있습니다.
-		            // 예를 들어, 삭제 후에 어떤 페이지로 이동하거나 메시지를 표시할 수 있습니다.
+		                pstmt.executeUpdate();
+		                System.out.println("댓글 삭제 성공");
+		            } else {
+		                System.out.println("해당 댓글이 속한 게시물을 찾을 수 없습니다.");
+		            }
 		        } catch (Exception e) {
 		            System.out.println(e.toString());
 		        } finally {
@@ -448,8 +462,6 @@ public class DBConnection {
 		            }
 		        }
 		    }
-		    
-		    
 		    
 		    public void insertComment(int boardID, CommentDTO comment) {
 		        Connection dbConn = null;
@@ -532,7 +544,7 @@ public class DBConnection {
 		            pstmt.setString(1, updatedBoard.getComment_ID());
 		            pstmt.setString(2, updatedBoard.getTitle());
 		            pstmt.setString(3, updatedBoard.getContents());
-		            pstmt.setBytes(4, updatedBoard.getFile_Name());
+		            pstmt.setBytes(4, updatedBoard.getFile_Name()); // 파일 이름을 문자열로 설정
 		            pstmt.setString(5, updatedBoard.getIns_Date_Time());
 		            pstmt.setString(6, updatedBoard.getUpd_Date_Time());
 		            pstmt.setString(7, updatedBoard.getDel_Date_Time());
