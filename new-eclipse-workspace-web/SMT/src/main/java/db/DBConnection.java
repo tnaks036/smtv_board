@@ -37,7 +37,7 @@ public class DBConnection {
 		            String selectQuery = "SELECT Board_ID, Comment_ID, Title, Contents, File_Name, FORMAT(Ins_Date_Time, 'MM-dd')as Ins_Date_Time,Upd_Date_Time, Del_Date_Time, Del_Yn FROM CS_Ques"; 
 		            pstmt = dbConn.prepareStatement(selectQuery);
 		            rs = pstmt.executeQuery();
-		            System.out.println(rs);
+		            // System.out.println(rs);   // 데이터 조회 rs 출력 
 
 		            while (rs.next()) {
 		                int boardID = rs.getInt("Board_ID");
@@ -57,7 +57,7 @@ public class DBConnection {
 		             // 나머지 필드들도 적절하게 가져와서 BoardDTO 객체를 생성하고 boardList에 추가
 		                BoardDTO board = new BoardDTO(boardID, commentID, title, contents, fileData, insDateTime, updDateTime, delDateTime, delYN);
 		                boardList.add(board);
-		                System.out.println(board);
+		                //System.out.println(board);
 		            }
 		        } catch (Exception e) {
 		            System.out.println(e.toString());
@@ -292,8 +292,8 @@ public class DBConnection {
 		                
 		                CommentDTO comment = new CommentDTO(boardID, commentID, answerID, contents, fileName, insDateTime, updDateTime, delDateTime, delYN);
 		                commentList.add(comment);
-		                System.out.println("\n");
-		                System.out.println(comment);
+		                //System.out.println("\n");
+		                //System.out.println(comment); // 데이터 조회 rs 출력 
 		            }
 		        } catch (Exception e) {
 		            System.out.println(e.toString());
@@ -487,7 +487,7 @@ public class DBConnection {
 		            pstmt.setString(9, comment.getDel_Yn());
 
 		            pstmt.executeUpdate();
-		            System.out.println("댓글 삽입 성공");
+		            System.out.println("Comment Insert Sucsess !!!! ");
 
 		            // 데이터 삽입 후에 커밋을 수행합니다.
 		            dbConn.commit();
@@ -552,7 +552,7 @@ public class DBConnection {
 		            pstmt.setInt(9, updatedBoard.getBoard_ID());
 
 		            pstmt.executeUpdate();
-		            System.out.println("게시물 수정 성공");
+		            System.out.println("게시물 수정 sucsess!!!!");
 
 		            // 데이터 수정 후에 커밋을 수행합니다.
 		            dbConn.commit();

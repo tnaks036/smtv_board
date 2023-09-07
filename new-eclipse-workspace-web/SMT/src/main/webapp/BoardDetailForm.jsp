@@ -270,7 +270,7 @@ https://templatemo.com/tm-590-topic-listing
 			        <input type="text" name="writer" required><br>	 -->
 			      <textarea placeholder="Contents" rows="4" cols="50" required></textarea>
 			      <button type="button" class="submit">등록하기</button>
-			      <a href="CommentWriteForm.jsp">진짜 등록하기</a>			     			      
+			      <a href="CommentWriteForm.jsp?board_ID=${board.getBoard_ID()}">진짜 등록하기</a>			     			      
 			    </form>
 		    <div class="comments">
 		      <c:forEach items="${commentList}" var="comment">
