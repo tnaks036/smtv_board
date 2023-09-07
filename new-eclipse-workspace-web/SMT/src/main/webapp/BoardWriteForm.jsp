@@ -60,7 +60,7 @@ https://templatemo.com/tm-590-topic-listing
             	<td></td>
             	<td>
             		<div class="input-group">
-                        <span class="input-group-text" id="inputGroup-sizing-default">제목</span>
+                        <span class="input-group-text" id="inputGroup-sizing-default">작성날짜</span>
                         <input name="ins_Date_Time" type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                         </div>
             	</td>                     

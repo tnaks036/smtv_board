@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.eclipse.jdt.internal.compiler.env.IGenericField;
+
 import dto.BoardDTO;
 import dto.CommentDTO;
 import db.DBConnection;
@@ -28,7 +30,7 @@ public class BoardController extends HttpServlet {
     private int board_ID;
     private List<BoardDTO> boardList;
     
-    
+    int boardID = 0;
     
     public BoardController() {
         super();
@@ -122,7 +124,22 @@ public class BoardController extends HttpServlet {
         //게시글 상세보기
         if(command.equals("/boardDetail.do"))
         {
+        	       	
             int num = Integer.parseInt(request.getParameter("board_ID"));
+//            if (num != null) {
+//            	try {
+//					int boardID = Integer.parseInt(requestURI);
+//					boardID = Integer.parseInt(requestURI);              
+//                	System.out.println("정슈 num 들어가유");
+//				} catch (NumberFormatException e) {
+//					System.out.println("실팽용");
+//	            	e.printStackTrace();
+//				}	
+//            }
+//            else {
+//        		System.out.println("null 값이용 비었어욤....");
+//        	}
+            
             
             // 게시글 목록에서 해당 게시글의 댓글을 가져옴
             DBConnection dbConn = new DBConnection();
@@ -143,6 +160,8 @@ public class BoardController extends HttpServlet {
             page="BoardDetailForm.jsp";
         }
         
+        
+        
         //게시글 삭제하기
         if (command.equals("/delete.do"))
         {
@@ -161,7 +180,7 @@ public class BoardController extends HttpServlet {
         }
         
         //게시글 수정 페이지로 이동
-        if(command.equals("/updateBoardForm.do"))
+        if(command.equals("/updateBoard.do"))
         {
             int num = Integer.parseInt(request.getParameter("board_ID"));
             

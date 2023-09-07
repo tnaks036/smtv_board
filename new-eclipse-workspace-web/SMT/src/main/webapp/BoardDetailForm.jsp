@@ -175,11 +175,22 @@
 		.bottom .menu.show-reply {
 		  color: #333;
 		}
-		
+		/* Style the button to look like a link */
+	  .link-button {
+	    background: none;
+	    border: none;
+	    color: blue;
+	    text-decoration: underline;
+	    cursor: pointer;
+	  }
+	
+	  /* Remove the default button styles */
+	  .link-button:focus {
+	    outline: none;
+	  }
 	</style>
 	
 	<link href="css/navbar-top-fixed.css" rel="stylesheet">
-    
     <!-- CSS FILES -->
     <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,23 +253,22 @@ https://templatemo.com/tm-590-topic-listing
 			<textarea id="content" name="boardContent" class="form-control" aria-label="With textarea" rows="20" readonly>${board.getContents()}</textarea>
 		</div>
 		</div>
+		
 		<div class="utility d-flex justify-content-center">
-		                <form action="updateBoardForm.do" method="get">
-		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
-		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		                <form action="updateBoard.do" method="get">
+		                  <input type="hidden" name="board_ID" value="${param.board_ID} }">
+		                  <input type="hidden" name="comment_ID" value="${param.comment_ID} }">
 		                  <button class="input-group-text" for="inputGroupFile02">게시글 수정</button>
 		                </form>
 						 &nbsp; &nbsp;
+						 
 		                <form action="delete.do" method="post">
-		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
-		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
-		                   	<input type="hidden" name="comment_ID_numeric" value="${comment.getComment_ID()}">
+		                  	<input type="hidden" name="board_ID" value="${param.board_ID}">
+		                  	<input type="hidden" name="comment_ID" value="${param.comment_ID}">
 		                  <button class="input-group-text" for="inputGroupFile02">게시글 삭제</button>
 		                </form>
 		              </div>
-		
-		
-		
+	
  		<!-- comment style -->
  		<div class="container">
 		 	<div id="root">
@@ -270,7 +280,12 @@ https://templatemo.com/tm-590-topic-listing
 			        <input type="text" name="writer" required><br>	 -->
 			      <textarea placeholder="Contents" rows="4" cols="50" required></textarea>
 			      <button type="button" class="submit">등록하기</button>
-			      <a href="CommentWriteForm.jsp?board_ID=${board.getBoard_ID()}">진짜 등록하기</a>			     			      
+			      
+			      <!-- Create a button with a link -->
+					<button type="button" class="submit" onclick="window.location.href='CommentWriteForm.jsp?board_ID=${board.getBoard_ID()}'">
+ 				 		Register
+					</button>
+			      <!-- <a href="CommentWriteForm.jsp?board_ID=${board.getBoard_ID()}">진짜 등록하기</a>	 -->		     			      
 			    </form>
 		    <div class="comments">
 		      <c:forEach items="${commentList}" var="comment">
@@ -280,16 +295,17 @@ https://templatemo.com/tm-590-topic-listing
 		              <div class="username">${comment.getComment_ID()}</div>
 		              <div class="utility">
 		                <form action="updateCommentForm.do" method="get">
-		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
-		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
+		                  <input type="hidden" name="board_ID" value="${param.board_ID}">
+		                  <input type="hidden" name="comment_ID" value="${param.comment_ID}">
 		                  <button class="input-group-text" for="inputGroupFile02">수정</button>
 		                </form>
 						 &nbsp; &nbsp;
 		                <form action="deleteComment.do" method="post">
-		                  <input type="hidden" name="board_ID" value="${comment.getBoard_ID()}">
-		                  <input type="hidden" name="comment_ID" value="${comment.getComment_ID()}">
-		                   	<input type="hidden" name="comment_ID_numeric" value="${comment.getComment_ID()}">
-		                  <button class="input-group-text" for="inputGroupFile02">삭제</button>
+		                  <!-- transform to numer -->
+		                  <input type="hidden" name="board_ID" value="${param.board_ID}">
+		                  <input type="hidden" name="comment_ID" value="${param.comment_ID}">
+		                   	<input type="hidden" name="comment_ID_numeric" value="${param.comment_ID}">
+		                  <button type="submit" class="input-group-text" for="inputGroupFile02">삭제</button>
 		                </form>
 		              </div>
 		            </header>

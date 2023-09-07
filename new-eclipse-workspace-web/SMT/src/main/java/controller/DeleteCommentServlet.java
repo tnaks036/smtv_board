@@ -16,7 +16,7 @@ public class DeleteCommentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String boardIDParam = request.getParameter("board_ID");
         String commentIDParam = request.getParameter("comment_ID");
-        System.out.println("HERE IT IS");
+        System.out.println("HERE IT IS Comment!!!!!!!!!! ");
         System.out.println(boardIDParam);
         System.out.println(commentIDParam);
 
@@ -34,6 +34,7 @@ public class DeleteCommentServlet extends HttpServlet {
     	                System.out.println("댓글 삭제 후 작업을 수행할 수 있습니다.");
     	                // 삭제 후 원하는 동작을 수행하면 됩니다.
     	            } catch (Exception e) {
+    	            	System.out.println("Error!!!");
     	                System.out.println(e.toString());
     	                // 에러 발생 시 처리
     	            }

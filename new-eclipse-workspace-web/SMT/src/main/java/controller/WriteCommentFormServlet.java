@@ -64,9 +64,10 @@ public class WriteCommentFormServlet extends HttpServlet {
     	String contents = request.getParameter("contents");
         String commentID = request.getParameter("comment_ID"); 
         String answerID = request.getParameter("answer_ID"); 
+        String insDateTime = request.getParameter("Ins_Date_Time");
         
 
-        CommentDTO comment = new CommentDTO(boardID, commentID, answerID, contents, null, null, null, null, null);
+        CommentDTO comment = new CommentDTO(boardID, commentID, answerID, contents, insDateTime, null, null, null, null);
         System.out.println("댓글삽입 시작");
         DBConnection dbConn = new DBConnection(); // DBConn 객체 생성
         dbConn.insertComment(boardID, comment); // 댓글 삽입 메소드 호출
