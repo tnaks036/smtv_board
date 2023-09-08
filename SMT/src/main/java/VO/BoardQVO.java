@@ -16,7 +16,6 @@ public class BoardQVO {
 	private int answerCnt;
 	
 	
-	
 	public String getFile_ViewName() {
 		return file_ViewName;
 	}

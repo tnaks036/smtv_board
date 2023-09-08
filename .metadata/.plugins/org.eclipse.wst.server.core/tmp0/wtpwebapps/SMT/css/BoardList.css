@@ -182,7 +182,7 @@ section.board{
 }
 
 .searchBox > #condition {
-	width: 100px;
+	width: 120px;
 	border: none;
 	border-radius : 0;
 	border-top: 3px solid #153b21;
@@ -225,11 +225,11 @@ section.board{
 	color: black;
 	font-weight:bold; */
 	
-	background-color: black;
+	background-color: #153b21;
 	border-radius : 0;
 	color: white;
 	height: 50px;
-	border: 5px solid black;
+	border: 5px solid #153b21;
 }
 
 /* boardList 테이블 */
@@ -332,7 +332,15 @@ button.selectedNumBtn{
 	display: none;	
 }
 
-/* 반응형 */
+/* 게시글 수 */
+#boardCnt{
+	text-align: left;
+	font-size: 0.85rem;
+	font-weight: bold;
+}
+
+
+/* 반응형 ========================================================= */
 @media (max-width: 880px){
 section.board{/*전체 board 패딩 삭제)*/
     padding: 0;

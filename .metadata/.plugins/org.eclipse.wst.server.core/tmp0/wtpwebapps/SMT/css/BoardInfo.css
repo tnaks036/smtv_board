@@ -216,6 +216,27 @@ div.ansUpdDBCancle >button:hover{
 	padding-bottom: 10px;
 }
 
+/* 이전글/다음글 */
+#preNextBoard_Box{
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	margin-top: 50px;
+}
+
+#preNextBoard_Box *{
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+
+#preNextBoard_Box >p{
+	padding: 20px;
+}
+
+#preNextBoard_Box >p >span{
+    margin-right: 30px;
+}
+
 /* 반응형 */
 @media (max-width: 880px){
 #boardInfoBox {

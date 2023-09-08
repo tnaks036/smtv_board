@@ -111,6 +111,10 @@ public class Page {
 				case "contents" :
 					query += " AND contents LIKE '%" + searchKeyword +"%' ";
 				break;
+				
+				case "comment_ID" :
+					query += " AND comment_ID LIKE '%" + searchKeyword +"%' ";
+				break;
 			}
 		}
 		

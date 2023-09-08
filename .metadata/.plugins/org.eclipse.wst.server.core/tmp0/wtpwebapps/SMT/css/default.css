@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,900,300);
-@import url(http://weloveiconfonts.com/api/?family=fontawesome);
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 *{
@@ -9,6 +8,10 @@
 	margin:0;
 	text-align:center;
 	font-family: 'Roboto', sans-serif;
+}
+
+nav{
+	min-width: 375px;
 }
 
 input[readonly],
@@ -207,6 +210,40 @@ i {
 }
 
 
+/* 로그인 모달 */
+#loginBox .loginInput{
+	display: flex;
+	padding: 10px;
+	justify-content: center;
+}
+
+#loginBox Input{
+    width: 50%;
+    min-width: 190px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+#loginBox Input:focus{
+	border: 1px solid #153b21;
+}
+
+#loginBox .loginInput > div{
+	text-align: right;
+	width: 100px;
+	margin-right: 10px;
+	line-height: 38px;
+	font-size: 0.85rem;
+    font-weight: bold;
+}
+
+#loginBox button{
+    background: #153b21;
+    color: white;
+    padding: 10px 40px;
+    margin-top: 10px;
+}
+
 @media (max-width: 991px){
   #navbarSupportedContent ul li a{
     padding: 12px 30px;
@@ -258,4 +295,7 @@ input.form-control:focus{
     border-left: 0.5em solid #0d771b;
     padding: 0.5em;
 }
+
+
+
 

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 
 import Model.DataBase;
+import Model.Image.Image;
 import VO.BoardAVO;
 
 public class Ans {
@@ -102,18 +103,23 @@ public class Ans {
 				avo.setIns_Date_Time(rs.getString("Ins_Date_Time"));
 				
 				// 이미지 데이터를 BufferedImage로 변환
-	            byte[] imageData = rs.getBytes("File_Name");
-	            if(imageData != null) {
-	            	ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
-	            	BufferedImage image = ImageIO.read(bais);
+	            byte[] fileData = rs.getBytes("File_Name");
+	            String extension = "";
+	            if(fileData != null) {
+	            	extension = Image.getExtensionFromMagicNumber(fileData);
+	            }
 	            	
-	            	// 이미지를 원하는 포맷으로 변환
+	            
+	            // 첨부파일이 이미지 파일 일 때
+	            if(extension != null && (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png"))) {
+	            	
+	            	ByteArrayInputStream bais = new ByteArrayInputStream(fileData);
+	            	BufferedImage image = ImageIO.read(bais);
 	            	byte[] newImageData = convertImageToFormat(image, "png");
 	            	
 	            	// 변환된 이미지 데이터를 Base64로 인코딩
 	            	String encodedImageData = Base64.getEncoder().encodeToString(newImageData);
 	            	avo.setFile_ViewName(encodedImageData);
-
 	            }
 	            list.add(avo);
 			}
@@ -180,11 +186,6 @@ public class Ans {
 				ps.setString(2, multi.getParameter("board_ID"));
 				ps.setString(3, multi.getParameter("answerID"));
 			}
-			
-					
-					
-			
-			
 			
 			ps.executeUpdate();
 			

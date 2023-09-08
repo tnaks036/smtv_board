@@ -62,12 +62,11 @@ public class Controller extends HttpServlet {
 				board.insBoard(img.uploadTest(request),response); //이미지등록
 				img.delImg();
 				site = "boardPage";
-//				if (site) {
-			        response.setContentType("text/html;charset=UTF-8");
-			        PrintWriter out = response.getWriter();
-			        out.println("<script>alert('등록이 완료되었습니다.'); location.href='" + site + "';</script>");
-			        out.flush();
-//			    }
+
+				response.setContentType("text/html;charset=UTF-8");
+		        PrintWriter out = response.getWriter();
+		        out.println("<script>alert('등록이 완료되었습니다.'); location.href='" + site + "';</script>");
+		        out.flush();
 				break;
 		
 			case "/updateFrm" : //게시판 수정폼
@@ -128,7 +127,11 @@ public class Controller extends HttpServlet {
 			case "/updAns" : //댓글 수정
 				ans.updAns(img.uploadTest(request), response);
 				return;
-		}
+				
+			case "/gptPage" : // gpt 페이지 이동
+				site = "/WEB-INF/GPT/gptPage.jsp";
+				break;
+ 		}
 		
 		if (site != null && !response.isCommitted()) {
 		    RequestDispatcher dispatcher = request.getRequestDispatcher(site);

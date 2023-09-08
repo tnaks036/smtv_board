@@ -26,26 +26,66 @@
 	    <ul class="navbar-nav ml-auto">
 	        <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
 	        <li class="nav-item ">
-	            <a class="nav-link" href="index.jsp">HOME</a>
+	            <a class="nav-link menu" href="index.jsp">HOME</a>
 	        </li>
 	        <li class="nav-item ">
-	            <a class="nav-link" href="boardPage">문의</a>
+	            <a class="nav-link menu" href="boardPage">문의</a>
 	        </li>
 	        <li class="nav-item">
-	            <a class="nav-link" href="javascript:void(0);">Components</a>
+	            <a class="nav-link menu" href="gptPage">Components</a>
 	        </li>
 	        <li class="nav-item">
-	            <a class="nav-link" href="javascript:void(0);">Calendar</a>
+	            <a class="nav-link menu" href="javascript:void(0);">Calendar</a>
 	        </li>
 	        <li class="nav-item">
-	            <a class="nav-link" href="javascript:void(0);">Charts</a>
+	            <a class="nav-link menu" href="javascript:void(0);">Charts</a>
 	        </li>
-	        <li class="nav-item">
-	            <a class="nav-link" href="javascript:void(0);">Documents</a>
-	        </li>
+	        
+	        <c:choose>
+	        	<c:when test="${loginID ne null}">
+ 				    <li class="nav-item">
+			            <a class="nav-link" >로그아웃</a>
+			        </li>
+	        	</c:when>
+	        	<c:otherwise>
+			        <li class="nav-item">
+			            <a class="nav-link" data-target="#loginModal" data-toggle="modal" >로그인</a>
+			        </li>
+	        	</c:otherwise>
+	        </c:choose>
 	    </ul>
 	</div>
-</nav>	
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="padding: 20px; transform: translateY(100%);">
+    	<div class="cloaseBtnBox" style="text-align: right;">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+    	</div>
+     	
+     	<div id="loginBox">
+     		<h5>로그인</h5>
+		     	<div class="loginInput">
+		     		<div>아이디</div>
+			     	<input type="text" class="form-control" placeholder="아이디" maxlength=12>
+		     	</div>
+				<div class="loginInput">
+					<div>비밀번호</div>
+			     	<input type="password" class="form-control" placeholder="비밀번호" maxlength=15>
+				</div>
+				<button type="button" class="btn">로그인</button>
+     	</div>
+     	
+     </div>
+     <div class="modal-body">
+     </div>
+    </div>
+ </div>
+
 <script src="js/board.js"></script>	
 <script>
 function test(){
@@ -62,8 +102,8 @@ function test(){
 	    "height": activeWidthNewAnimHeight + "px",
 	    "width": activeWidthNewAnimWidth + "px"
 	  });
-	  $("#navbarSupportedContent").on("click","li",function(e){
-	    $('#navbarSupportedContent ul li').removeClass("active");
+	  $("#navbarSupportedContent").on("click","li.menu",function(e){
+	    $('#navbarSupportedContent ul li.menu').removeClass("active");
 	    $(this).addClass('active');
 	    var activeWidthNewAnimHeight = $(this).innerHeight();
 	    var activeWidthNewAnimWidth = $(this).innerWidth();
@@ -109,21 +149,9 @@ function test(){
 
 
 
-	// --------------add active class-on another-page move----------
-/* 	jQuery(document).ready(function($){
-	  // Get current path and find target link
-	  var path = window.location.pathname.split("/").pop();
-	  
-	  // Account for home page with empty path
-	  if ( path == '' ) {
-	    path = 'index.jsp';
-	  }
-	
-	  var target = $('#navbarSupportedContent ul li a[href="'+path+'"]');
-	   if (target.length > 0) {
-	    target.parent().addClass('active');
-  		}
-	}); */
+$('#loginModal').on('shown.bs.modal', function () {
+	  $('#myInput').trigger('focus')
+	})
 </script>
 </body>
 </html>

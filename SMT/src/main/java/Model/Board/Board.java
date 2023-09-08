@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 
 import Model.DataBase;
+import Model.Image.Image;
 import Model.Page.Page;
 import VO.BoardQVO;
 import VO.PageNum;
@@ -82,6 +83,10 @@ public class Board {
 				
 			case "contents" :
 				query += " AND cq.contents LIKE '%" + searchKeyword +"%' ";
+				break;
+
+			case "comment_ID" :
+				query += " AND cq.comment_ID LIKE '%" + searchKeyword +"%' ";
 				break;
 			}
 		}
@@ -224,6 +229,8 @@ public class Board {
 		        ps.setString(1, title);
 		        ps.setString(2, contents);
 				ps.setBytes(3, fileData);
+			
+				
 			}else {
 				query +=  " , Upd_Date_Time = GETDATE()"
 					  + " WHERE Board_ID = " + multi.getParameter("board_ID");
@@ -277,19 +284,27 @@ public class Board {
 
 	public String boardInfo(HttpServletRequest request, HttpServletResponse response) {
 		// 게시판 상세로 이동
-		query = "SELECT "
+		query = "SELECT * FROM ("
+				+ " SELECT "
 				+ " cq.Board_ID as Board_ID, "
 				+ " cq.Comment_ID as Comment_ID, "
 				+ " cq.Title as Title, "
 				+ " cq.contents as contents, "
 				+ " cq.File_Name as File_Name, "
-				+ " cq.Ins_Date_Time as Ins_Date_Time, "
-				+ " count(ca.board_ID) as answerCnt "
+				+ " FORMAT(cq.Ins_Date_Time, 'yy-MM-dd HH:mm') as Ins_Date_Time, "
+				+ " count(ca.board_ID) as answerCnt, "
+				+ " LAG(cq.Title, 1, '이전 행이 없습니다.') OVER(ORDER BY cq.Ins_Date_Time) as preTitle, "
+				+ " LEAD(cq.Title, 1, '다음 행이 없습니다.') OVER(ORDER BY cq.Ins_Date_Time)as nextTitle, "
+				+ " LAG(cq.Board_ID, 1) OVER(ORDER BY cq.Ins_Date_Time) as preBoard_ID, "
+				+ " LEAD(cq.Board_ID, 1) OVER(ORDER BY cq.Ins_Date_Time)as nextBoard_ID "
 				+ " FROM CS_Ques cq"
 				+ " LEFT JOIN CS_ANS ca ON cq.Board_ID = ca.Board_ID "
-				+ " WHERE cq.Board_ID = "+ request.getParameter("board_ID")
-				+ " GROUP BY cq.Board_ID, cq.Comment_ID, cq.contents, cq.File_Name, cq.Title, cq.Ins_Date_Time ";
+				+ " WHERE cq.Del_Yn <> 'Y' OR cq.Del_Yn IS NULL "
+				+ " GROUP BY cq.Board_ID, cq.Comment_ID, cq.contents, cq.File_Name, cq.Title, cq.Ins_Date_Time "
+				+ " ) AS boardInfoTable "
+				+ " WHERE Board_ID = "+ request.getParameter("board_ID");
 		
+//		System.out.println(query);
 		try {
 			con = db.getConnection();
 			ps = con.prepareStatement(query);
@@ -305,24 +320,38 @@ public class Board {
 				qvo.setFile_Name(rs.getBytes("File_Name"));
 				qvo.setIns_Date_Time(rs.getString("Ins_Date_Time"));
 				
+				
 				// 이미지 데이터를 BufferedImage로 변환
-	            byte[] imageData = rs.getBytes("File_Name");
-	            if(imageData != null) {
-	            	ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
-	            	BufferedImage image = ImageIO.read(bais);
+	            byte[] fileData = rs.getBytes("File_Name");
+	            String extension = "";
+	            
+	            if(fileData != null) {
+	            	extension = Image.getExtensionFromMagicNumber(fileData);
+	            }
 	            	
-	            	// 이미지를 원하는 포맷으로 변환
+	            
+	            // 첨부파일이 이미지 파일 일 때
+	            if(extension != null && (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png"))) {
+	            	
+	            	ByteArrayInputStream bais = new ByteArrayInputStream(fileData);
+	            	BufferedImage image = ImageIO.read(bais);
 	            	byte[] newImageData = convertImageToFormat(image, "png");
 	            	
 	            	// 변환된 이미지 데이터를 Base64로 인코딩
 	            	String encodedImageData = Base64.getEncoder().encodeToString(newImageData);
 	            	qvo.setFile_ViewName(encodedImageData);
 	            }
+				
+				
 			}else {
 				return "";
 			}
 
 			request.setAttribute("list", qvo);
+			request.setAttribute("preTitle", rs.getString("preTitle"));
+			request.setAttribute("nextTitle", rs.getString("nextTitle"));
+			request.setAttribute("preBoard_ID", rs.getString("preBoard_ID"));
+			request.setAttribute("nextBoard_ID", rs.getString("nextBoard_ID"));
 			
 		}catch(Exception e) {
 			e.printStackTrace();

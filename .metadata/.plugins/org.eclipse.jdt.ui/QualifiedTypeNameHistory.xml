@@ -5,8 +5,9 @@
     <fullyQualifiedTypeName name="Model.DataBase"/>
     <fullyQualifiedTypeName name="VO.BoardQVO"/>
     <fullyQualifiedTypeName name="java.nio.file.Path"/>
-    <fullyQualifiedTypeName name="Model.Image.Image"/>
     <fullyQualifiedTypeName name="java.io.ByteArrayOutputStream"/>
     <fullyQualifiedTypeName name="java.io.File"/>
     <fullyQualifiedTypeName name="java.util.Base64"/>
+    <fullyQualifiedTypeName name="com.oreilly.servlet.MultipartRequest"/>
+    <fullyQualifiedTypeName name="Model.Image.Image"/>
 </qualifiedTypeNameHistroy>

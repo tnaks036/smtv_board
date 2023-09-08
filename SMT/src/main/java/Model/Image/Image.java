@@ -48,7 +48,7 @@ public class Image {
 	
 	public void downloadImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-		int board_ID = Integer.parseInt(request.getParameter("board_ID")); // 이미지 파일 이름
+		int board_ID = Integer.parseInt(request.getParameter("board_ID")); 
 		
 		byte[] fileData;
 		
@@ -62,11 +62,11 @@ public class Image {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
             return;
         }
+        
+        String extension = getExtensionFromMagicNumber(fileData);
 
         // 응답 설정
-        response.setHeader("Content-Disposition", "attachment; filename=SMT_" + request.getParameter("board_ID") + ".png");
-        //filename = "나올 파일 이름 (확장자 포함)"
-        
+        response.setHeader("Content-Disposition", "attachment; filename=SMT_" + request.getParameter("board_ID") + "." + extension);
         response.setContentType("application/octet-stream");
 
         // 파일 다운로드
@@ -79,6 +79,39 @@ public class Image {
             }
         }
     }
+
+
+	public static String getExtensionFromMagicNumber(byte[] data) {
+	    if (data.length >= 2) {
+	    	//확장자  추가
+	        if (data[0] == (byte) 0xFF && data[1] == (byte) 0xD8) {
+	            return "jpg";
+	        } else if (data[0] == (byte) 0x89 && data[1] == (byte) 0x50) {
+	            return "png";
+	        } else if (data[0] == (byte) 0x47 && data[1] == (byte) 0x49) {
+	            return "gif";
+	        } else if (data[0] == (byte) 0x42 && data[1] == (byte) 0x4D) {
+	            return "bmp";
+	        } else  if (data[0] == (byte) 0xD0 && data[1] == (byte) 0xCF && data[2] == (byte) 0x11 && data[3] == (byte) 0xE0) {
+                return "doc";
+            } else if (data[0] == (byte) 0x50 && data[1] == (byte) 0x4B && data[2] == (byte) 0x03 && data[3] == (byte) 0x04) {
+                return "pptx";
+            } else if (data[0] == (byte) 0x50 && data[1] == (byte) 0x4B && data[2] == (byte) 0x07 && data[3] == (byte) 0x08) {
+                return "ppt";
+            } else if (data[0] == (byte) 0x09 && data[1] == (byte) 0x08 && data[2] == (byte) 0x10 && data[3] == (byte) 0x00) {
+                return "xls";
+            } else if (data[0] == (byte) 0x09 && data[1] == (byte) 0x08 && data[2] == (byte) 0x06 && data[3] == (byte) 0x00) {
+                return "xls";
+            } else if (data[0] == (byte) 0x09 && data[1] == (byte) 0x08 && data[2] == (byte) 0x02 && data[3] == (byte) 0x00) {
+                return "xls";
+            } else if (data[0] == (byte) 0xFF && data[1] == (byte) 0xDB) {
+                return "jpge";
+            } else if (data[0] == (byte) 0x25 && data[1] == (byte) 0x50 && data[2] == (byte) 0x44 && data[3] == (byte) 0x46) {
+                return "pdf";
+            } 
+	    }
+	    return null;
+	}
 
     private byte[] getFileDataFromDatabase(int boardID) { // 게시글
         // DB에서 파일 데이터를 가져오는 로직을 여기에 작성
@@ -133,7 +166,8 @@ public class Image {
     
     
     public void delImg() {
-    	String directoryPath = "C:/Users/SMT/Desktop/git";
+//    	String directoryPath = "C:/Users/SMT/Desktop/git";
+    	String directoryPath = "C:\\Users\\SMT\\Desktop\\git\\smtv_board\\SMT\\src\\main\\webapp\\img";
 
         File directory = new File(directoryPath);
 

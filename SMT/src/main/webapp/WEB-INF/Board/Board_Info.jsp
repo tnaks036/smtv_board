@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import = "java.util.*" %>
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html>
 <head>
 <link rel="stylesheet" href="css/BoardList.css">
@@ -51,12 +51,13 @@
 
 	<div style="display: flex; justify-content: space-between;">
 		<p>${list.comment_ID}</p>
-	<c:if test="${list.file_ViewName ne null}">
-		<a class="downloadLink" href="downloadImg?file_Name=${list.file_ViewName}&board_ID=${list.board_ID}">[첨부파일]</a>
+	<%-- <c:if test="${list.file_ViewName ne null}"> --%>
+	<c:if test="${list.file_Name ne null}">
+ 		<a class="downloadLink" href="downloadImg?file_Name=${list.file_ViewName}&board_ID=${list.board_ID}">[첨부파일]</a> 
 	</c:if>
 	</div>
 	<c:if test="${list.file_ViewName ne null}">
-		<img src="data:image/png;base64,${list.file_ViewName}" alt="Image">
+ 		<img src="data:image/png;base64,${list.file_ViewName}" alt="Image"> 
 	</c:if>
 	<p>
 	${list.contents}
@@ -93,7 +94,11 @@
 
 <hr> 
 <div class="comment_Box"> <!-- 댓글이 들어갈 박스 -->
+</div>
 
+<div id="preNextBoard_Box"><!-- 이전글, 다음글 박스 -->
+	<p><span><strong>이전글</strong></span><a onClick="BoardInfo(${preBoard_ID})">${preTitle}</a></p>
+	<p><span><strong>다음글</strong></span><a onClick="BoardInfo(${nextBoard_ID})">${nextTitle}</a></p>
 </div>
 </section>
 <%@ include file = "../../../footer.jsp" %>
@@ -127,6 +132,8 @@ function deleteBoard(boardID){
 		    data: {
 		    	"board_ID" : board_ID
 		    },
+		    contentType : false,
+		    processData : false,
 		    success: function(data) {
 		    	if(data.result == "suc"){
 		    		alert("삭제가 완료되었습니다.");
@@ -215,6 +222,7 @@ function getAnsList() {
 					var writer = list[i].anser_ID;
 					var ins_Date_Time = list[i].ins_Date_Time;
 					var file_ViewName = list[i].file_ViewName;
+					var file_Name = list[i].file_Name;
 					comment_html += "<div>";
 					comment_html += "<form enctype='multipart/form-data'>" //폼시작
 					comment_html += "<input type='hidden' class='board_ID form-control' name='board_ID' value='${list.board_ID}'>";
@@ -223,8 +231,11 @@ function getAnsList() {
 					comment_html += "<input type='text' class='insDateTime form-control' value='" + ins_Date_Time + "' style='display:block;' readonly>";
 					comment_html += "</div>";
 					
+					if(file_Name != null){
+						comment_html += "<div style='text-align:right;'><a class='downloadLink' href='downloadImg?board_ID=${list.board_ID}&reply=1'>[첨부파일]</a></div>"; 
+					}
+					
 					if(file_ViewName != null){
-						comment_html += "<div style='text-align:right;'><a class='downloadLink' href='downloadImg?file_Name=" + file_ViewName + "&board_ID=${list.board_ID}&reply=1'>[첨부파일]</a></div>"; 
 						comment_html += "<img id='ansImge' src='data:image/png;base64,"+ file_ViewName + "' alt='Image'><br>";
 					}
 					

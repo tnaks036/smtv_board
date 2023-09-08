@@ -16,6 +16,7 @@
 				<select class="custom-select" id="condition" name="condition">
 					<option value="title">제목</option>
 					<option value="contents">내용</option>
+					<option value="comment_ID">작성자명</option>
 				</select>
 				<input type="text" id="searchKeyword" class="form-control" name="searchKeyword" maxlength="20">
 				<button type="button" class="btn" onClick="getQuesList()">
@@ -26,6 +27,7 @@
 		</div>
 	</form>
 		
+<p id = "boardCnt"></p>
 <div id = "boardListDiv">
 </div>
 
@@ -138,13 +140,16 @@ function getQuesList(nNum){ //페이징 + 리스트
 				    		pageBtn_html += "<a class='pBtn' onClick='getQuesList(" + pageInfo.totalNum + ")'>&gt;&gt;</a>";
 			    		}
 			    	}
-
+					
+					
 	    }else{
 			comment_html += "등록된 결과가 없습니다.";  	
-			comment_html += "";    	
+			pageBtn_html += "";    	
 	    }
 					$("#boardListDiv").html(comment_html);
 			    	$("#pageBtns").html(pageBtn_html);
+					var boardCnt = "총 게시글\t" + pageInfo.listNum;
+					$("#boardCnt").html(boardCnt);
     },
 	    error: function(xhr, status, error) {
 	      alert("목록을 불러오는 중 에러가 발생했습니다.");
