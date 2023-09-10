@@ -8,13 +8,8 @@
 <meta charset="UTF-8">
 <title>${board.getTitle()}</title> <!-- 글 상세보기 : 글 제목, 글 작성 날짜, 첨부 파일, 글 내용을 출력  -->
 <style type="text/css">
-		.container{
-			margin-top: 100px;
-			
-		}
 		.input-group{
-			margin-bottom: 5px;
-			
+			margin-bottom: 5px;		
 		}
 		#btn{
 			margin-top: 20px;
