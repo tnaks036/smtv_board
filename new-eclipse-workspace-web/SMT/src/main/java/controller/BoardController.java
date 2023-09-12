@@ -182,17 +182,53 @@ public class BoardController extends HttpServlet {
         //게시글 수정 페이지로 이동
         if(command.equals("/updateBoard.do"))
         {
-            int num = Integer.parseInt(request.getParameter("board_ID"));
+            //int num = Integer.parseInt(request.getParameter("board_ID"));
+            
+            String boardIDParameter = request.getParameter("board_ID");    
+            String comment_ID= request.getParameter("comment_ID");   
+            String title = request.getParameter("title");
+            String contents = request.getParameter("contents");
+            String file_name = request.getParameter("file_name");
+            String ins_Date_Time = request.getParameter("ins_Date_Time");
+            String upd_Date_Time = request.getParameter("upd_Date_Time");
+            String del_Date_Time = request.getParameter("del_Date_Time");
+            String del_Yn = request.getParameter("del_Yn");
+
+            
+    	    int boardID = 0; // set default value 
+    	    if (boardIDParameter != null && !boardIDParameter.isEmpty()) {
+            try {
+                boardID = Integer.parseInt(boardIDParameter);
+                
+            } catch (NumberFormatException e) {
+                // 정수로 변환할 수 없는 경우 예외 처리
+                e.printStackTrace(); // 또는 로깅 처리
+            }
+    	    }
+             
+    	    BoardDTO updatedBoard = new BoardDTO(board_ID, comment_ID, title, contents, null, ins_Date_Time, upd_Date_Time,
+                    del_Date_Time, del_Yn);
+    	    
+            DBConnection dbConn = new DBConnection();	// Create an instance of DbConnection
+            dbConn.updateBoard(updatedBoard);
+    	    
+    	    // Assuming you have a boardList containing the posts you want to edit
+    	    // Loop through the boardList and find the post by its ID ~~~~
             
             for(BoardDTO board : boardList) {
-                if(board.getBoard_ID() == num) {
+                if(board.getBoard_ID() == boardID) {
                     request.setAttribute("board", board);
                     break;
                 }
             }
-            //수정하고자 하는 게시글의 정보를 jsp에 보내줘야함.
+            // Set the boardToUpdate as an attribute to send to the JSP 
+            request.setAttribute("updatedBoard", updatedBoard);
+            // Now, forward to the update form JSP
             page = "BoardUpdateForm.jsp";
             isRedirect = false; // Modified Part
+            
+            //response.sendRedirect("boardDetail.do?board_ID=" + boardID);
+            
         }
         
       

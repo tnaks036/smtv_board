@@ -207,17 +207,21 @@
     <form action="writeCommentForm.do" method="post">
         <input type="hidden" name="board_ID" value="${param.board_ID}">
         <input type="hidden" name="comment_ID" value="${param.comment_ID}">
-
+        
         <div class="input-group">
                         <span class="input-group-text" id="inputGroup-sizing-default">작성날짜</span>
-                        <input name="insDateTime" type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        </div>                                                    	                        
+                        <input name="ins_Date_Time" type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                        required value="${param.ins_Date_Time}">
+        </div>   
+                                                 	                        
         <label for="writer">작성자:</label>
         <input type="text" name="writer" required value="${param.comment_ID}"><br>
         <label for="contents">내용:</label>
         <textarea name="contents" rows="4" cols="50" required></textarea><br>
         <input type="submit" value="작성">
     </form>
+    
+                
     
     <br>
     <!-- original 

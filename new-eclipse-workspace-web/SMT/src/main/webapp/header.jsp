@@ -40,11 +40,11 @@
             }
             else if(value == "1") // 로그인 버튼 클릭시 로그인 화면으로 이동
             {
-                location.href="LoginForm.do";
+                location.href="join.jsp";  //"LoginForm.do"
             }
             else if(value == "2") // 회원가입 버튼 클릭시 회원가입 화면으로 이동
             {
-                location.href="SignUpForm.do";
+                location.href="login.jsp"; //SignUpForm.do
             }
             else if(value == "3") // 회원정보 버튼 클릭시 회원정보 상세보기 화면으로 이동
             {
@@ -62,24 +62,14 @@
     </script>
  
     <link href="css/navbar-top-fixed.css" rel="stylesheet">
-    
-    <!-- CSS FILES -->
-    <!-- CSS FILES -->        
+    <!-- CSS FILES -->    
         <link rel="preconnect" href="https://fonts.googleapis.com">
-        
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-                        
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">                        
         <link href="css/bootstrap.min.css" rel="stylesheet">
-
         <link href="css/bootstrap-icons.css" rel="stylesheet">
-
         <link href="css/templatemo-topic-listing.css" rel="stylesheet">    
-        <!--
-TemplateMo 590 topic listing
-https://templatemo.com/tm-590-topic-listing
-        -->
+        <!--TemplateMo 590 topic listing https://templatemo.com/tm-590-topic-listing -->
       </head>
       <body>
       <div id="header">
@@ -88,6 +78,12 @@ https://templatemo.com/tm-590-topic-listing
                     <a class="navbar-brand" href="boardList.do">
                         <!-- <i class="bi-back"></i> -->
                         <span>게시판</span>
+                    </a>
+                    <a class="navbar-brand" href="login.jsp">
+                        <span>로그인</span>
+                    </a>
+                    <a class="navbar-brand" href="join.jsp">
+                        <span>회원가입</span>
                     </a>
 
                     <div class="d-lg-none ms-auto me-4">
@@ -105,11 +101,11 @@ https://templatemo.com/tm-590-topic-listing
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#section_2">Browse Topics</a>
+                                <a class="nav-link click-scroll" href="#section_2">Sign In</a>
                             </li>
     
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#section_3">How it works</a>
+                                <a class="nav-link click-scroll" href="#section_3">Login How it works</a>
                             </li>
 
                             <li class="nav-item">

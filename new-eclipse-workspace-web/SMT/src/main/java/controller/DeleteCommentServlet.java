@@ -14,22 +14,23 @@ import db.DBConnection;
 @WebServlet("/deleteComment.do")
 public class DeleteCommentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String boardIDParam = request.getParameter("board_ID");
-        String commentIDParam = request.getParameter("comment_ID");
-        System.out.println("HERE IT IS Comment!!!!!!!!!! ");
-        System.out.println(boardIDParam);
-        System.out.println(commentIDParam);
+    	String boardIDParameter = request.getParameter("board_ID");
+    	//int boardID = 0; // 기본값 설정    	
+        String commentIDParameter= request.getParameter("comment_ID");
+        System.out.println("HERE IT IS Comment :D ");
+        System.out.println("boardIDParameter: " +boardIDParameter);
+        System.out.println("comment_IDParameter: " + commentIDParameter);
+               
+        if (boardIDParameter != null && !boardIDParameter.isEmpty() && commentIDParameter != null && !commentIDParameter.isEmpty()) {
+            int boardID = Integer.parseInt(boardIDParameter);
+            String commentID = commentIDParameter;
 
-        if (boardIDParam != null && !boardIDParam.isEmpty() && commentIDParam != null && !commentIDParam.isEmpty()) {
-            int boardID = Integer.parseInt(boardIDParam);
-            String commentID = commentIDParam;
-
-            if (commentIDParam != null && !commentIDParam.isEmpty()) {
+            if (commentIDParameter != null && !commentIDParameter.isEmpty()) {
     	        try {
     	            // 트랜잭션 시작
     	            DBConnection dbConn = new DBConnection();
     	            try {
-    	                dbConn.deleteComment(commentIDParam);
+    	                dbConn.deleteComment(commentIDParameter);
 
     	                System.out.println("댓글 삭제 후 작업을 수행할 수 있습니다.");
     	                // 삭제 후 원하는 동작을 수행하면 됩니다.
@@ -41,7 +42,7 @@ public class DeleteCommentServlet extends HttpServlet {
 
     	            // 댓글 삭제 후 어떤 페이지로 이동하거나 메시지를 표시할 수 있습니다.
     	            // 예를 들어, 댓글 목록 페이지로 이동
-    	            response.sendRedirect("/smtv/boardDetail.do?board_ID=" + boardIDParam); // board_id 파라미터 추가
+    	            response.sendRedirect("boardDetail.do?board_ID=" + boardIDParameter); // board_id 파라미터 추가
     	        } catch (NumberFormatException ex) {
     	            System.out.println("유효하지 않은 댓글 ID입니다.");
     	            // 유효하지 않은 댓글 ID 처리

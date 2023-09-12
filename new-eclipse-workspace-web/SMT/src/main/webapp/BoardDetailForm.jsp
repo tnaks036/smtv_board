@@ -44,8 +44,14 @@
 		  margin: 0 auto;
 		  max-width: 1200px;
 		}
-		
-		/* 입력 폼 */
+		.content p {
+		    max-width: 100%; /* Set the maximum width as needed */
+		    overflow: hidden; /* Hide any content that overflows */
+		    text-overflow: ellipsis; /* Add ellipsis (...) for text that overflows */
+		    white-space: nowrap; /* Prevent text from wrapping to the next line */
+		}
+				
+				/* 입력 폼 */
 		.form {
 		  display: flex;
 		  flex-direction: column;
@@ -251,12 +257,11 @@ https://templatemo.com/tm-590-topic-listing
 		
 		<div class="utility d-flex justify-content-center">
 		                <form action="updateBoard.do" method="get">
-		                  <input type="hidden" name="board_ID" value="${param.board_ID} }">
-		                  <input type="hidden" name="comment_ID" value="${param.comment_ID} }">
+						  <input type="hidden" name="board_ID" value="${param.board_ID} }">
+		                  <input type="hidden" name="comment_ID" value="${param.comment_ID} }"> 
 		                  <button class="input-group-text" for="inputGroupFile02">게시글 수정</button>
 		                </form>
-						 &nbsp; &nbsp;
-						 
+						 &nbsp; &nbsp;						 
 		                <form action="delete.do" method="post">
 		                  	<input type="hidden" name="board_ID" value="${param.board_ID}">
 		                  	<input type="hidden" name="comment_ID" value="${param.comment_ID}">
@@ -268,8 +273,7 @@ https://templatemo.com/tm-590-topic-listing
  		<div class="container">
 		 	<div id="root">
 			    <form class="form comment-form" action="writeCommentForm.do" method="post">
-			    	<input type="hidden" name="board_ID" value="${board_ID}">
-			    	
+			    	<input type="hidden" name="board_ID" value="${board_ID}">			    	
 			    	<textarea placeholder="작성자" rows="1" cols="10" required></textarea>		     					    	
 			    	<!--<label for="writer">작성자:</label>
 			        <input type="text" name="writer" required><br>	 -->
@@ -299,12 +303,13 @@ https://templatemo.com/tm-590-topic-listing
 		                  <!-- transform to numer -->
 		                  <input type="hidden" name="board_ID" value="${param.board_ID}">
 		                  <input type="hidden" name="comment_ID" value="${param.comment_ID}">
-		                   	<input type="hidden" name="comment_ID_numeric" value="${param.comment_ID}">
+		                   <input type="hidden" name="comment_ID_numeric" value="${param.comment_ID}">
 		                  <button type="submit" class="input-group-text" for="inputGroupFile02">삭제</button>
 		                </form>
-		              </div>
+		              </div>		           		             		              
 		            </header>
-		            <p>${comment.getContents()}</p>
+					<p>${comment.getContents()}</p>
+		            
 		            <ul class="bottom">
 		              <li class="menu time">${comment.getIns_Date_Time()}</li>
 		            </ul>

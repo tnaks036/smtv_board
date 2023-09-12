@@ -37,7 +37,7 @@ https://templatemo.com/tm-590-topic-listing
     <form action="regBoard.do" method="post" name="boardForm"> <!-- enctype="multipart/form-data" onsubmit="return checkValue()"> 이부분 삭제 -->
         <!-- memberID 파라미터 전달 용 숨은 input 태그, hidden xxxxx-->
         <!-- <input type="hidden" name="boardID" value="${sessionScope.memberID}"> -->
-        <table>
+        <table width=100%"">
             <tr>
                 <td></td>
                 <td>

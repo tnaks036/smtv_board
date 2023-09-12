@@ -17,12 +17,16 @@ public class UpdateCommentFormServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int boardID = Integer.parseInt(request.getParameter("board_ID"));
         String commentID = request.getParameter("comment_ID");
-
+        System.out.println("HERE IT IS Comment :D ");
+        System.out.println("boardIDParameter: " +boardID);
+        //System.out.println("comment_IDParameter: " + commentID);
+               
+        
         // 댓글 정보를 가져와서 댓글 수정 페이지로 전달
         DBConnection dbConn = new DBConnection();
         CommentDTO comment = dbConn.getComment(boardID, commentID);
         request.setAttribute("comment", comment);
-
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("CommentUpdateForm.jsp");
         dispatcher.forward(request, response);
     }
