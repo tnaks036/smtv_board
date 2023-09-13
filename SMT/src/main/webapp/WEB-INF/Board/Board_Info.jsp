@@ -83,7 +83,7 @@
 					<p id="originName" style="display : inline-block; color: #21252978; font-size:0.8rem; margin-right:10px;"></p>
 					<img id="previewImg" style="height:auto; max-width:720px;">
 				</div>
-				<input type="file" id="imageInput" name="file_Name" onChange="previewImage(event)" accept="image/*" style="display:none;">
+				<input type="file" id="imageInput" name="file_Name" onChange="previewImage(event)" style="display:none;">
 			</div>
 			<div class="col-md-2 col-12">
 				<button type="button" class="btn" id="insAnsBtn" onClick="insAns(${list.board_ID})">등록</button>
@@ -248,7 +248,7 @@ function getAnsList() {
 					comment_html += "</svg>";
 					comment_html += "</label>";
 					comment_html += "<img class='ansUpdpreviewImg' style='max-height:50px; width:auto;'>";
-					comment_html += "<input type='file' id='ansUpdimageInput" + i + "' class='fileNm' name='file_Name' accept='image/*' style='display:none;'>";
+					comment_html += "<input type='file' id='ansUpdimageInput" + i + "' class='fileNm' name='file_Name' style='display:none;'>";
 					comment_html += "</div>";
 					comment_html += "<div class='ansUpdDBCancle' style='display:none;'>";
 					comment_html += "<button type='button' class='btn updDBBtn'>등록</button>";
@@ -315,7 +315,7 @@ function getAnsList() {
 						    
 						    var boardID = $container.find(".board_ID").val();
 						    var content = $textarea.val();
-						    var fileInput = $container.find(".fileNm")[0];
+						    var fileInput = $container.find(".ansUpdfileLabelBox").find(".fileNm")[0];
 						    var file = fileInput.files[0];
 						    var answerID = $container.find(".answerID").val();
 							  
@@ -323,7 +323,8 @@ function getAnsList() {
 						    formData.append("board_ID", board_ID);
 						    formData.append("answerID", answerID);
 						    formData.append("content", content);
-						    if (file) {
+						    console.log(file);
+						    if (file != null) {
 						      formData.append("fileNm", file);
 						    }
 						    

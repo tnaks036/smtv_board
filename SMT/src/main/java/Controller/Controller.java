@@ -125,12 +125,9 @@ public class Controller extends HttpServlet {
 				return;
 			
 			case "/updAns" : //댓글 수정
+				System.out.println("컨트롤러");
 				ans.updAns(img.uploadTest(request), response);
 				return;
-				
-			case "/gptPage" : // gpt 페이지 이동
-				site = "/WEB-INF/GPT/gptPage.jsp";
-				break;
  		}
 		
 		if (site != null && !response.isCommitted()) {

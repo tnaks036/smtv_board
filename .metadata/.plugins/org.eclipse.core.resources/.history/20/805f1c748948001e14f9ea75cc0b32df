@@ -1,6 +1,0 @@
-@charset "UTF-8";
-
-#insBoardBox{
-	border-top: 3px solid black;
-	border-bottom: 3px solid black;
-}

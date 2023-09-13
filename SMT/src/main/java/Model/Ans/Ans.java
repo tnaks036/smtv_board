@@ -159,7 +159,6 @@ public class Ans {
 	}
 	
 	public void updAns(MultipartRequest multi, HttpServletResponse response) {
-		
 		try {
 			con = db.getConnection();
 			query = "UPDATE CS_ANS SET Upd_DATE_TIME = GETDATE(), "
@@ -167,11 +166,11 @@ public class Ans {
 
 			File file = multi.getFile("fileNm");
 			if (file != null && file.exists()) {
+				System.out.println(" 13123");
 				byte[] fileData = Files.readAllBytes(file.toPath());
 				query += " ,FILE_NAME = ? "
 						+ " WHERE BOARD_ID = ? "
 						+ " AND ANSWER_ID = ? ";
-
 				ps = con.prepareStatement(query);
 				ps.setString(1, multi.getParameter("content"));
 				ps.setBytes(2, fileData);

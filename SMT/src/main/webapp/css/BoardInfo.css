@@ -199,12 +199,12 @@ div.ansUpdDBCancle >button:hover{
 
 /* 다운로드 a태그 */
 .downloadLink{
+	font-size: 0.85rem;
 	color: black;
 	cursor: pointer;
 }
 
 .downloadLink:hover{
-	font-size: 0.85rem;
 	text-decoration: underline;
 }
 

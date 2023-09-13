@@ -66,7 +66,7 @@ public class Image {
         String extension = getExtensionFromMagicNumber(fileData);
 
         // 응답 설정
-        response.setHeader("Content-Disposition", "attachment; filename=SMT_" + request.getParameter("board_ID") + "." + extension);
+        response.setHeader("Content-Disposition", "attachment; filename=SMTFile" + request.getParameter("board_ID") + "." + extension);
         response.setContentType("application/octet-stream");
 
         // 파일 다운로드
@@ -84,35 +84,33 @@ public class Image {
 	public static String getExtensionFromMagicNumber(byte[] data) {
 	    if (data.length >= 2) {
 	    	//확장자  추가
-	        if (data[0] == (byte) 0xFF && data[1] == (byte) 0xD8) {
-	            return "jpg";
-	        } else if (data[0] == (byte) 0x89 && data[1] == (byte) 0x50) {
-	            return "png";
-	        } else if (data[0] == (byte) 0x47 && data[1] == (byte) 0x49) {
-	            return "gif";
-	        } else if (data[0] == (byte) 0x42 && data[1] == (byte) 0x4D) {
-	            return "bmp";
-	        } else  if (data[0] == (byte) 0xD0 && data[1] == (byte) 0xCF && data[2] == (byte) 0x11 && data[3] == (byte) 0xE0) {
-                return "doc";
-            } else if (data[0] == (byte) 0x50 && data[1] == (byte) 0x4B && data[2] == (byte) 0x03 && data[3] == (byte) 0x04) {
-                return "pptx";
-            } else if (data[0] == (byte) 0x50 && data[1] == (byte) 0x4B && data[2] == (byte) 0x07 && data[3] == (byte) 0x08) {
-                return "ppt";
-            } else if (data[0] == (byte) 0x09 && data[1] == (byte) 0x08 && data[2] == (byte) 0x10 && data[3] == (byte) 0x00) {
-                return "xls";
-            } else if (data[0] == (byte) 0x09 && data[1] == (byte) 0x08 && data[2] == (byte) 0x06 && data[3] == (byte) 0x00) {
-                return "xls";
-            } else if (data[0] == (byte) 0x09 && data[1] == (byte) 0x08 && data[2] == (byte) 0x02 && data[3] == (byte) 0x00) {
-                return "xls";
-            } else if (data[0] == (byte) 0xFF && data[1] == (byte) 0xDB) {
-                return "jpge";
-            } else if (data[0] == (byte) 0x25 && data[1] == (byte) 0x50 && data[2] == (byte) 0x44 && data[3] == (byte) 0x46) {
-                return "pdf";
-            } 
+	    	if (data.length >= 4) {
+	            if (data[0] == (byte) 0xFF && data[1] == (byte) 0xD8) {
+	                return "jpg";
+	            } else if (data[0] == (byte) 0x89 && data[1] == (byte) 0x50 && data[2] == (byte) 0x4E && data[3] == (byte) 0x47) {
+	                return "png";
+	            } else if (data[0] == (byte) 0x47 && data[1] == (byte) 0x49 && data[2] == (byte) 0x46 && data[3] == (byte) 0x38) {
+	                return "gif";
+	            } else if (data[0] == (byte) 0x42 && data[1] == (byte) 0x4D) {
+	                return "bmp";
+	            } else if (data[0] == (byte) 0xD0 && data[1] == (byte) 0xCF && data[2] == (byte) 0x11 && data[3] == (byte) 0xE0) {
+	                return "doc";
+	            } else if (data[0] == (byte) 0xFF && data[1] == (byte) 0xDB) {
+	                return "jpge";
+	            } else if (data[0] == (byte) 0x25 && data[1] == (byte) 0x50 && data[2] == (byte) 0x44 && data[3] == (byte) 0x46) {
+	                return "pdf";
+	            } else if (data[0] == (byte) 0x50 && data[1] == (byte) 0x4B && data[2] == (byte) 0x03 && data[3] == (byte) 0x04) {
+	                if (data[34] == (byte) 0x06 && data[35] == (byte) 0x00 && data[36] == (byte) 0x00 && data[37] == (byte) 0x00) {
+	                    return "pptx";
+	                } else if (data[34] == (byte) 0x07 && data[35] == (byte) 0x08) {
+	                    return "ppt";
+	                }
+	            }
+	    	}
 	    }
 	    return null;
 	}
-
+	    
     private byte[] getFileDataFromDatabase(int boardID) { // 게시글
         // DB에서 파일 데이터를 가져오는 로직을 여기에 작성
         // 예: SELECT FileData FROM CS_Ques WHERE File_Name = ?
@@ -152,7 +150,6 @@ public class Image {
 			con = db.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
-			
 			if(rs.next()) {
 				bao.setFile_Name(rs.getBytes("File_Name"));
 				return bao.getFile_Name();
