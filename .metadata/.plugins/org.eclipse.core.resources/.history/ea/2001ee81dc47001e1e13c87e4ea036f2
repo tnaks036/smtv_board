@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>글 수정</title>
+</head>
+<body>
+<form id="updateForm" action="updateBoard.do" method="post" enctype="multipart/form-data">
+<input type="hidden" name="board_ID" id="board_ID"> <!-- 게시글 번호를 hidden 필드로 전달 -->
+
+<table>
+    <tr>
+        <td>제목</td>
+        <td><input type="text" name="title" value="${board.getTitle()}"></td>
+    </tr>
+    <tr>
+        <td>내용</td>
+        <td><textarea rows="5" cols="50" name="contents">${board.getContents()}</textarea></td>
+    </tr>
+    <tr>
+        <td>첨부 파일</td>
+        <td><input type="file" name="file_name"></td>
+    </tr>
+</table>
+<input type="submit" value="글 수정">
+</form>
+
+<script>
+    // URL 파라미터에서 게시글 번호 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const board_ID = urlParams.get('board_ID');
+    
+    // hidden 필드에 게시글 번호 설정
+    document.getElementById('board_ID').value = board_ID;
+    
+    // 폼 제출 시 hidden 필드의 값을 확인
+    document.getElementById('updateForm').addEventListener('submit', function() {
+        const hiddenValue = document.getElementById('board_ID').value;
+        console.log('게시글 번호: ' + hiddenValue);
+    });
+</script>
+</body>
+</html>

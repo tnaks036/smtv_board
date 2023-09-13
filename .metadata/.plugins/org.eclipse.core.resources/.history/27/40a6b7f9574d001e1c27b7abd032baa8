@@ -1,0 +1,218 @@
+package controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import dto.BoardDTO;
+import dto.CommentDTO;
+import smtv.DBConn;
+
+@WebServlet("*.do")
+
+@MultipartConfig(
+    maxFileSize = 1024 * 1024, // 업로드 가능한 최대 크기 (1MB)
+    maxRequestSize = 2 * 1024 * 1024, // 전체 요청의 최대 크기 (2MB)
+    fileSizeThreshold = 0 // 파일 크기가 너무 큰 경우 예외 발생하지 않음
+)
+public class BoardController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    private int board_ID;
+    private List<BoardDTO> boardList;
+    private String uploadDirectory = "C:\\Users\\V15 G3\\Documents\\GitHub\\smtv_board\\upload"; // 업로드 디렉토리 경로
+    private String filePath; // 파일 업로드 경로
+
+    public BoardController() {
+        super();
+        boardList = new ArrayList<>();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        doProcess(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        doProcess(request, response);
+    }
+
+    public void doProcess(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
+        String requestURI = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        String command = requestURI.substring(contextPath.length());
+
+        String page = "";
+        boolean isRedirect = false;
+
+        if (command.equals("/boardList.do")) {
+            DBConn dbConn = new DBConn();
+            boardList = dbConn.getBoardList();
+            request.setAttribute("list", boardList);
+            page = "boardList.jsp";
+        }
+
+        if (command.equals("/regBoardForm.do")) {
+            page = "board_write_form.jsp";
+        }
+
+        if (command.equals("/regBoard.do")) {
+            String comment_ID = request.getParameter("comment_ID");
+            String title = request.getParameter("title");
+            String contents = request.getParameter("contents");
+            String ins_Date_Time = request.getParameter("ins_Date_Time");
+            String upd_Date_Time = request.getParameter("upd_Date_Time");
+            String del_Date_Time = request.getParameter("del_Date_Time");
+            String del_Yn = request.getParameter("del_Yn");
+
+            DBConn dbConn = new DBConn();
+            Part filePart = request.getPart("fileToUpload");
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            byte[] fileData = null;
+            filePath = null;
+            BoardDTO board = new BoardDTO(board_ID, comment_ID, title, contents, fileData, ins_Date_Time, upd_Date_Time,
+                    del_Date_Time, del_Yn);
+
+            dbConn.insertBoard(board);
+
+            if (fileName != null && !fileName.isEmpty()) {
+                // 게시글별로 디렉토리 생성
+                board_ID = dbConn.getNextBoardID();
+                String boardDirPath = uploadDirectory + File.separator + board_ID;
+                System.out.println(boardDirPath);
+                File boardDir = new File(boardDirPath);
+                if (!boardDir.exists()) {
+                    boardDir.mkdirs();
+                }
+
+                // 파일 경로 설정
+                filePath = boardDirPath + File.separator + fileName;
+                System.out.println(filePath);
+
+                try (InputStream fileContent = filePart.getInputStream()) {
+                    fileData = new byte[fileContent.available()];
+                    fileContent.read(fileData);
+                    Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            boardList = dbConn.getBoardList();
+            page = "boardList.do";
+            isRedirect = true;
+        }
+
+        if (command.equals("/boardDetail.do")) {
+            int num = Integer.parseInt(request.getParameter("board_ID"));
+            DBConn dbConn = new DBConn();
+            List<CommentDTO> commentList = dbConn.getCommentList(num);
+
+            for (BoardDTO board : boardList) {
+                if (board.getBoard_ID() == num) {
+                    request.setAttribute("board", board);
+                    break;
+                }
+            }
+            request.setAttribute("commentList", commentList);
+            boardList = dbConn.getBoardList();
+            page = "boardDetail.jsp";
+        }
+
+        if (command.equals("/delete.do")) {
+            int num = Integer.parseInt(request.getParameter("board_ID"));
+            System.out.println(num);
+            DBConn dbConn = new DBConn();
+
+            // 해당 게시물의 파일 경로를 얻어옵니다.
+            String filePathToDelete = uploadDirectory + File.separator + num;
+            System.out.println("File path to delete: " + filePathToDelete);
+
+            // 파일 및 폴더 삭제 시도
+            try {
+                File folderToDelete = new File(filePathToDelete);
+                deleteFolder(folderToDelete); // 폴더와 하위 항목 모두 삭제
+                System.out.println("Folder and its contents deleted successfully.");
+            } catch (SecurityException e) {
+                // 파일 삭제 권한이 없는 경우 예외 처리
+                System.err.println("Security Exception: " + e.getMessage());
+            } catch (Exception e) {
+                // 기타 예외 처리
+                System.err.println("Exception: " + e.getMessage());
+            }
+
+            // 게시물 삭제 처리
+            dbConn.deleteBoard(num);
+            boardList = dbConn.getBoardList();
+            page = "boardList.do";
+            isRedirect = true;
+        }
+
+        if (command.equals("/updateBoardForm.do")) {
+            int num = Integer.parseInt(request.getParameter("board_ID"));
+            for (BoardDTO board : boardList) {
+                if (board.getBoard_ID() == num) {
+                    request.setAttribute("board", board);
+                    break;
+                }
+            }
+            page = "update_board_form.jsp";
+            isRedirect = false;
+        }
+
+        // 파일 업로드 경로를 request에 설정
+        request.setAttribute("filePath", filePath);
+
+        if (isRedirect) {
+            response.sendRedirect(page);
+        } else {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+            dispatcher.forward(request, response);
+        }
+    }
+
+    // 추가된 메소드: 폴더와 하위 항목 모두 삭제
+    private boolean deleteFolder(File folder) {
+        if (folder == null || !folder.exists()) {
+            return true; // 폴더가 없거나 이미 삭제되었을 경우
+        }
+
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (!deleteFolder(file)) {
+                        return false;
+                    }
+                } else {
+                    if (!file.delete()) {
+                        return false; // 파일 삭제 실패
+                    }
+                }
+            }
+        }
+
+        return folder.delete(); // 빈 폴더 삭제 시도
+    }
+}
