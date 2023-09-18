@@ -132,9 +132,8 @@ public class Controller extends HttpServlet {
 				
 				
 //			case "/signUp" : //회원가입
-//				signup.signUp()
-//				return;
-				
+//			    signup.signUp(request, response);
+//			    return;
  		}
 		
 		if (site != null && !response.isCommitted()) {
