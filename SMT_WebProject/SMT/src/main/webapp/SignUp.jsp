@@ -21,9 +21,9 @@
         <label for="user_PW">Password:</label>
         <input type="password" id="password" name="user_PW" required><br><br>
         <label for="phone_Num">PhoneNumber:</label>
-        <input type="phone_Num" id="phone_Num" name="phone_Num" required><br><br>
+        <input type="text" id="phone_Num" name="phone_Num" required><br><br>
         <label for="corp_Name">CompanyName:</label>
-        <input type="corp_Name" id="corp_Name" name="corp_Name" required><br><br>
+        <input type="text" id="corp_Name" name="corp_Name" required><br><br>
         <button type="submit">Signup</button>
     </form>
 

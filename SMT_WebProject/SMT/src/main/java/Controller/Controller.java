@@ -15,6 +15,7 @@ import com.oreilly.servlet.MultipartRequest;
 import Model.Ans.Ans;
 import Model.Board.Board;
 import Model.Image.Image;
+import Model.User.SignupServlet;
 
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -39,6 +40,7 @@ public class Controller extends HttpServlet {
 		Image img = new Image();
 		Ans ans = new Ans();
 		Gson gson = new Gson();
+		SignupServlet signup = new SignupServlet(); 
 		
 		switch(command) {
 			case "/boardPage" : 
@@ -129,8 +131,9 @@ public class Controller extends HttpServlet {
 				return;
 				
 				
-			case "/signupppp" : //회원가입
-				
+//			case "/signUp" : //회원가입
+//				signup.signUp()
+//				return;
 				
  		}
 		
