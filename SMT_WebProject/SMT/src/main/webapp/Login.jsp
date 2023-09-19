@@ -70,7 +70,7 @@
  
 <tr height="30">
 	<td colspan="2" align="center">
-	<a href="javascript:location.href=/join/searchpw.do';">비밀번호 찾기</a>
+	<a href="javascript:location.href=/searchpw.do';">비밀번호 찾기</a>
 	</td>
 </tr>
  
@@ -90,14 +90,14 @@
 		if(!f.userID.value) {
 			
 			alert("아이디를 입력하세요.");
-			f.userId.focus();
+			f.userID.focus();
 			return;
 		}
 		
 		if(!f.userPW.value) {
 			
 			alert("패스워드를 입력하세요.");
-			f.userPwd.focus();
+			f.userPw.focus();
 			return;
 		}
 		

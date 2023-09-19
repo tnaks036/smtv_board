@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>User Signup</h1>
-    <form id="signupForm">
+    <form id="signupForm" method="post" action ="/SignupServlet">
         <label for="user_ID">User_ID</label>
         <input type="text" id="user_ID" name="user_ID" required><br><br>
         <label for="user_PW">Password:</label>

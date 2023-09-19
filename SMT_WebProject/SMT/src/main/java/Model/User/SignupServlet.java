@@ -79,10 +79,10 @@ public class SignupServlet extends HttpServlet {
 	        	pstmt.setString(4, corp_Name);
 	        	
 	        	// check Duplicated User From Database
-	        	String checkQueryDuplicates = "SELECT User_ID FROM SC_Join WHERE User_ID = ?";
-	        	PreparedStatement checkStmt = conn.prepareStatement(checkQueryDuplicates);
-	        	checkStmt.setString(1,  user_ID);
-	        	ResultSet resultSet = checkStmt.executeQuery();
+//	        	String checkQueryDuplicates = "SELECT User_ID FROM SC_Join WHERE User_ID = ?";
+//	        	PreparedStatement checkStmt = conn.prepareStatement(checkQueryDuplicates);
+//	        	checkStmt.setString(1,  user_ID);
+//	        	ResultSet resultSet = checkStmt.executeQuery();
 	        	
 	        	int rowsAffected = pstmt.executeUpdate(); //db 에서 실행        	
 	        	System.out.println("working?");
