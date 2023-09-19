@@ -27,7 +27,7 @@
         <button type="submit">Signup</button>
     </form>
 
-    <script src="js/signup.js">
+    <script type="text/javascript">
 	 // js/signup.js
         document.getElementById("signupForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent form from submitting normally
@@ -53,11 +53,11 @@
         // Send form data
         xhr.send(formData);
     });
-	 /*
-        function signup() {
+        /*function signup() {
             var username = document.getElementById("user_ID").value;
             var password = document.getElementById("user_PW").value;
-
+            var phone_Num = document.getElementById("phone_Num").value;
+            var corp_Name = document.getElementById("corp_Name").value;
             // Create XMLHttpRequest object
             var xhttp = new XMLHttpRequest();
 

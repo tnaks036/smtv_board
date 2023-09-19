@@ -129,11 +129,9 @@ public class Controller extends HttpServlet {
 			case "/updAns" : //댓글 수정
 				ans.updAns(img.uploadTest(request), response);
 				return;
+			
+			
 				
-				
-//			case "/signUp" : //회원가입
-//			    signup.signUp(request, response);
-//			    return;
  		}
 		
 		if (site != null && !response.isCommitted()) {
