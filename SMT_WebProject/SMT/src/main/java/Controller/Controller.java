@@ -130,7 +130,8 @@ public class Controller extends HttpServlet {
 				ans.updAns(img.uploadTest(request), response);
 				return;
 			
-			
+			//case "/signup" : //회원가입
+				
 				
  		}
 		

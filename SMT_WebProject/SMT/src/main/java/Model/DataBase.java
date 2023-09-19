@@ -26,7 +26,8 @@ public class DataBase {
 	
 	public void close(PreparedStatement ps) {
 		try {
-			ps.close();
+	            ps.close();
+	        
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

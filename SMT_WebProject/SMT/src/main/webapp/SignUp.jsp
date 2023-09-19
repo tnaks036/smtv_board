@@ -30,7 +30,7 @@
     <script type="text/javascript">
 	 // js/signup.js
         document.getElementById("signupForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent form from submitting normally
+    	event.preventDefault(); // Prevent form from submitting normally
 
         // Get form data
         var formData = new FormData(this);
@@ -53,6 +53,8 @@
         // Send form data
         xhr.send(formData);
     });
+	 
+	 
         /*function signup() {
             var username = document.getElementById("user_ID").value;
             var password = document.getElementById("user_PW").value;
