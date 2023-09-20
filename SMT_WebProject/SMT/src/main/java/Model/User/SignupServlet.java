@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +25,28 @@ public class SignupServlet extends HttpServlet {
        
 	 private static Map<String, Object> users = new HashMap<>();
 	
+	 public int checkUsernameDuplicate(String username) throws DuplicateFormatFlagsException {
+		    String sql = "SELECT COUNT(username) FROM user WHERE username = ?";
+		    int result = 0;
+		    DataBase db = new DataBase();
+		    try (Connection conn = db.getConnection();
+		         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		        pstmt.setString(1, username);
+		        try (ResultSet rs = pstmt.executeQuery()) {
+		            if (rs.next()) {
+		                result = rs.getInt(1);
+		            }
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    if (result > 0) {
+		        throw new DuplicateFormatFlagsException(sql);
+		    }
+		    return result;
+		}
+	 
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -57,7 +79,7 @@ public class SignupServlet extends HttpServlet {
         
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        //ResultSet rs = null;
         
         /// 회원 가입 기능 구현
         try {
@@ -100,6 +122,7 @@ public class SignupServlet extends HttpServlet {
 		            
 		            response.setStatus(HttpServletResponse.SC_OK);
 		            response.getWriter().write("회원 가입 성공");
+		            System.out.println("회원가입 성공??");
 	        	}
 	        	else if (users.containsKey(user_ID)) {
 		            response.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -121,7 +144,8 @@ public class SignupServlet extends HttpServlet {
 //        map 방식 체크
 //        else if (users.containsKey(user_ID)) {
 //            response.setStatus(HttpServletResponse.SC_CONFLICT);
-//            response.getWriter().write("이미 사용 중인 사용자 이름입니다.");
+//            response.getWriter().write("이미 사용 중인 사용자 이름입니다.");  
 	    }
+
 	}
 }

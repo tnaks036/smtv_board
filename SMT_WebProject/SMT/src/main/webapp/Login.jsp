@@ -14,98 +14,17 @@
     <title>User Login</title>
 </head>
 <body>
-    <center><h1>Login</h1>
-    <br/><br/>
-    <center>
-<form action="" method="post" name="myForm">
- 
-<table align="center" cellpadding="0" cellspacing="0">
- 
-<tr height="2"><td colspan="2" bgcolor="#cccccc"></td></tr>
- 
-<tr height="30">
-	<td colspan="2" align="center">
-	<b>로그인</b>
-	</td>
-</tr>
- 
-<tr height="2"><td colspan="2" bgcolor="#cccccc"></td></tr>
- 
-<tr height="25">
-	<td width="80" bgcolor="#e6e4e6" align="center">아이디</td>
-	<td width="120" style="padding-left: 5px;">
-	<input type="text" name="userID" maxlength="10" size="15"/>
-	</td>
-</tr>
- 
-<tr height="25">
-	<td width="80" bgcolor="#e6e4e6" align="center">패스워드</td>
-	<td width="120" style="padding-left: 5px;">
-	<input type="password" name="userPW" maxlength="10" size="15"/>
-	</td>
-</tr>
- 
-<tr height="2"><td colspan="2" bgcolor="#cccccc"></td></tr>
- 
-<tr height="30">
-	<td colspan="2" align="center">
-	<input type="button" value="로그인" class="btn2" onclick="login();">
-	<input type="button" value="취소" class="btm2" 
-	onclick="javascript:location.href=/'">
-	<input type="button" value=" 회원가입 " class="btm2" 
-	onclick="javascript:location.href=/join/created.do';">
-	</td>
-</tr>
- 
-<tr height="30">
-	<td colspan="2" align="center">
-	<font color="red"><b>${message }</b></font>  <!-- el로 받았으니까 서블릿에서 받아올것이다 -->
-	<font color="red"><b>${message2 }</b></font>
-	<font color="red"><b>${message3 }</b></font>
-	</td>
-</tr>
- 
-<!-- 비밀번호 찾기 만들기 -->
-<tr height="2" ><td colspan="2"  bgcolor="#cccccc"></td></tr>
- 
-<tr height="30">
-	<td colspan="2" align="center">
-	<a href="javascript:location.href=/searchpw.do';">비밀번호 찾기</a>
-	</td>
-</tr>
- 
-<tr height="2"><td colspan="2" bgcolor="#cccccc"></td></tr>
- 
- 
-</table>
- 
-</form>
-
-    <script type="text/javascript">
- 
-	function login() {
-		
-		var f = document.myForm;
-		
-		if(!f.userID.value) {
-			
-			alert("아이디를 입력하세요.");
-			f.userID.focus();
-			return;
-		}
-		
-		if(!f.userPW.value) {
-			
-			alert("패스워드를 입력하세요.");
-			f.userPw.focus();
-			return;
-		}
-		
-		f.action = "login_ok.do";
-		f.submit();
-		
-	}
- 
-</script>
+    <h1>로그인</h1>
+    <form name="myForm" method="post" action="/LoginServlet"> <!-- action을 서블릿 URL로 설정 -->
+        <label for="userID">아이디:</label>
+        <input type="text" id="userID" name="user_ID" required><br><br>
+        <label for="userPW">패스워드:</label>
+        <input type="password" id="userPW" name="user_PW" required><br><br>
+        <input type="submit" value="로그인"> <!-- type을 submit으로 변경 -->
+    </form>
+    
+    <h1>회원가입</h1>
+    <button onclick="window.location.href='/SignUp.jsp'">회원가입</button>
+<button onclick="">비밀번호 찾기</button>
 </body>
 </html>

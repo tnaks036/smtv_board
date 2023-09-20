@@ -15,11 +15,11 @@ import com.oreilly.servlet.MultipartRequest;
 import Model.Ans.Ans;
 import Model.Board.Board;
 import Model.Image.Image;
-import Model.User.SignupServlet;
 
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		doPro(request, response);
@@ -40,7 +40,8 @@ public class Controller extends HttpServlet {
 		Image img = new Image();
 		Ans ans = new Ans();
 		Gson gson = new Gson();
-		SignupServlet signup = new SignupServlet(); 
+		
+		
 		
 		switch(command) {
 			case "/boardPage" : 
@@ -130,8 +131,7 @@ public class Controller extends HttpServlet {
 				ans.updAns(img.uploadTest(request), response);
 				return;
 			
-			//case "/signup" : //회원가입
-				
+
 				
  		}
 		
