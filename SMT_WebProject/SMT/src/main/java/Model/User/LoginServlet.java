@@ -84,7 +84,7 @@ public class LoginServlet extends HttpServlet {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, loginVO.getUser_ID());
             rs = pstmt.executeQuery();
-
+            System.out.println("working?");
             if (rs.next()) {
                 String hashedPasswordFromDB = rs.getString("User_PW");
                 String userPW = loginVO.getUser_PW();
