@@ -1,4 +1,4 @@
-package Model.User;
+package User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 import Model.DataBase;
 import VO.UserVO;
-
+import User.UserDAO;
 /**
  * Servlet implementation class SignupServlet
  */
@@ -25,28 +25,28 @@ public class SignupServlet extends HttpServlet {
        
 	 private static Map<String, Object> users = new HashMap<>();
 	
-	 public int checkUsernameDuplicate(String username) throws DuplicateFormatFlagsException {
-		    String sql = "SELECT COUNT(username) FROM user WHERE username = ?";
-		    int result = 0;
+	 public boolean checkUsernameDuplicate(String user_ID) throws DuplicateFormatFlagsException {
+		    String sql = "SELECT COUNT(User_ID) FROM user WHERE User_ID = ?";	    
+		    boolean result = false;
 		    DataBase db = new DataBase();
 		    try (Connection conn = db.getConnection();
 		         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-		        pstmt.setString(1, username);
+		        pstmt.setString(1, user_ID);
 		        try (ResultSet rs = pstmt.executeQuery()) {
 		            if (rs.next()) {
-		                result = rs.getInt(1);
+		            	int count = rs.getInt(1);
+		                result = count > 0; // 중복 사용자면 true, 아니면 false
 		            }
 		        }
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		    }
 
-		    if (result > 0) {
+		    if (result) {
 		        throw new DuplicateFormatFlagsException(sql);
 		    }
 		    return result;
 		}
-	 
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -70,6 +70,7 @@ public class SignupServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String user_ID = request.getParameter("user_ID");
         String user_PW = request.getParameter("user_PW");
+        String user_PW2 = request.getParameter("user_PW2");
         String phone_Num = request.getParameter("phone_Num");
         String corp_Name = request.getParameter("corp_Name");
         System.out.println("겟파람");
@@ -114,23 +115,28 @@ public class SignupServlet extends HttpServlet {
 		            UserVO user = new UserVO();
 		            user.setUser_ID(user_ID);
 		            user.setUser_PW(hashedPassword);
+		            
 		            user.setPhone_Num(phone_Num);		        
 		            user.setCorp_Name(corp_Name);
-		            System.out.println("working?");
+		            System.out.println("working saved in data??");
 		            // UserVO 객체를 어딘가에 저장하거나 데이터베이스에 저장
 		            //users.put(user_ID, user_PW); 
 		            
 		            response.setStatus(HttpServletResponse.SC_OK);
-		            response.getWriter().write("회원 가입 성공");
+		            //response.getWriter().write("회원 가입 성공");
+		            request.getSession().setAttribute("MessageType", "성공");
 		            System.out.println("회원가입 성공??");
 	        	}
-	        	else if (users.containsKey(user_ID)) {
+	        	else if (checkUsernameDuplicate(user_ID)) {
 		            response.setStatus(HttpServletResponse.SC_CONFLICT);
-		            response.getWriter().write("이미 사용 중인 사용자 이름입니다.");
+		            //response.getWriter().write("이미 사용 중인 사용자 이름입니다.");
+		            System.out.println("이미 사용중인 사용자 이름입니다.");
+		            return;
 		        } else {
 		        	//회원가입 실패
 		        	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	                response.getWriter().write("회원 가입 실패");
+	                System.out.println("실패!!!!");
 		        }
 	    } catch (Exception e) {
 	    	e.printStackTrace();
@@ -147,5 +153,24 @@ public class SignupServlet extends HttpServlet {
 //            response.getWriter().write("이미 사용 중인 사용자 이름입니다.");  
 	    }
 
+	
+
 	}
 }
+
+	<%
+		String messageContent = null;
+		if(session.getAttribute("messageContent") != null){
+			messageContent = (String) session.getAttribute("messageContent");
+		}
+		String messageType = null;
+		if(session.getAttribute("messageType") != null){
+			messageType = (String) session.getAttribute("messageType");
+		}
+		if(messageContent !=null){
+		
+		}
+	%>
+
+
+

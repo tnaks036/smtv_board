@@ -4,22 +4,41 @@
 <!DOCTYPE html>
 <html>
 <head>	
-<link rel="stylesheet" type="text/css" href="css/Login_Join.css">
+<link rel="stylesheet" type="text/css" href="css/SignUp.css">
+<script defer src="SignUp.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User Signup</title>
 </head>
 <body>
-    <h1>User Signup</h1>
+    <main id="main-holder">
+	    <h1 id="login-header">SignIn</h1>	
+	        
+	    <div id="login-error-msg-holder">
+	      <p id="login-error-msg">Invalid username <span id="error-msg-second-line">and/or password</span></p>
+    </div>
+	
+	<form id="login-form">
+		<input type="text" name="user_ID" id="username-field" class="login-form-field" placeholder="ID" 
+		onchange="login()"> 
+		<input type="password" name="user_PW" id="password-field" class="login-form-field" placeholder="Password" 
+		onchange="login()">
+		<input type="submit" value="Login" id="login-form-submit">
+	</form>
+    
+    <!--  -->
+    
     <form id="signupForm" method="post" action ="/SignupServlet">
         <label for="user_ID">User_ID</label>
-        <input type="text" id="user_ID" name="user_ID" required><br><br>
+        <input type="text" id="user_ID" name="user_ID" onchange="login()" ><br><br>
         <label for="user_PW">Password:</label>
-        <input type="password" id="password" name="user_PW" required onchange="check_pw()"><br><br>
+        <input type="password" name="user_PW" id="user_PW" required onchange="check_PW()">&nbsp;<span style="color:cadetblue">보안성</span> <progress id="pw_pro" value="0" max="3"></progress>&nbsp;<span id="pw_pro_label"></span>
+ 	 
         <label for="user_PW">Check Password:</label>
         <input type="password" id="password" name="user_PW2" required onchange="check_pw()"><br><br>
         <label for="phone_Num">PhoneNumber:</label>
@@ -29,33 +48,7 @@
         <button type="submit">Signup</button>
     </form>
 
-    <script type="text/javascript">
-	 // js/signup.js
-        document.getElementById("signupForm").addEventListener("submit", function(event) {
-    	event.preventDefault(); // Prevent form from submitting normally
-
-        // Get form data
-        var formData = new FormData(this);
-
-        // Create AJAX request
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "SignupServlet");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    alert("Signup successful!");
-                    // Redirect to login page
-                    window.location.href = "login_Join.jsp";
-                } else {
-                    alert("Signup failed. Please try again.");
-                }
-            }
-        };
-
-        // Send form data
-        xhr.send(formData);
-    });
-	 
+    <script type="text/javascript"> 
 	 function check_PW(){
 		 
 		 var pw = document.getElementById('user_PW').value;
