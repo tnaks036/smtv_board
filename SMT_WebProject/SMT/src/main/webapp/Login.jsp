@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>	
-<link rel="stylesheet" type="text/css" href="css/SignUp.css">
+<link rel="stylesheet" type="text/css" href="css/SignUp_Login.css">
 <script defer src="SignUp.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>

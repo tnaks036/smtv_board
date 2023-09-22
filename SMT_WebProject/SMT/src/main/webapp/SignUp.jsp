@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>	
-<link rel="stylesheet" type="text/css" href="css/SignUp.css">
+<link rel="stylesheet" type="text/css" href="css/SignUp_Login.css">
 <script defer src="SignUp.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
@@ -18,36 +18,24 @@
 <body>
     <main id="main-holder">
 	    <h1 id="login-header">SignIn</h1>	
-	        
+	    	    
 	    <div id="login-error-msg-holder">
 	      <p id="login-error-msg">Invalid username <span id="error-msg-second-line">and/or password</span></p>
     </div>
 	
-	<form id="login-form">
-		<input type="text" name="user_ID" id="username-field" class="login-form-field" placeholder="ID" 
-		onchange="login()"> 
+	<form id="login-form" method="post" action ="/SignupServlet" >
+		<input type="text" name="user_ID" id="username-field" class="login-form-field" placeholder="ID">
 		<input type="password" name="user_PW" id="password-field" class="login-form-field" placeholder="Password" 
-		onchange="login()">
+		>&nbsp;<span style="color:cadetblue">보안성</span><progress id="pw_pro" value="0" max="3">
+														</progress>&nbsp;<span id="pw_pro_label"></span>
+		<input type="password" name="user_PW2" id="password-field" class="login-form-field" placeholder="Check Password"
+		onchange="check_PW()">
+		<input type="text" name="pheon_Num" id="phonenumber-field" class="login-form-field" placeholder="Phone Number" > 
+		<input type="text" name="corp_Name" id="Corpname-field" class="login-form-field" placeholder="Company name" > 
 		<input type="submit" value="Login" id="login-form-submit">
 	</form>
-    
     <!--  -->
-    
-    <form id="signupForm" method="post" action ="/SignupServlet">
-        <label for="user_ID">User_ID</label>
-        <input type="text" id="user_ID" name="user_ID" onchange="login()" ><br><br>
-        <label for="user_PW">Password:</label>
-        <input type="password" name="user_PW" id="user_PW" required onchange="check_PW()">&nbsp;<span style="color:cadetblue">보안성</span> <progress id="pw_pro" value="0" max="3"></progress>&nbsp;<span id="pw_pro_label"></span>
- 	 
-        <label for="user_PW">Check Password:</label>
-        <input type="password" id="password" name="user_PW2" required onchange="check_pw()"><br><br>
-        <label for="phone_Num">PhoneNumber:</label>
-        <input type="text" id="phone_Num" name="phone_Num" required><br><br>
-        <label for="corp_Name">CompanyName:</label>
-        <input type="text" id="corp_Name" name="corp_Name" required><br><br>
-        <button type="submit">Signup</button>
-    </form>
-
+    </main>
     <script type="text/javascript"> 
 	 function check_PW(){
 		 
