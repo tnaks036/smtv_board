@@ -75,8 +75,8 @@ public class SignupServlet extends HttpServlet {
         System.out.println("Is this working???");
         //HttpSession session = request.getSession();
         
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+//        response.setContentType("application/json");
+//        response.setCharacterEncoding("UTF-8");
         
         int result = this.userDAO.Signup(user_ID, user_PW, phone_Num, corp_Name);
         
