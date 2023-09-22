@@ -98,7 +98,7 @@
 	       }
 	    	
 		// AJAX를 사용하여 회원가입 처리
-		/*
+		
 		    const signupForm = document.getElementById("signup-form");
 	    signupForm.addEventListener("submit", function (event) {
 	        event.preventDefault();
@@ -135,7 +135,7 @@
 	        };
 	        xhr.send(formData);
 	    });
-	    */
+	    
     </script>
 </body>
 </html>

@@ -55,8 +55,8 @@ public class SignupServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("application/x-json; charset=UTF-8"); //JSON형식으로 response 타입지정
+//        request.setCharacterEncoding("UTF-8");
+//        response.setContentType("application/x-json; charset=UTF-8"); //JSON형식으로 response 타입지정
         //JsonArray arrayObj = new JsonArray();                         //JSON리스트를 가져오기 위해 Array생성
         
         UserDAO userDAO  = new UserDAO();
@@ -75,8 +75,8 @@ public class SignupServlet extends HttpServlet {
         System.out.println("Is this working???");
         //HttpSession session = request.getSession();
         
-//        response.setContentType("application/json");
-//        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json"); //JSON형식으로 response 타입지정
+        response.setCharacterEncoding("UTF-8");
         
         int result = this.userDAO.Signup(user_ID, user_PW, phone_Num, corp_Name);
         
