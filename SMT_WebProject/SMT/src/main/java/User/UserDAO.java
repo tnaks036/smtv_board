@@ -3,6 +3,7 @@ package User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.DuplicateFormatFlagsException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +36,12 @@ public class UserDAO {
 	    }
 
 	    if (result) {
-	        throw new DuplicateFormatFlagsException(sql);
+	    	throw new DuplicateFormatFlagsException("Duplicate user ID");
 	    }
 	    return result;
 	}
     
+    //SQLExeption 에서 빼고 수정하니 받아와짐 왜?ㅇㅅㅇ
     public int Signup(String user_ID, String user_PW, String phone_Num, String corp_Name) {
         DataBase db = new DataBase();
         //SQL 쿼리문 작성 (SQL SERVER 사용 예제)

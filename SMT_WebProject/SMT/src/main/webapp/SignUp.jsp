@@ -5,7 +5,6 @@
 <html>
 <head>	
 <link rel="stylesheet" type="text/css" href="css/SignUp_Login.css">
-<script defer src="SignUp.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -24,77 +23,90 @@
     </div>
 	
 	<form id="login-form" method="post" action ="/SignupServlet" >
-		<input type="text" name="user_ID" id="username-field" class="login-form-field" placeholder="ID">
-		<input type="password" name="user_PW" id="password-field" class="login-form-field" placeholder="Password" 
-		>&nbsp;<span style="color:cadetblue">보안성</span><progress id="pw_pro" value="0" max="3">
+		<input type="text" name="user_ID" id="id" class="login-form-field" placeholder="ID">
+		<input type="password" name="user_PW" id="pw" class="login-form-field" placeholder="Password" 
+		onchange="check_PW()">&nbsp;<span style="color:cadetblue">보안성</span><progress id="pw_pro" value="0" max="3">
 														</progress>&nbsp;<span id="pw_pro_label"></span>
-		<input type="password" name="user_PW2" id="password-field" class="login-form-field" placeholder="Check Password"
-		onchange="check_PW()">
-		<input type="text" name="pheon_Num" id="phonenumber-field" class="login-form-field" placeholder="Phone Number" > 
-		<input type="text" name="corp_Name" id="Corpname-field" class="login-form-field" placeholder="Company name" > 
+		<input type="password" name="user_PW2" id="pw2" class="login-form-field" placeholder="Check Password"
+		onchange="check_PW()">&nbsp;<span id="check"></span>
+		<input type="text" name="pheon_Num" id="pn" class="login-form-field" placeholder="Phone Number" > 
+		<input type="text" name="corp_Name" id="cn" class="login-form-field" placeholder="Company name" > 
 		<input type="submit" value="Login" id="login-form-submit">
 	</form>
     <!--  -->
     </main>
-    <script type="text/javascript"> 
-	 function check_PW(){
-		 
-		 var pw = document.getElementById('user_PW').value;
-		 var SC = ["!","@","#","$","%"];
-         var check_SC = 0;
-		 
-         if(pw.length<6||pw.length>16){
-        	 window.alert('비밀번호는 6글자 이상, 16글자 이하만 사용 가능합니다.');
-        	 document.getElementById('user_PW').value=";
-         }
-         for(var i=0;i<SC.length;i++){
-             if(pw.indexOf(SC[i]) != -1){
-                 check_SC = 1;
-             }
-         }
-         if(check_SC == 0){
-             window.alert('!,@,#,$,% 의 특수문자가 들어가 있지 않습니다.')
-             document.getElementById('user_PW').value='';
-         }
-         if(document.getElementById('user_PW').value !='' && document.getElementById('user_PW2').value!=''){
-             if(document.getElementById('user_PW').value==document.getElementById('user_PW2').value){
-                 document.getElementById('check').innerHTML='비밀번호가 일치합니다.'
-                 document.getElementById('check').style.color='blue';
-             }
-             else{
-                 document.getElementById('check').innerHTML='비밀번호가 일치하지 않습니다.';
-                 document.getElementById('check').style.color='red';
-             }
-         }
-     }
-	 
-        /*function signup() {
-            var username = document.getElementById("user_ID").value;
-            var password = document.getElementById("user_PW").value;
-            var phone_Num = document.getElementById("phone_Num").value;
-            var corp_Name = document.getElementById("corp_Name").value;
-            // Create XMLHttpRequest object
-            var xhttp = new XMLHttpRequest();
+    <script defer src="SignUp.js"></script>
+    <script> 
+		// AJAX를 사용하여 회원가입 처리
+		/*
+		    const signupForm = document.getElementById("signup-form");
+	    signupForm.addEventListener("submit", function (event) {
+	        event.preventDefault();
 
-            // Define callback function for when the request completes
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    var response = this.responseText;
+	        const user_ID = document.getElementById("username-field").value;
+	        const user_PW = document.getElementById("password-field").value;
+	        const user_PW2 = document.getElementById("password-field2").value;
+	        const phone_Num = document.getElementById("phonenumber-field").value;
+	        const corp_Name = document.getElementById("Corpname-field").value;
 
-                    // Process the response from the server
-                    if (response === "Signup successful") {
-                        alert("Signup successful");
-                    } else {
-                        alert("User ID already exists");
-                    }
-                }
-            };
+	        // FormData 객체를 사용하여 데이터 전송
+	        const formData = new FormData();
+	        formData.append("user_ID", user_ID);
+	        formData.append("user_PW", user_PW);
+	        formData.append("user_PW2", user_PW2);
+	        formData.append("phone_Num", phone_Num);
+	        formData.append("corp_Name", corp_Name);
 
-            // Send the request to the server
-            xhttp.open("POST", "/signup", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("user_ID=" + user_ID + "&user_PW=" + user_PW);
-        }*/
+	        // AJAX 요청 보내기
+	        const xhr = new XMLHttpRequest();
+	        xhr.open("POST", "/SignupServlet", true);
+	        xhr.onreadystatechange = function () {
+	            if (xhr.readyState === 4 && xhr.status === 200) {
+	                const response = xhr.responseText;
+	                if (response === "success") {
+	                    // 회원가입 성공
+	                    alert("회원가입에 성공했습니다.");
+	                    window.location.href = "SignUp.jsp"; // 원하는 페이지로 리다이렉트
+	                } else {
+	                    // 회원가입 실패
+	                    alert("회원가입에 실패했습니다. " + response);
+	                }
+	            }
+	        };
+	        xhr.send(formData);
+	    });
+	    */
+	////// Sign Up Function
+	    function check_PW(){
+	  		 
+	  		 var pw = document.getElementById('pw').value;
+	  		 var SC = ["!","@","#","$","%"];
+	         var check_SC = 0;
+	  		 
+	           if(pw.length<4||pw.length>16){
+	          	 window.alert('비밀번호는 4글자 이상, 16글자 이하만 사용 가능합니다.');
+	          	 document.getElementById('user_PW').value = "";
+	           }
+	           for(var i=0;i<SC.length;i++){
+	               if(pw.indexOf(SC[i]) != -1){
+	                   check_SC = 1;
+	               }
+	           }
+	           if(check_SC == 0){
+	               window.alert('!,@,#,$,% 의 특수문자가 들어가 있지 않습니다.')
+	               document.getElementById('pw').value='';
+	           }
+	           if(document.getElementById('pw').value !='' && document.getElementById('pw2').value!=''){
+	               if(document.getElementById('pw').value==document.getElementById('pw2').value){
+	                   document.getElementById('check').innerHTML='비밀번호가 일치합니다.'
+	                   document.getElementById('check').style.color='blue';
+	               }
+	               else{
+	                   document.getElementById('check').innerHTML='비밀번호가 일치하지 않습니다.';
+	                   document.getElementById('check').style.color='red';
+	               }
+	           }
+	       }
     </script>
 </body>
 </html>

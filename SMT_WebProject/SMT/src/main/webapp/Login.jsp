@@ -23,7 +23,7 @@
     </div>
     
     <form id="login-form" method="post" action="/LoginServlet">    <!-- action을 서블릿 URL로 설정 -->
-				<input type="text" name="user_ID" id="username-field" class="login-form-field" placeholder="ID" 
+		<input type="text" name="user_ID" id="username-field" class="login-form-field" placeholder="ID" 
 		onchange="login()"> 
 		<input type="password" name="user_PW" id="password-field" class="login-form-field" placeholder="Password" 
 		onchange="login()">

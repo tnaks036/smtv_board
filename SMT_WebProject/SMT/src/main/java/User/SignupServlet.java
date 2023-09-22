@@ -1,9 +1,11 @@
 package User;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import com.google.gson.JsonArray;
+import com.google.gson.stream.JsonReader;
+
 import Model.DataBase;
 import VO.UserVO;
 import User.UserDAO;
@@ -26,9 +32,6 @@ public class SignupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private UserDAO userDAO; 
-    
-	
-	private static Map<String, Object> users = new HashMap<>();
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -52,7 +55,15 @@ public class SignupServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/x-json; charset=UTF-8"); //JSON형식으로 response 타입지정
+        //JsonArray arrayObj = new JsonArray();                         //JSON리스트를 가져오기 위해 Array생성
         
+        UserDAO userDAO  = new UserDAO();
+        // 사용자 정보를 저장하는 방식을 여기에 추가-db에 저장 가능
+        // 사용자 정보를 UserVO 객체에 저장
+        UserVO user = new UserVO();
+      
 		String user_ID = request.getParameter("user_ID");
 		System.out.println("user_ID: " + user_ID);
         String user_PW = request.getParameter("user_PW");
@@ -61,38 +72,20 @@ public class SignupServlet extends HttpServlet {
         String phone_Num = request.getParameter("phone_Num");
         String corp_Name = request.getParameter("corp_Name");
         System.out.println("또잉서블");
-        String hashedPassword = BCrypt.hashpw(user_PW, BCrypt.gensalt()); // 비밀번호 해시화
         System.out.println("Is this working???");
         //HttpSession session = request.getSession();
         
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         
-        if(user_ID == null || user_ID.equals("") || user_PW == null || user_PW.equals("") ||
-        		user_PW2 == null || user_PW2.equals("") || phone_Num == null || phone_Num.equals("") || 
-        		corp_Name == null || corp_Name.equals("")) {
-        	System.out.println("모든 내용을 입력하세요.");
-        	request.getSession().setAttribute("messageType", "Error Message");
-        	request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
-        	response.sendRedirect("SignUp.jsp");
-        	return;
-        }    		
-        if(!user_PW.equals(user_PW2)) {
-        	request.getSession().setAttribute("messageType", "Error Message");
-        	request.getSession().setAttribute("messageContent", "비밀번호가 일치하지 않습니다..");
-        	response.sendRedirect("SignUp.jsp");
-        	return;
+        int result = this.userDAO.Signup(user_ID, user_PW, phone_Num, corp_Name);
+        
+        if (result == 1) {
+            // 회원가입 성공
+            response.getWriter().write("Success !!!!! ");
+        } else {
+            // 회원가입 실패
+            response.getWriter().write("Failed for Sign Up :(");
         }
-        int result = this.userDAO.Signup(user_ID, hashedPassword, phone_Num, corp_Name);
-        if(result == 1) {//new UserDAO()
-        	request.getSession().setAttribute("messageType", "Sucsess !!! ");
-        	request.getSession().setAttribute("messageContent", "회원가입에 성공했습니다.");
-        	response.sendRedirect("SignUp.jsp");
-        	return;
-        }
-        else {
-        	request.getSession().setAttribute("messageType", "Error Message ");
-        	request.getSession().setAttribute("messageContent", "이미 존재하는 회원입니다. ");
-        	response.sendRedirect("SignUp.jsp");
-        	return;
-        }
-	}
+    }
 }

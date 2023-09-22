@@ -1,5 +1,5 @@
 
-
+///Login Function 
   function onClick() {
     const value = pannel.value;
     console.log(value);
@@ -27,3 +27,6 @@
   }
   
   btn.addEventListener("click", onClick);
+  
+  
+  
